@@ -58,7 +58,7 @@ export const asyncRoutes = [
     component: Layout,
     redirect: "/auth/userManagement",
     meta: {
-      title: "权限管理",
+      title: "网约房管理",
       remixIcon: "user-settings-line",
       roles: ["admin"],
     },
@@ -81,108 +81,35 @@ export const asyncRoutes = [
           remixIcon: "admin-line",
         },
       },
-      {
-        path: "permission",
-        name: "Permission",
-        component: () => import("@/views/auth/permission"),
-        meta: {
-          title: "权限管理",
-          remixIcon: "group-line",
-        },
-      },
-      // {
-      //   path: 'menuManagement',
-      //   name: 'MenuManagement',
-      //   component: () => import('@/views/setting/menuManagement'),
-      //   meta: {
-      //     title: '菜单管理',
-      //     badge: 'New',
-      //     remixIcon: 'menu-2-fill',
-      //   },
-      // },
     ],
   },
   {
-    path: "/system",
+    path: "/auth",
+    name: "PersonnelManagement",
     component: Layout,
+    redirect: "/auth/userManagement",
     meta: {
-      title: "系统监控",
+      title: "系统管理",
       remixIcon: "user-settings-line",
       roles: ["admin"],
     },
     children: [
       {
-        path: "loginLog",
-        name: "loginLog",
-        component: () => import("@/views/system/loginLog"),
+        path: "userManagement",
+        name: "UserManagement",
+        component: () => import("@/views/auth/userManagement"),
         meta: {
-          title: "登录日志",
+          title: "用户管理",
           remixIcon: "user-3-line",
         },
       },
       {
-        path: "oprationLog",
-        name: "oprationLog",
-        component: () => import("@/views/system/oprationLog"),
+        path: "roleManagement",
+        name: "RoleManagement",
+        component: () => import("@/views/auth/roleManagement"),
         meta: {
-          title: "操作日志",
+          title: "角色管理",
           remixIcon: "admin-line",
-        },
-      },
-    ],
-  },
-  {
-    path: "/blog",
-    component: Layout,
-    meta: {
-      title: "内容管理",
-      remixIcon: "user-settings-line",
-      roles: ["admin"],
-    },
-    children: [
-      {
-        path: "flash",
-        name: "flash",
-        component: () => import("@/views/blog/Flash"),
-        meta: {
-          title: "快讯管理",
-          remixIcon: "user-3-line",
-        },
-      },
-      {
-        path: "flashAdd",
-        name: "flashAdd",
-        component: () => import("@/views/blog/Flash/flashAdd"),
-        meta: {
-          title: "新增快讯",
-          remixIcon: "user-3-line",
-        },
-      },
-      {
-        path: "news",
-        name: "news",
-        component: () => import("@/views/blog/news"),
-        meta: {
-          title: "新闻管理",
-          remixIcon: "user-3-line",
-        },
-      },
-      {
-        path: "newsMarkdown",
-        name: "newsmarkdown",
-        component: () => import("@/views/blog/news/newsmarkdownEditor"),
-        meta: {
-          title: "新闻Markdown编辑",
-          remixIcon: "user-3-line",
-        },
-      },
-      {
-        path: "newsRichText",
-        name: "news",
-        component: () => import("@/views/blog/news/newsrichTextEditor"),
-        meta: {
-          title: "新闻富文本编辑",
-          remixIcon: "user-3-line",
         },
       },
     ],
