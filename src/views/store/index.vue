@@ -72,14 +72,6 @@
         prop="email"
         show-overflow-tooltip
       ></el-table-column>
-
-      <!-- <el-table-column align="center" label="角色" show-overflow-tooltip>
-        <template #default="{ row }">
-          <el-tag v-for="(item, index) in row.roles" :key="index">
-            {{ item }}
-          </el-tag>
-        </template>
-      </el-table-column> -->
       <el-table-column
         align="center"
         label="是否登录锁"
@@ -201,8 +193,8 @@ export default {
     async fetchData() {
       this.listLoading = true;
       const { data } = await getList(this.queryForm);
-      this.list = data.data;
-      this.total = data.total;
+      this.list = data;
+      this.total = data.pageTotal;
       this.listLoading = false;
     },
   },

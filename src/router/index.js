@@ -121,18 +121,18 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: "userManagement",
-        name: "UserManagement",
-        component: () => import("@/views/auth/userManagement"),
+        path: "user",
+        name: "userManagement",
+        component: () => import("@/views/user"),
         meta: {
           title: "用户管理",
           remixIcon: "user-3-line",
         },
       },
       {
-        path: "roleManagement",
-        name: "RoleManagement",
-        component: () => import("@/views/auth/roleManagement"),
+        path: "role",
+        name: "roleManagement",
+        component: () => import("@/views/role"),
         meta: {
           title: "角色管理",
           remixIcon: "admin-line",

@@ -99,7 +99,7 @@
 
 <script>
 import { doDelete, getList } from "@/api/roleManagement";
-import Edit from "./components/RoleManagementEdit";
+import Edit from "./components/roleEdit";
 
 export default {
   name: "RoleManagement",

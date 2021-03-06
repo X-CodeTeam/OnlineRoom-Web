@@ -117,9 +117,9 @@
       </el-table-column>
     </el-table>
     <el-pagination
-      :current-page="queryForm.currentPage"
+      :current-page="queryForm.index"
       :layout="layout"
-      :page-size="queryForm.pageSize"
+      :page-size="queryForm.size"
       :total="total"
       background
       @current-change="handleCurrentChange"
@@ -130,8 +130,8 @@
 </template>
 
 <script>
-import { doDelete, getList } from "@/api/userManagement";
-import Edit from "./components/UserManagementEdit";
+import { doDelete, queryPage } from "@/api/users";
+import Edit from "./components/userEdit";
 
 export default {
   name: "UserManagement",
@@ -144,8 +144,8 @@ export default {
       total: 0,
       selectRows: "",
       queryForm: {
-        currentPage: 1,
-        pageSize: 10,
+        index: 1,
+        size: 10,
         username: "",
       },
     };
@@ -187,20 +187,20 @@ export default {
       }
     },
     handleSizeChange(val) {
-      this.queryForm.pageSize = val;
+      this.queryForm.size = val;
       this.fetchData();
     },
     handleCurrentChange(val) {
-      this.queryForm.currentPage = val;
+      this.queryForm.index = val;
       this.fetchData();
     },
     queryData() {
-      this.queryForm.currentPage = 1;
+      this.queryForm.index = 1;
       this.fetchData();
     },
     async fetchData() {
       this.listLoading = true;
-      const { data } = await getList(this.queryForm);
+      const { data } = await queryPage(this.queryForm);
       this.list = data.data;
       this.total = data.total;
       this.listLoading = false;
