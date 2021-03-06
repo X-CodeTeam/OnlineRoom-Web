@@ -53,10 +53,9 @@ export const asyncRoutes = [
     ],
   },
   {
-    path: "/auth",
-    name: "PersonnelManagement",
+    path: "/room",
+    name: "RoomManagement",
     component: Layout,
-    redirect: "/auth/userManagement",
     meta: {
       title: "网约房管理",
       remixIcon: "user-settings-line",
@@ -64,20 +63,47 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: "userManagement",
-        name: "UserManagement",
-        component: () => import("@/views/auth/userManagement"),
+        path: "store",
+        name: "StoreManagement",
+        component: () => import("@/views/store"),
         meta: {
-          title: "用户管理",
+          title: "门店管理",
           remixIcon: "user-3-line",
         },
       },
       {
-        path: "roleManagement",
-        name: "RoleManagement",
-        component: () => import("@/views/auth/roleManagement"),
+        path: "room",
+        name: "roomManagement",
+        component: () => import("@/views/room"),
         meta: {
-          title: "角色管理",
+          title: "房间管理",
+          remixIcon: "admin-line",
+        },
+      },
+      {
+        path: "order",
+        name: "orderManagement",
+        component: () => import("@/views/order"),
+        meta: {
+          title: "订单管理",
+          remixIcon: "admin-line",
+        },
+      },
+      {
+        path: "checkin",
+        name: "checkinManagement",
+        component: () => import("@/views/checkin"),
+        meta: {
+          title: "入住信息",
+          remixIcon: "admin-line",
+        },
+      },
+      {
+        path: "warning",
+        name: "warningManagement",
+        component: () => import("@/views/warning"),
+        meta: {
+          title: "预警记录",
           remixIcon: "admin-line",
         },
       },
