@@ -11,11 +11,6 @@ export const constantRoutes = [
     hidden: true,
   },
   {
-    path: "/register",
-    component: () => import("@/views/register"),
-    hidden: true,
-  },
-  {
     path: "/callback",
     component: () => import("@/views/callback"),
     hidden: true,

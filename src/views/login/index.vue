@@ -12,8 +12,7 @@
           class="login-form"
           label-position="left"
         >
-          <div class="title">hello !</div>
-          <div class="title-tips">欢迎来到{{ title }}！</div>
+          <div class="title-tips">{{ title }}</div>
           <el-form-item prop="username" style="margin-top: 40px">
             <el-input
               v-model.trim="form.username"
@@ -60,9 +59,6 @@
           >
             登录
           </el-button>
-          <router-link to="/register">
-            <div style="margin-top: 20px">注册</div>
-          </router-link>
         </el-form>
       </el-col>
       <el-col :lg="1" :md="1" :sm="24" :xl="1" :xs="24">
