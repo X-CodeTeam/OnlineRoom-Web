@@ -1,8 +1,8 @@
 import request from "@/utils/request";
 
-export function getList(params) {
+export function queryPage(params) {
   return request({
-    url: "/Admin/User/GetPage",
+    url: "/stores",
     method: "get",
     params,
   });

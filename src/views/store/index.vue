@@ -44,34 +44,46 @@
       </el-table-column>
       <el-table-column
         align="center"
-        label="用户名"
-        prop="username"
+        label="门店名称"
+        prop="storeName"
         show-overflow-tooltip
       ></el-table-column>
       <el-table-column
         align="center"
-        label="昵称"
-        prop="nickName"
+        label="门店区域"
+        prop="storeAreaname"
         show-overflow-tooltip
       ></el-table-column>
       <el-table-column
         align="center"
-        label="手机号码"
-        prop="phone"
+        label="门店地点"
+        prop="storeDetails"
         show-overflow-tooltip
       ></el-table-column>
       <el-table-column
         align="center"
-        label="邮箱"
-        prop="email"
+        label="经营者姓名"
+        prop="managerName"
         show-overflow-tooltip
       ></el-table-column>
       <el-table-column
         align="center"
-        label="邮箱"
-        prop="description"
+        label="经营者手机号"
+        prop="managerPhone"
         show-overflow-tooltip
       ></el-table-column>
+      <el-table-column
+        align="center"
+        label="状态"
+        prop="storeStatus"
+        show-overflow-tooltip
+      >
+        <template #default="{ row }">
+          <span>
+            {{ row.isLocked ? "正常" : "注销" }}
+          </span>
+        </template>
+      </el-table-column>
       <el-table-column
         align="center"
         label="操作"
@@ -98,7 +110,7 @@
 </template>
 
 <script>
-import { doDelete, getList } from "@/api/userManagement";
+import { doDelete, queryPage } from "@/api/store";
 import Edit from "./components/StoreEdit";
 
 export default {
@@ -168,9 +180,7 @@ export default {
     },
     async fetchData() {
       this.listLoading = true;
-      const { data } = await getList(this.queryForm);
-      debugger;
-      console.log("data: ", data);
+      const { data } = await queryPage(this.queryForm);
       this.list = data;
       this.total = data.pageTotal;
       this.listLoading = false;
