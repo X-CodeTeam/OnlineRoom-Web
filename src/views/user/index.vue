@@ -45,13 +45,7 @@
       <el-table-column
         align="center"
         label="用户名"
-        prop="account"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        align="center"
-        label="真实姓名"
-        prop="name"
+        prop="username"
         show-overflow-tooltip
       ></el-table-column>
       <el-table-column
@@ -63,7 +57,7 @@
       <el-table-column
         align="center"
         label="手机号码"
-        prop="phoneNumber"
+        prop="phone"
         show-overflow-tooltip
       ></el-table-column>
       <el-table-column
@@ -72,38 +66,12 @@
         prop="email"
         show-overflow-tooltip
       ></el-table-column>
-
-      <!-- <el-table-column align="center" label="角色" show-overflow-tooltip>
-        <template #default="{ row }">
-          <el-tag v-for="(item, index) in row.roles" :key="index">
-            {{ item }}
-          </el-tag>
-        </template>
-      </el-table-column> -->
       <el-table-column
         align="center"
-        label="是否登录锁"
-        prop="lockoutEnabled"
+        label="邮箱"
+        prop="description"
         show-overflow-tooltip
-      >
-        <template #default="{ row }">
-          <span>
-            {{ row.lockoutEnabled ? "是" : "否" }}
-          </span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        label="是否锁定"
-        prop="isLocked"
-        show-overflow-tooltip
-      >
-        <template #default="{ row }">
-          <span>
-            {{ row.isLocked ? "是" : "否" }}
-          </span>
-        </template>
-      </el-table-column>
+      ></el-table-column>
       <el-table-column
         align="center"
         label="操作"
@@ -201,7 +169,7 @@ export default {
     async fetchData() {
       this.listLoading = true;
       const { data } = await queryPage(this.queryForm);
-      this.list = data.data;
+      this.list = data;
       this.total = data.total;
       this.listLoading = false;
     },
