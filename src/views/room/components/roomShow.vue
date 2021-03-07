@@ -8,58 +8,49 @@
     <el-form ref="form" :model="form" label-width="160px">
       <el-row>
         <el-col :span="12">
-          <el-form-item label="门店名称：">{{ form.storeName }} </el-form-item>
+          <el-form-item label="所属门店：">{{ form.storeName }} </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="门店地点：">{{
-            form.storeLocation
-          }}</el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="行政区域：">{{
-            form.storeAreaname
-          }}</el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="管辖派出所："
-            >{{ form.policeZoneName }}
-          </el-form-item>
-        </el-col>
-      </el-row>
-
-      <el-form-item label="详细地址：">{{ form.storeDetails }} </el-form-item>
-
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="所属企业名称："
-            >{{ form.corporateName }}
-          </el-form-item>
-        </el-col>
-        <el-col :span="12">
-          <el-form-item label="统一社会信用代码："
-            >{{ form.unifiedSocialCreditCode }}
+          <el-form-item label="楼栋号："
+            >{{ form.buildingNumber }}
           </el-form-item>
         </el-col>
       </el-row>
 
       <el-row>
         <el-col :span="12">
-          <el-form-item label="经营者姓名："
-            >{{ form.managerName }}
+          <el-form-item label="房间号：">{{ form.roomNo }} </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="房间别名：">{{ form.roomAlias }} </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="户型："
+            >{{ form.roomHouseTypeString }}
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="经营者手机号："
-            >{{ form.managerPhone }}
+          <el-form-item label="房屋类型："
+            >{{ form.roomTypeString }}
           </el-form-item>
         </el-col>
       </el-row>
 
-      <el-form-item label="经营者身份证号："
-        >{{ form.managerIdcard }}
-      </el-form-item>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="面积：">{{ form.area }} </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="房东姓名："
+            >{{ form.landlordName }}
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-form-item label="房东电话：">{{ form.landlordPhone }} </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="close">取 消</el-button>
@@ -69,37 +60,26 @@
 
 <script>
 export default {
-  name: "StoreShow",
-
-  components: {},
-
+  name: "RoomShow",
   data() {
     return {
       form: {},
       title: "",
       dialogFormVisible: false,
-      org: {
-        policeZoneData: [],
-      },
     };
   },
-
   methods: {
     showEdit(row) {
       if (row) {
-        this.title = "详情";
+        this.title = "房间详情";
         this.form = Object.assign({}, row);
       }
       this.dialogFormVisible = true;
     },
-
     close() {
       this.$refs["form"].resetFields();
       this.form = this.$options.data().form;
       this.dialogFormVisible = false;
-      this.org.policeZoneData = [];
-      this.form.storeAreaname = null;
-      this.form.storeAreacode = null;
     },
   },
 };

@@ -42,13 +42,13 @@
       <el-table-column
         align="center"
         label="门店名称"
-        prop="account"
+        prop="storeName"
         show-overflow-tooltip
       ></el-table-column>
       <el-table-column
         align="center"
         label="门店地点"
-        prop="name"
+        prop="storeLocation"
         show-overflow-tooltip
       ></el-table-column>
       <el-table-column
@@ -72,16 +72,17 @@
       <el-table-column
         align="center"
         label="户型"
-        prop="roomHouseType"
+        prop="roomHouseTypeString"
         show-overflow-tooltip
       ></el-table-column>
       <el-table-column
         align="center"
         label="操作"
         show-overflow-tooltip
-        width="85"
+        width="120"
       >
         <template #default="{ row }">
+          <el-button type="text" @click="handleShow(row)">详情</el-button>
           <el-button type="text" @click="handleEdit(row)">编辑</el-button>
           <el-button type="text" @click="handleDelete(row)">删除</el-button>
         </template>
@@ -97,16 +98,18 @@
       @size-change="handleSizeChange"
     ></el-pagination>
     <edit ref="edit" @fetch-data="fetchData"></edit>
+    <show ref="show" @fetch-data="fetchData"></show>
   </div>
 </template>
 
 <script>
 import { doDelete, queryPage } from "@/api/room";
 import Edit from "./components/roomEdit";
+import show from "./components/roomShow";
 
 export default {
   name: "UserManagement",
-  components: { Edit },
+  components: { Edit, show },
   data() {
     return {
       list: [],
@@ -133,6 +136,11 @@ export default {
         this.$refs["edit"].showEdit(row);
       } else {
         this.$refs["edit"].showEdit();
+      }
+    },
+    handleShow(row) {
+      if (row.roomId) {
+        this.$refs["show"].showEdit(row);
       }
     },
     handleDelete(row) {
