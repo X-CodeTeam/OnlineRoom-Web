@@ -44,7 +44,7 @@
     "js-cookie": "^2.2.1",
     "jsencrypt": "^3.0.0-rc.1",
     "jsplumb": "^2.14.6",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "nprogress": "^0.2.0",
     "qs": "^6.9.4",
     "remixicon": "^2.5.0",

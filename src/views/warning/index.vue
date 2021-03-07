@@ -166,7 +166,6 @@ export default {
     },
     handleDelete(row) {
       if (row.id) {
-        console.log(row.id);
         this.$baseConfirm("你确定要删除当前项吗", null, async () => {
           const res = await doDelete({ ids: [row.id] });
           this.$baseMessage(res.message, "success");
