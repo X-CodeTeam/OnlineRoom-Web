@@ -3,12 +3,12 @@
  */
 
 .theme-white {
-  $base-menu-background: #fff;
+  $base-menu-background: #2f3447;
   $base-menu-background-active: #1890ff;
   $base-color-blue: #1890ff;
 
   @mixin container {
-    color: #515a6e !important;
+    color: #fff !important;
     background: $base-menu-background !important;
   }
 

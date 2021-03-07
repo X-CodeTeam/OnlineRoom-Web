@@ -77,7 +77,7 @@
       >
         <template #default="{ row }">
           <span>
-            {{ row.isLocked ? "正常" : "注销" }}
+            {{ row.storeStatus ? "正常" : "注销" }}
           </span>
         </template>
       </el-table-column>
