@@ -5,21 +5,33 @@
     width="500px"
     @close="close"
   >
-    <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-      <el-form-item label="用户名" prop="account">
-        <el-input v-model.trim="form.account"></el-input>
+    <el-form ref="form" :model="form" :rules="rules" label-width="160px">
+      <el-form-item label="所属门店：" prop="storeName">
+        <el-input v-model.trim="form.storeName"></el-input>
       </el-form-item>
-      <el-form-item label="真实姓名" prop="name">
-        <el-input v-model.trim="form.name"></el-input>
+      <el-form-item label="楼栋号：" prop="buildingNumber">
+        <el-input v-model.trim="form.buildingNumber"></el-input>
       </el-form-item>
-      <el-form-item label="用户昵称" prop="nickName">
-        <el-input v-model.trim="form.nickName"></el-input>
+      <el-form-item label="房间号：" prop="roomNo">
+        <el-input v-model.trim="form.roomNo"></el-input>
       </el-form-item>
-      <el-form-item label="手机号码" prop="phoneNumber">
-        <el-input v-model.trim="form.phoneNumber"></el-input>
+      <el-form-item label="房间别名：" prop="roomAlias">
+        <el-input v-model.trim="form.roomAlias"></el-input>
       </el-form-item>
-      <el-form-item label="邮箱" prop="email">
-        <el-input v-model.trim="form.email"></el-input>
+      <el-form-item label="户型：" prop="roomHouseType">
+        <el-input v-model.trim="form.roomHouseType"></el-input>
+      </el-form-item>
+      <el-form-item label="房屋类型：" prop="roomType">
+        <el-input v-model.trim="form.roomType"></el-input>
+      </el-form-item>
+      <el-form-item label="面积：" prop="area">
+        <el-input v-model.trim="form.area"></el-input>
+      </el-form-item>
+      <el-form-item label="房东姓名：" prop="landlordName">
+        <el-input v-model.trim="form.landlordName"></el-input>
+      </el-form-item>
+      <el-form-item label="房东电话：" prop="landlordPhone">
+        <el-input v-model.trim="form.landlordPhone"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -30,17 +42,24 @@
 </template>
 
 <script>
-import { doEdit, doAdd } from "@/api/userManagement";
+import { doEdit, doAdd } from "@/api/room";
 
 export default {
-  name: "UserManagementEdit",
+  name: "RoomEdit",
   data() {
     return {
       form: {},
       rules: {
-        account: [{ required: true, trigger: "blur", message: "请输入用户名" }],
-        email: [{ required: true, trigger: "blur", message: "请输入邮箱" }],
-        nickName: [{ required: true, trigger: "blur", message: "请选择昵称" }],
+        storeName: [
+          { required: true, trigger: "blur", message: "请选择所属门店" },
+        ],
+        roomNo: [{ required: true, trigger: "blur", message: "请输入房间号" }],
+        roomHouseType: [
+          { required: true, trigger: "blur", message: "请选择户型" },
+        ],
+        roomType: [
+          { required: true, trigger: "blur", message: "请选择房屋类型" },
+        ],
       },
       title: "",
       dialogFormVisible: false,

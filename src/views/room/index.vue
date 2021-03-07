@@ -158,9 +158,9 @@ export default {
     },
     async fetchData() {
       this.listLoading = true;
-      const { data } = await queryPage(this.queryForm);
+      const { data, pageTotal } = await queryPage(this.queryForm);
       this.list = data;
-      this.total = data.total;
+      this.total = pageTotal;
       this.listLoading = false;
     },
   },

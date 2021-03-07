@@ -67,7 +67,7 @@ export const asyncRoutes = [
         name: "StoreManagement",
         component: () => import("@/views/store"),
         meta: {
-          title: "门店管理",
+          title: "门店管理-开发中",
           remixIcon: "user-3-line",
         },
       },
@@ -76,7 +76,7 @@ export const asyncRoutes = [
         name: "roomManagement",
         component: () => import("@/views/room"),
         meta: {
-          title: "房间管理",
+          title: "房间管理-开发中",
           remixIcon: "admin-line",
         },
       },
@@ -85,7 +85,7 @@ export const asyncRoutes = [
         name: "orderManagement",
         component: () => import("@/views/order"),
         meta: {
-          title: "订单管理",
+          title: "订单管理-开发中",
           remixIcon: "admin-line",
         },
       },
@@ -94,7 +94,7 @@ export const asyncRoutes = [
         name: "checkinManagement",
         component: () => import("@/views/checkin"),
         meta: {
-          title: "入住信息",
+          title: "入住信息-开发中",
           remixIcon: "admin-line",
         },
       },
@@ -103,7 +103,7 @@ export const asyncRoutes = [
         name: "warningManagement",
         component: () => import("@/views/warning"),
         meta: {
-          title: "预警记录",
+          title: "预警记录-开发中",
           remixIcon: "admin-line",
         },
       },
@@ -125,7 +125,7 @@ export const asyncRoutes = [
         name: "userManagement",
         component: () => import("@/views/user"),
         meta: {
-          title: "用户管理",
+          title: "用户管理-开发中",
           remixIcon: "user-3-line",
         },
       },
@@ -134,7 +134,7 @@ export const asyncRoutes = [
         name: "roleManagement",
         component: () => import("@/views/role"),
         meta: {
-          title: "角色管理",
+          title: "角色管理-开发中",
           remixIcon: "admin-line",
         },
       },

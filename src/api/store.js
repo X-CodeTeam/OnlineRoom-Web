@@ -10,15 +10,15 @@ export function queryPage(params) {
 
 export function doEdit(data) {
   return request({
-    url: "/Admin/User/Update",
-    method: "post",
+    url: "/stores",
+    method: "put",
     data,
   });
 }
 
 export function doAdd(data) {
   return request({
-    url: "/Admin/User/Add",
+    url: "/stores",
     method: "post",
     data,
   });

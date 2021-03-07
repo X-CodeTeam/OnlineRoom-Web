@@ -111,7 +111,7 @@ import { doDelete, queryPage } from "@/api/store";
 import Edit from "./components/StoreEdit";
 
 export default {
-  name: "UserManagement",
+  name: "StoreManagement",
   components: { Edit },
   data() {
     return {
@@ -165,9 +165,9 @@ export default {
     },
     async fetchData() {
       this.listLoading = true;
-      const { data } = await queryPage(this.queryForm);
+      const { data, pageTotal } = await queryPage(this.queryForm);
       this.list = data;
-      this.total = data.pageTotal;
+      this.total = pageTotal;
       this.listLoading = false;
     },
   },
