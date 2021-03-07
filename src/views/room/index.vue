@@ -54,7 +54,7 @@
       <el-table-column
         align="center"
         label="楼栋号"
-        prop="nickName"
+        prop="buildingNumber"
         show-overflow-tooltip
       ></el-table-column>
       <el-table-column
