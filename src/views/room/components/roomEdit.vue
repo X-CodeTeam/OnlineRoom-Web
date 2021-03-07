@@ -2,34 +2,62 @@
   <el-dialog
     :title="title"
     :visible.sync="dialogFormVisible"
-    width="500px"
+    width="900px"
     @close="close"
   >
     <el-form ref="form" :model="form" :rules="rules" label-width="160px">
-      <el-form-item label="所属门店：" prop="storeName">
-        <el-input v-model.trim="form.storeName"></el-input>
-      </el-form-item>
-      <el-form-item label="楼栋号：" prop="buildingNumber">
-        <el-input v-model.trim="form.buildingNumber"></el-input>
-      </el-form-item>
-      <el-form-item label="房间号：" prop="roomNo">
-        <el-input v-model.trim="form.roomNo"></el-input>
-      </el-form-item>
-      <el-form-item label="房间别名：" prop="roomAlias">
-        <el-input v-model.trim="form.roomAlias"></el-input>
-      </el-form-item>
-      <el-form-item label="户型：" prop="roomHouseType">
-        <el-input v-model.trim="form.roomHouseType"></el-input>
-      </el-form-item>
-      <el-form-item label="房屋类型：" prop="roomType">
-        <el-input v-model.trim="form.roomType"></el-input>
-      </el-form-item>
-      <el-form-item label="面积：" prop="area">
-        <el-input v-model.trim="form.area"></el-input>
-      </el-form-item>
-      <el-form-item label="房东姓名：" prop="landlordName">
-        <el-input v-model.trim="form.landlordName"></el-input>
-      </el-form-item>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="所属门店：" prop="storeName">
+            <el-input v-model.trim="form.storeName"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="楼栋号：" prop="buildingNumber">
+            <el-input v-model.trim="form.buildingNumber"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="房间号：" prop="roomNo">
+            <el-input v-model.trim="form.roomNo"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="房间别名：" prop="roomAlias">
+            <el-input v-model.trim="form.roomAlias"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="户型：" prop="roomHouseType">
+            <el-input v-model.trim="form.roomHouseType"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="房屋类型：" prop="roomType">
+            <el-input v-model.trim="form.roomType"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="面积：" prop="area">
+            <el-input v-model.trim="form.area"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="房东姓名：" prop="landlordName">
+            <el-input v-model.trim="form.landlordName"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
       <el-form-item label="房东电话：" prop="landlordPhone">
         <el-input v-model.trim="form.landlordPhone"></el-input>
       </el-form-item>

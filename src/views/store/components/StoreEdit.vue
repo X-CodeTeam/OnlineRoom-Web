@@ -2,37 +2,68 @@
   <el-dialog
     :title="title"
     :visible.sync="dialogFormVisible"
-    width="700px"
+    width="900px"
     @close="close"
   >
     <el-form ref="form" :model="form" :rules="rules" label-width="160px">
-      <el-form-item label="门店名称：" prop="storeName">
-        <el-input v-model.trim="form.storeName"></el-input>
-      </el-form-item>
-      <el-form-item label="门店地点：" prop="storeLocation">
-        <el-input v-model.trim="form.storeLocation"></el-input>
-      </el-form-item>
-      <el-form-item label="行政区域：" prop="storeAreaname">
-        <el-input v-model.trim="form.storeAreaname"></el-input>
-      </el-form-item>
-      <el-form-item label="管辖派出所：" prop="policeZoneName">
-        <el-input v-model.trim="form.policeZoneName"></el-input>
-      </el-form-item>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="门店名称：" prop="storeName">
+            <el-input v-model.trim="form.storeName"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="门店地点：" prop="storeLocation">
+            <el-input v-model.trim="form.storeLocation"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="行政区域：" prop="storeAreaname">
+            <el-input v-model.trim="form.storeAreaname"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="管辖派出所：" prop="policeZoneName">
+            <el-input v-model.trim="form.policeZoneName"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
       <el-form-item label="详细地址：" prop="storeDetails">
         <el-input v-model.trim="form.storeDetails"></el-input>
       </el-form-item>
-      <el-form-item label="所属企业名称：" prop="corporateName">
-        <el-input v-model.trim="form.corporateName"></el-input>
-      </el-form-item>
-      <el-form-item label="统一社会信用代码：" prop="managerIdcard">
-        <el-input v-model.trim="form.managerIdcard"></el-input>
-      </el-form-item>
-      <el-form-item label="经营者姓名：" prop="managerName">
-        <el-input v-model.trim="form.managerName"></el-input>
-      </el-form-item>
-      <el-form-item label="经营者手机号：" prop="managerPhone">
-        <el-input v-model.trim="form.managerPhone"></el-input>
-      </el-form-item>
+
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="所属企业名称：" prop="corporateName">
+            <el-input v-model.trim="form.corporateName"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item
+            label="统一社会信用代码："
+            prop="unifiedSocialCreditCode"
+          >
+            <el-input v-model.trim="form.unifiedSocialCreditCode"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="经营者姓名：" prop="managerName">
+            <el-input v-model.trim="form.managerName"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="12">
+          <el-form-item label="经营者手机号：" prop="managerPhone">
+            <el-input v-model.trim="form.managerPhone"></el-input>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
       <el-form-item label="经营者身份证号：" prop="managerIdcard">
         <el-input v-model.trim="form.managerIdcard"></el-input>
       </el-form-item>
@@ -66,7 +97,7 @@ export default {
           { required: true, trigger: "blur", message: "请选择管辖派出所" },
         ],
         managerIdcard: [
-          { required: true, trigger: "blur", message: "请选择行政身份证号" },
+          { required: true, trigger: "blur", message: "请输入经营者身份证号" },
         ],
         storeDetails: [
           { required: true, trigger: "blur", message: "请输入详细地址" },
