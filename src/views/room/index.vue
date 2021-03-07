@@ -88,7 +88,7 @@
       </el-table-column>
     </el-table>
     <el-pagination
-      :current-page="queryForm.currentPage"
+      :current-page="queryForm.pageIndex"
       :layout="layout"
       :page-size="queryForm.pageSize"
       :total="total"
@@ -115,7 +115,7 @@ export default {
       total: 0,
       selectRows: "",
       queryForm: {
-        currentPage: 1,
+        pageIndex: 1,
         pageSize: 10,
         username: "",
       },
@@ -149,11 +149,11 @@ export default {
       this.fetchData();
     },
     handleCurrentChange(val) {
-      this.queryForm.currentPage = val;
+      this.queryForm.pageIndex = val;
       this.fetchData();
     },
     queryData() {
-      this.queryForm.currentPage = 1;
+      this.queryForm.pageIndex = 1;
       this.fetchData();
     },
     async fetchData() {

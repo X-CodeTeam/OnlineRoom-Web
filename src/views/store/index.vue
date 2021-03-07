@@ -72,12 +72,12 @@
       <el-table-column
         align="center"
         label="状态"
-        prop="storeStatus"
+        prop="enableMark"
         show-overflow-tooltip
       >
         <template #default="{ row }">
           <span>
-            {{ row.storeStatus ? "正常" : "注销" }}
+            {{ row.enableMark ? "正常" : "注销" }}
           </span>
         </template>
       </el-table-column>
@@ -85,16 +85,22 @@
         align="center"
         label="操作"
         show-overflow-tooltip
-        width="85"
+        width="120"
       >
         <template #default="{ row }">
+          <el-button type="text" @click="handleShow(row)">详情</el-button>
           <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-          <el-button type="text" @click="handleDelete(row)">删除</el-button>
+          <el-button
+            v-if="row.enableMark"
+            type="text"
+            @click="handleDelete(row)"
+            >注销</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
     <el-pagination
-      :current-page="queryForm.currentPage"
+      :current-page="queryForm.pageIndex"
       :layout="layout"
       :page-size="queryForm.pageSize"
       :total="total"
@@ -103,16 +109,18 @@
       @size-change="handleSizeChange"
     ></el-pagination>
     <edit ref="edit" @fetch-data="fetchData"></edit>
+    <show ref="show" @fetch-data="fetchData"></show>
   </div>
 </template>
 
 <script>
-import { doDelete, queryPage } from "@/api/store";
+import { doLogout, queryPage } from "@/api/store";
 import Edit from "./components/StoreEdit";
+import Show from "./components/StoreShow";
 
 export default {
   name: "StoreManagement",
-  components: { Edit },
+  components: { Edit, Show },
   data() {
     return {
       list: [],
@@ -121,7 +129,7 @@ export default {
       total: 0,
       selectRows: "",
       queryForm: {
-        currentPage: 1,
+        pageIndex: 1,
         pageSize: 10,
         username: "",
       },
@@ -141,12 +149,21 @@ export default {
         this.$refs["edit"].showEdit();
       }
     },
+    handleShow(row) {
+      if (row.storeId) {
+        this.$refs["show"].showEdit(row);
+      }
+    },
     handleDelete(row) {
       if (row.storeId) {
-        this.$baseConfirm("你确定要删除当前项吗", null, async () => {
-          const res = await doDelete({ storeId: row.storeId });
-          this.$baseMessage(res.message, "success");
-          await this.fetchData();
+        this.$baseConfirm("你确定要注销当前项吗", null, async () => {
+          const res = await doLogout({ storeId: row.storeId });
+          if (res.ok) {
+            this.$baseMessage("注销成功！", "success");
+            // await this.fetchData();
+          } else {
+            this.$baseMessage("注销成功！", "error");
+          }
         });
       }
     },
@@ -155,11 +172,11 @@ export default {
       this.fetchData();
     },
     handleCurrentChange(val) {
-      this.queryForm.currentPage = val;
+      this.queryForm.pageIndex = val;
       this.fetchData();
     },
     queryData() {
-      this.queryForm.currentPage = 1;
+      this.queryForm.pageIndex = 1;
       this.fetchData();
     },
     async fetchData() {

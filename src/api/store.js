@@ -24,10 +24,10 @@ export function doAdd(data) {
   });
 }
 
-export function doDelete(data) {
+export function doLogout(data) {
   return request({
-    url: "/stores",
-    method: "delete",
-    params: data,
+    url: "/stores/logout",
+    method: "put",
+    data,
   });
 }
