@@ -26,8 +26,8 @@ export function doAdd(data) {
 
 export function doDelete(data) {
   return request({
-    url: "/Admin/User/Delete",
-    method: "post",
-    data,
+    url: "/rooms",
+    method: "delete",
+    params: data,
   });
 }

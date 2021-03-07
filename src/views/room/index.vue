@@ -5,9 +5,6 @@
         <el-button icon="el-icon-plus" type="primary" @click="handleEdit">
           添加
         </el-button>
-        <el-button icon="el-icon-delete" type="danger" @click="handleDelete">
-          批量删除
-        </el-button>
       </vab-query-form-left-panel>
       <vab-query-form-right-panel :span="12">
         <el-form :inline="true" :model="queryForm" @submit.native.prevent>
@@ -132,32 +129,19 @@ export default {
       this.selectRows = val;
     },
     handleEdit(row) {
-      if (row.id) {
+      if (row.roomId) {
         this.$refs["edit"].showEdit(row);
       } else {
         this.$refs["edit"].showEdit();
       }
     },
     handleDelete(row) {
-      if (row.id) {
-        console.log(row.id);
+      if (row.roomId) {
         this.$baseConfirm("你确定要删除当前项吗", null, async () => {
-          const res = await doDelete({ ids: [row.id] });
+          const res = await doDelete({ roomId: row.roomId });
           this.$baseMessage(res.message, "success");
           await this.fetchData();
         });
-      } else {
-        if (this.selectRows.length > 0) {
-          const ids = this.selectRows.map((item) => item.id);
-          this.$baseConfirm("你确定要删除选中项吗", null, async () => {
-            const res = await doDelete({ ids });
-            this.$baseMessage(res.message, "success");
-            await this.fetchData();
-          });
-        } else {
-          this.$baseMessage("未选中任何行", "error");
-          return false;
-        }
       }
     },
     handleSizeChange(val) {

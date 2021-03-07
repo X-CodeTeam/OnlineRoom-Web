@@ -2,24 +2,39 @@
   <el-dialog
     :title="title"
     :visible.sync="dialogFormVisible"
-    width="500px"
+    width="700px"
     @close="close"
   >
-    <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-      <el-form-item label="用户名" prop="account">
-        <el-input v-model.trim="form.account"></el-input>
+    <el-form ref="form" :model="form" :rules="rules" label-width="160px">
+      <el-form-item label="门店名称：" prop="storeName">
+        <el-input v-model.trim="form.storeName"></el-input>
       </el-form-item>
-      <el-form-item label="真实姓名" prop="name">
-        <el-input v-model.trim="form.name"></el-input>
+      <el-form-item label="门店地点：" prop="storeLocation">
+        <el-input v-model.trim="form.storeLocation"></el-input>
       </el-form-item>
-      <el-form-item label="用户昵称" prop="nickName">
-        <el-input v-model.trim="form.nickName"></el-input>
+      <el-form-item label="行政区域：" prop="storeAreaname">
+        <el-input v-model.trim="form.storeAreaname"></el-input>
       </el-form-item>
-      <el-form-item label="手机号码" prop="phoneNumber">
-        <el-input v-model.trim="form.phoneNumber"></el-input>
+      <el-form-item label="管辖派出所：" prop="policeZoneName">
+        <el-input v-model.trim="form.policeZoneName"></el-input>
       </el-form-item>
-      <el-form-item label="邮箱" prop="email">
-        <el-input v-model.trim="form.email"></el-input>
+      <el-form-item label="详细地址：" prop="storeDetails">
+        <el-input v-model.trim="form.storeDetails"></el-input>
+      </el-form-item>
+      <el-form-item label="所属企业名称：" prop="corporateName">
+        <el-input v-model.trim="form.corporateName"></el-input>
+      </el-form-item>
+      <el-form-item label="统一社会信用代码：" prop="managerIdcard">
+        <el-input v-model.trim="form.managerIdcard"></el-input>
+      </el-form-item>
+      <el-form-item label="经营者姓名：" prop="managerName">
+        <el-input v-model.trim="form.managerName"></el-input>
+      </el-form-item>
+      <el-form-item label="经营者手机号：" prop="managerPhone">
+        <el-input v-model.trim="form.managerPhone"></el-input>
+      </el-form-item>
+      <el-form-item label="经营者身份证号：" prop="managerIdcard">
+        <el-input v-model.trim="form.managerIdcard"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -30,17 +45,38 @@
 </template>
 
 <script>
-import { doEdit, doAdd } from "@/api/userManagement";
+import { doEdit, doAdd } from "@/api/store";
 
 export default {
-  name: "UserManagementEdit",
+  name: "StoreEdit",
   data() {
     return {
       form: {},
       rules: {
-        account: [{ required: true, trigger: "blur", message: "请输入用户名" }],
-        email: [{ required: true, trigger: "blur", message: "请输入邮箱" }],
-        nickName: [{ required: true, trigger: "blur", message: "请选择昵称" }],
+        storeName: [
+          { required: true, trigger: "blur", message: "请输入门店名称" },
+        ],
+        storeLocation: [
+          { required: true, trigger: "blur", message: "请输入门店地址" },
+        ],
+        storeAreaname: [
+          { required: true, trigger: "blur", message: "请选择行政区域" },
+        ],
+        policeZoneName: [
+          { required: true, trigger: "blur", message: "请选择管辖派出所" },
+        ],
+        managerIdcard: [
+          { required: true, trigger: "blur", message: "请选择行政身份证号" },
+        ],
+        storeDetails: [
+          { required: true, trigger: "blur", message: "请输入详细地址" },
+        ],
+        managerName: [
+          { required: true, trigger: "blur", message: "请输入经营者姓名" },
+        ],
+        managerPhone: [
+          { required: true, trigger: "blur", message: "请输入经营者手机号" },
+        ],
       },
       title: "",
       dialogFormVisible: false,
