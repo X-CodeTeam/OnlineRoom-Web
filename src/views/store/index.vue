@@ -143,7 +143,6 @@ export default {
     },
     handleDelete(row) {
       if (row.storeId) {
-        console.log(row.storeId);
         this.$baseConfirm("你确定要删除当前项吗", null, async () => {
           const res = await doDelete({ storeId: row.storeId });
           this.$baseMessage(res.message, "success");

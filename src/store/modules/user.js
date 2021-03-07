@@ -152,8 +152,6 @@ const actions = {
       return false;
     }
 
-    console.log(data[0]);
-
     let { username, avatar, roles, ability } = data[0].profile;
 
     if (username) {

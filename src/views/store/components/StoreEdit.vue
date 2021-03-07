@@ -21,12 +21,20 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="行政区域：" prop="storeAreaname">
-            <el-input v-model.trim="form.storeAreaname"></el-input>
+            <base-area-select
+              :zone-name.sync="form.storeAreaname"
+              :zone-code.sync="form.storeAreacode"
+              :police-zone-data.sync="org.policeZoneData"
+            ></base-area-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="管辖派出所：" prop="policeZoneName">
-            <el-input v-model.trim="form.policeZoneName"></el-input>
+            <base-police-select
+              :zone-data="org.policeZoneData"
+              :police-zone-id.sync="form.policeZoneId"
+              :police-zone-name.sync="form.policeZoneName"
+            ></base-police-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -77,9 +85,17 @@
 
 <script>
 import { doEdit, doAdd } from "@/api/store";
+import BaseAreaSelect from "@/components/BaseAreaSelect";
+import BasePoliceSelect from "@/components/BasePoliceSelect";
 
 export default {
   name: "StoreEdit",
+
+  components: {
+    BaseAreaSelect,
+    BasePoliceSelect,
+  },
+
   data() {
     return {
       form: {},
@@ -112,8 +128,12 @@ export default {
       title: "",
       dialogFormVisible: false,
       isAdd: false,
+      org: {
+        policeZoneData: [],
+      },
     };
   },
+
   methods: {
     showEdit(row) {
       if (!row) {
@@ -126,11 +146,16 @@ export default {
       }
       this.dialogFormVisible = true;
     },
+
     close() {
       this.$refs["form"].resetFields();
       this.form = this.$options.data().form;
       this.dialogFormVisible = false;
+      this.org.policeZoneData = [];
+      this.form.storeAreaname = null;
+      this.form.storeAreacode = null;
     },
+
     save() {
       this.$refs["form"].validate(async (valid) => {
         if (valid) {
