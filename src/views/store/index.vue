@@ -89,7 +89,9 @@
       >
         <template #default="{ row }">
           <el-button type="text" @click="handleShow(row)">详情</el-button>
-          <el-button type="text" @click="handleEdit(row)">编辑</el-button>
+          <el-button v-if="row.enableMark" type="text" @click="handleEdit(row)"
+            >编辑</el-button
+          >
           <el-button
             v-if="row.enableMark"
             type="text"
@@ -160,9 +162,10 @@ export default {
           const res = await doLogout({ storeId: row.storeId });
           if (res.ok) {
             this.$baseMessage("注销成功！", "success");
-            // await this.fetchData();
+            await this.fetchData();
           } else {
-            this.$baseMessage("注销成功！", "error");
+            this.$baseMessage("注销失败！", "error");
+            await this.fetchData();
           }
         });
       }

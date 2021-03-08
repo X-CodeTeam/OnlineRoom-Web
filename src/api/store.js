@@ -28,6 +28,6 @@ export function doLogout(data) {
   return request({
     url: "/stores/logout",
     method: "put",
-    data,
+    params: data,
   });
 }
