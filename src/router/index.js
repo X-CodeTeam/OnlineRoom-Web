@@ -138,6 +138,15 @@ export const asyncRoutes = [
           remixIcon: "admin-line",
         },
       },
+      {
+        path: "zoom",
+        name: "zoomManagement",
+        component: () => import("@/views/zoom"),
+        meta: {
+          title: "网格员管理-开发中",
+          remixIcon: "admin-line",
+        },
+      },
     ],
   },
   {
