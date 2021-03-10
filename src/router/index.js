@@ -156,6 +156,15 @@ export const asyncRoutes = [
           remixIcon: "admin-line",
         },
       },
+      {
+        path: "followObject",
+        name: "followObjectManagement",
+        component: () => import("@/views/followObject"),
+        meta: {
+          title: "关注对象",
+          remixIcon: "admin-line",
+        },
+      },
     ],
   },
   {
