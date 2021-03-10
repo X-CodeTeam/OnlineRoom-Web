@@ -147,6 +147,15 @@ export const asyncRoutes = [
           remixIcon: "admin-line",
         },
       },
+      {
+        path: "zone",
+        name: "zoneManagement",
+        component: () => import("@/views/zone"),
+        meta: {
+          title: "行政区划管理-开发中",
+          remixIcon: "admin-line",
+        },
+      },
     ],
   },
   {
