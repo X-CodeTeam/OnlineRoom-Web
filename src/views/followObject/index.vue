@@ -77,7 +77,7 @@
       >
         <template #default="{ row }">
           <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-          <el-button type="text" @click="handleDelete(row)">删除</el-button>
+          <el-button type="text" @click="handleDelete(row)">取消关注</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -136,9 +136,9 @@ export default {
     },
     handleDelete(row) {
       if (row.objectId) {
-        this.$baseConfirm("你确定要删除当前项吗", null, async () => {
+        this.$baseConfirm("你确定要取消关注吗？", null, async () => {
           const res = await doDelete({ objectId: row.objectId });
-          this.$baseMessage("删除成功！", "success");
+          this.$baseMessage("取消成功！", "success");
           await this.fetchData();
         });
       }
