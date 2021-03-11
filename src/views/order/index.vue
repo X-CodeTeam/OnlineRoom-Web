@@ -1,14 +1,7 @@
 <template>
   <div class="userManagement-container">
     <vab-query-form>
-      <vab-query-form-left-panel :span="12">
-        <el-button icon="el-icon-plus" type="primary" @click="handleEdit">
-          添加
-        </el-button>
-        <el-button icon="el-icon-delete" type="danger" @click="handleDelete">
-          批量删除
-        </el-button>
-      </vab-query-form-left-panel>
+      <vab-query-form-left-panel :span="12"> </vab-query-form-left-panel>
       <vab-query-form-right-panel :span="12">
         <el-form :inline="true" :model="queryForm" @submit.native.prevent>
           <el-form-item>
@@ -44,65 +37,40 @@
       </el-table-column>
       <el-table-column
         align="center"
-        label="用户名"
-        prop="account"
+        label="门店地点"
+        prop="storeLocation"
         show-overflow-tooltip
       ></el-table-column>
       <el-table-column
         align="center"
-        label="真实姓名"
-        prop="name"
+        label="房间号"
+        prop="roomNo"
         show-overflow-tooltip
       ></el-table-column>
       <el-table-column
         align="center"
-        label="昵称"
-        prop="nickName"
+        label="入住日期"
+        prop="reserveStartTime"
         show-overflow-tooltip
       ></el-table-column>
       <el-table-column
         align="center"
-        label="手机号码"
-        prop="phoneNumber"
+        label="退房日期"
+        prop="reserveEndTime"
         show-overflow-tooltip
       ></el-table-column>
       <el-table-column
         align="center"
-        label="邮箱"
-        prop="email"
+        label="预订人数"
+        prop="reservePeopleNum"
         show-overflow-tooltip
       ></el-table-column>
-
-      <!-- <el-table-column align="center" label="角色" show-overflow-tooltip>
-        <template #default="{ row }">
-          <el-tag v-for="(item, index) in row.roles" :key="index">
-            {{ item }}
-          </el-tag>
-        </template>
-      </el-table-column> -->
       <el-table-column
         align="center"
-        label="是否登录锁"
-        prop="lockoutEnabled"
+        label="订单状态"
+        prop="reserveStatusString"
         show-overflow-tooltip
       >
-        <template #default="{ row }">
-          <span>
-            {{ row.lockoutEnabled ? "是" : "否" }}
-          </span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        label="是否锁定"
-        prop="isLocked"
-        show-overflow-tooltip
-      >
-        <template #default="{ row }">
-          <span>
-            {{ row.isLocked ? "是" : "否" }}
-          </span>
-        </template>
       </el-table-column>
       <el-table-column
         align="center"
@@ -111,8 +79,7 @@
         width="85"
       >
         <template #default="{ row }">
-          <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-          <el-button type="text" @click="handleDelete(row)">删除</el-button>
+          <el-button type="text" @click="handleShow(row)">详情</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -125,17 +92,17 @@
       @current-change="handleCurrentChange"
       @size-change="handleSizeChange"
     ></el-pagination>
-    <edit ref="edit" @fetch-data="fetchData"></edit>
+    <show ref="show" @fetch-data="fetchData"></show>
   </div>
 </template>
 
 <script>
-import { doDelete, getList } from "@/api/userManagement";
-import Edit from "./components/orderEdit";
+import { queryPage } from "@/api/order";
+import show from "./components/orderShow";
 
 export default {
   name: "UserManagement",
-  components: { Edit },
+  components: { show },
   data() {
     return {
       list: [],
@@ -157,33 +124,9 @@ export default {
     setSelectRows(val) {
       this.selectRows = val;
     },
-    handleEdit(row) {
-      if (row.id) {
-        this.$refs["edit"].showEdit(row);
-      } else {
-        this.$refs["edit"].showEdit();
-      }
-    },
-    handleDelete(row) {
-      if (row.id) {
-        console.log(row.id);
-        this.$baseConfirm("你确定要删除当前项吗", null, async () => {
-          const res = await doDelete({ ids: [row.id] });
-          this.$baseMessage(res.message, "success");
-          await this.fetchData();
-        });
-      } else {
-        if (this.selectRows.length > 0) {
-          const ids = this.selectRows.map((item) => item.id);
-          this.$baseConfirm("你确定要删除选中项吗", null, async () => {
-            const res = await doDelete({ ids });
-            this.$baseMessage(res.message, "success");
-            await this.fetchData();
-          });
-        } else {
-          this.$baseMessage("未选中任何行", "error");
-          return false;
-        }
+    handleShow(row) {
+      if (row.reserveId) {
+        this.$refs["show"].showEdit(row);
       }
     },
     handleSizeChange(val) {
@@ -200,9 +143,9 @@ export default {
     },
     async fetchData() {
       this.listLoading = true;
-      const { data } = await getList(this.queryForm);
-      this.list = data.data;
-      this.total = data.total;
+      const { data, pageTotal } = await queryPage(this.queryForm);
+      this.list = data;
+      this.total = pageTotal;
       this.listLoading = false;
     },
   },
