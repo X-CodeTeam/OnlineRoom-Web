@@ -148,9 +148,7 @@ const actions = {
   async getUserInfo({ commit, dispatch, state }) {
     const { data } = await getUserInfo(state.accessToken);
 
-    if (!data || !data.length) {
-      return false;
-    }
+    if (!data || !data.length) return false;
 
     let { username, avatar, roles, ability } = data[0].profile;
 

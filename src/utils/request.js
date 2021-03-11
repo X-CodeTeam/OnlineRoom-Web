@@ -12,6 +12,7 @@ import store from "@/store";
 import qs from "qs";
 import router from "@/router";
 import { isArray } from "@/utils/validate";
+import da from "element-ui/src/locale/lang/da";
 
 let loadingInstance;
 
@@ -38,42 +39,20 @@ const CODE_MESSAGE = {
 };
 
 const handleData = ({ config, data, status, statusText }) => {
-  if (loadingInstance) loadingInstance.close();
+  if (loadingInstance) loadingInstance.close(); // ？？？没搞懂
   // 若data.code存在，覆盖默认code
-  let code = data && data.code ? data.code : status;
   // 若code属于操作正常code，则status修改为200
-  if (codeVerificationArray.includes(code)) code = 200;
-  // 若data.msg存在，覆盖默认提醒消息
-  const msg = !data
-    ? `后端接口 ${config.url} 异常 ${code}：${CODE_MESSAGE[code]}`
-    : !data.message
-    ? `后端接口 ${config.url} 异常 ${code}：${statusText}`
-    : data.message;
+  // if (codeVerificationArray.includes(code)) code = 200;
 
-  switch (code) {
-    case 200:
-      // 业务层级错误处理，以下是假定restful有一套统一输出格式（指不管成功与否都有相应的数据格式）情况下进行处理
-      // 例如响应内容：
-      //  错误内容：{ status: 1, msg: '非法参数' }
-      //  正确内容：{ status: 200, data: {  }, msg: '操作正常' }
-      // 修改返回内容为 `data` 内容，对于绝大多数场景已经无须再关心业务状态码(code)和消息(msg)
-      // return data.data
-      // 或者依然保持完整的格式
-      return data;
-    case 401:
-      Vue.prototype.$baseMessage(msg, "error");
-      store.dispatch("user/resetAll").catch(() => {});
-      break;
-    case 403:
-      router
-        .push({
-          path: "/403",
-        })
-        .catch(() => {});
-      break;
-    default:
-      Vue.prototype.$baseMessage(msg, "error");
-      break;
+  // 如果令牌失效则自动条状到登录页面
+  const { data: _data, err } = data;
+
+  if (!_data) {
+    switch (err.code) {
+      case "99003":
+        store.dispatch("user/resetAll").then((r) => {});
+        break;
+    }
   }
 
   return data;

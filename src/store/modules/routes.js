@@ -2,8 +2,7 @@
  * @description 路由拦截状态管理，目前两种模式：all模式与fintelligence模式，其中partialRoutes是菜单暂未使用
  */
 import { asyncRoutes, constantRoutes } from "@/router";
-import { getRouterList } from "@/api/router";
-import { convertRouter, filterRoutes } from "@/utils/routes";
+import { filterRoutes } from "@/utils/routes";
 
 const state = { routes: [], partialRoutes: [] };
 
@@ -28,16 +27,13 @@ const actions = {
    * @param mode
    * @returns
    */
-  async setRoutes({ commit }, mode = "all") {
+  async setRoutes({ commit }, mode) {
     let routes = asyncRoutes;
-    if (mode === "all") {
-      let { data } = await getRouterList();
-      if (data[data.length - 1].path !== "*")
-        data.push({ path: "*", redirect: "/404", hidden: true });
-      routes = convertRouter(data);
-    }
+
     const finallyRoutes = filterRoutes([...constantRoutes, ...routes]);
+
     commit("setRoutes", finallyRoutes);
+
     return [...routes];
   },
 

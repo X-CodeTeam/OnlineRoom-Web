@@ -70,7 +70,6 @@ export default {
     async fetchData(reserveId) {
       this.listLoading = true;
       const { data } = await queryReserve(reserveId);
-      debugger;
       if (data.length >= 1) {
         this.form = data[0];
       }
