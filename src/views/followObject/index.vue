@@ -1,18 +1,46 @@
 <template>
   <div class="userManagement-container">
     <vab-query-form>
-      <vab-query-form-left-panel :span="12">
+      <vab-query-form-left-panel :span="4">
         <el-button icon="el-icon-plus" type="primary" @click="handleEdit">
           添加
         </el-button>
       </vab-query-form-left-panel>
-      <vab-query-form-right-panel :span="12">
+      <vab-query-form-right-panel :span="20">
         <el-form :inline="true" :model="queryForm" @submit.native.prevent>
-          <el-form-item>
+          <el-form-item label="姓名:">
             <el-input
-              v-model.trim="queryForm.username"
+              v-model.trim="queryForm.objectName"
               clearable
-              placeholder="请输入门店名称"
+              placeholder="请输入姓名"
+            />
+          </el-form-item>
+          <el-form-item label="手机号:">
+            <el-input
+              v-model.trim="queryForm.objectPhone"
+              clearable
+              placeholder="请输入手机号"
+            />
+          </el-form-item>
+          <el-form-item label="mac地址:">
+            <el-input
+              v-model.trim="queryForm.objectMac"
+              clearable
+              placeholder="请输入mac地址"
+            />
+          </el-form-item>
+          <el-form-item label="身份证号:">
+            <el-input
+              v-model.trim="queryForm.objectIdcard"
+              clearable
+              placeholder="请输入身份证号"
+            />
+          </el-form-item>
+          <el-form-item label="关注内容:">
+            <el-input
+              v-model.trim="queryForm.followContent"
+              clearable
+              placeholder="请输入关注内容"
             />
           </el-form-item>
           <el-form-item>
@@ -111,7 +139,11 @@ export default {
       queryForm: {
         pageIndex: 1,
         pageSize: 10,
-        username: "",
+        followContent: "",
+        objectIdcard: "",
+        objectMac: "",
+        objectName: "",
+        objectPhone: "",
       },
     };
   },
