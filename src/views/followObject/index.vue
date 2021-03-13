@@ -111,9 +111,7 @@ export default {
       queryForm: { ...followQueryInfo },
     };
   },
-  created() {
-    this.fetchData();
-  },
+
   methods: {
     _initStoreInfo: queryPage,
     handleEdit(row) {
@@ -139,7 +137,7 @@ export default {
     },
 
     async queryData() {
-      await this.$refs.followTable.flashTable();
+      this.$refs.followTable && (await this.$refs.followTable.flashTable());
     },
 
     async fetchData() {
