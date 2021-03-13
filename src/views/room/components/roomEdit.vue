@@ -9,7 +9,19 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="所属门店：" prop="storeName">
-            <el-input v-model.trim="form.storeName"></el-input>
+            <el-select
+              v-model.trim="form.storeId"
+              clearable
+              placeholder="所属门店"
+              style="width: 100%"
+            >
+              <el-option
+                v-for="store in needData['stores']"
+                :key="store.storeId"
+                :label="store.storeName"
+                :value="store.storeId"
+              ></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -62,6 +74,7 @@
         <el-input v-model.trim="form.landlordPhone"></el-input>
       </el-form-item>
     </el-form>
+
     <div slot="footer" class="dialog-footer">
       <el-button @click="close">取 消</el-button>
       <el-button type="primary" @click="save">确 定</el-button>
@@ -74,6 +87,18 @@ import { doEdit, doAdd } from "@/api/room";
 
 export default {
   name: "RoomEdit",
+
+  props: {
+    needData: {
+      type: Object,
+      default: () => {
+        return {
+          stores: [],
+        };
+      },
+    },
+  },
+
   data() {
     return {
       form: {},
@@ -94,6 +119,7 @@ export default {
       isAdd: false,
     };
   },
+
   methods: {
     showEdit(row) {
       if (!row) {
@@ -106,23 +132,26 @@ export default {
       }
       this.dialogFormVisible = true;
     },
+
     close() {
       this.$refs["form"].resetFields();
       this.form = this.$options.data().form;
       this.dialogFormVisible = false;
     },
+
     save() {
       this.$refs["form"].validate(async (valid) => {
         if (valid) {
           if (this.isAdd) {
-            const res = await doAdd(this.form);
-            this.$baseMessage(res.message, "success");
+            (await doAdd(this.form)) &&
+              this.$baseMessage(res.message, "success");
           } else {
             const res = await doEdit(this.form);
             this.$baseMessage(res.message, "success");
           }
 
           this.$emit("fetch-data");
+
           this.close();
         } else {
           return false;

@@ -10,7 +10,7 @@ export function queryPage(params) {
 
 export function doEdit(data) {
   return request({
-    url: "/Admin/User/Update",
+    url: "/rooms",
     method: "post",
     data,
   });
@@ -18,7 +18,7 @@ export function doEdit(data) {
 
 export function doAdd(data) {
   return request({
-    url: "/Admin/User/Add",
+    url: "/rooms",
     method: "post",
     data,
   });
