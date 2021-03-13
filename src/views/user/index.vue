@@ -54,9 +54,7 @@
         >
           <template #default="{ row }">
             <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-            <el-button type="text" @click="handleDelete(row)"
-              >取消关注</el-button
-            >
+            <el-button type="text" @click="handleDelete(row)">删除</el-button>
           </template>
         </el-table-column>
       </template>
@@ -99,7 +97,7 @@ export default {
     _initStoreInfo: queryPage,
 
     handleEdit(row) {
-      if (row.id) {
+      if (row.userId) {
         this.$refs["edit"].showEdit(row);
       } else {
         this.$refs["edit"].showEdit();
