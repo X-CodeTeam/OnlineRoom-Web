@@ -10,9 +10,8 @@ import {
 } from "@/config";
 import store from "@/store";
 import qs from "qs";
-import router from "@/router";
 import { isArray } from "@/utils/validate";
-import da from "element-ui/src/locale/lang/da";
+import { Message } from "element-ui";
 
 let loadingInstance;
 
@@ -53,6 +52,14 @@ const handleData = ({ config, data, status, statusText }) => {
         store.dispatch("user/resetAll").then((r) => {});
         break;
     }
+  }
+
+  if (!data.ok) {
+    Message({
+      type: "error",
+      message: err.msg,
+      duration: 1500,
+    });
   }
 
   return data;

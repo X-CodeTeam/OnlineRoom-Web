@@ -65,7 +65,11 @@
       </template>
     </el-table-plus>
 
-    <edit ref="edit" @fetch-data="queryData"></edit>
+    <edit
+      ref="edit"
+      :need-data="{ stores: options.belongStore }"
+      @fetch-data="queryData"
+    ></edit>
     <show ref="show" @fetch-data="queryData"></show>
   </div>
 </template>

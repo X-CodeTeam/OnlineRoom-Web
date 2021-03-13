@@ -159,8 +159,6 @@ export default {
       async handler(newVal, oldVal) {
         if (this.content) return;
 
-        console.log("zhixing");
-
         await this._initTableData();
 
         oldVal && this.$emit("is-paging", false);
