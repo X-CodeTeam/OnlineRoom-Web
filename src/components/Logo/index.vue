@@ -1,9 +1,15 @@
 <template>
   <div :class="'logo-container-' + layout">
-    <router-link to="/">
-      <span class="logo">
-        <remix-icon v-if="logo" :icon-class="logo" is-svg />
-      </span>
+    <router-link
+      to="/"
+      style="display: flex; align-items: center; justify-content: center"
+    >
+      <el-image
+        :src="logoImage"
+        alt="error"
+        fit="contain"
+        style="width: 45px; height: 45px"
+      ></el-image>
       <span
         :class="{ 'hidden-xs-only': layout === 'horizontal' }"
         class="title"
@@ -15,15 +21,23 @@
 </template>
 <script>
 import { mapGetters } from "vuex";
+import logoImage from "@/assets/logo.png";
 
 export default {
   name: "Logo",
+
   computed: {
     ...mapGetters({
       logo: "settings/logo",
       layout: "settings/layout",
       title: "settings/title",
     }),
+  },
+
+  data() {
+    return {
+      logoImage,
+    };
   },
 };
 </script>

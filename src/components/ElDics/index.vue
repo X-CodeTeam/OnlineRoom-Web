@@ -22,10 +22,14 @@
 <script>
 import { dictionariesByTypeCode } from "@/api/dictionary";
 
-const selfType = ["storeStatus"];
-
 const selfTypeData = {
-  storeStatus: [{}],
+  storeStatus: [
+    {
+      label: "正常",
+      value: true,
+    },
+    { label: "注销", value: false },
+  ],
 };
 
 export default {
@@ -106,7 +110,10 @@ export default {
     }
 
     this.optionValues = this.optionValues.map((item) => {
-      return { value: item.dictValue, label: item.dictLabel };
+      return {
+        value: item.value || item.dictValue,
+        label: item.label || item.dictLabel,
+      };
     });
 
     if (!this.isQuery) return;
@@ -140,7 +147,16 @@ export default {
 
       if (force || dicData === "[]" || !dicData) {
         // session中没有，从远程获取。issue 防止数据为[]时造成的错误
-        const { data: dicData } = await dictionariesByTypeCode(typeCode);
+
+        let dicData = null;
+
+        if (Object.keys(selfTypeData).indexOf(typeCode) !== -1) {
+          dicData = selfTypeData[typeCode];
+        } else {
+          const { data } = await dictionariesByTypeCode(typeCode);
+
+          dicData = data;
+        }
 
         dicData &&
           sessionStorage.setItem(typeCode, JSON.stringify(dicData || {}));

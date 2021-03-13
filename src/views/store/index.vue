@@ -3,6 +3,7 @@
     <!-- 自定义位置 -->
     <el-table-plus
       ref="storeTable"
+      :is-index="true"
       :search-form="true"
       :query-params="queryForm"
       :table-props="storeTableProps"
@@ -26,7 +27,7 @@
         </el-form-item>
         <el-form-item class="grow-1 res-select-mini">
           <el-dics
-            type-code="STORE_STATUS"
+            type-code="storeStatus"
             :value-prop-name.sync="queryForm.enableMark"
             style="width: 100%"
           ></el-dics>
@@ -40,7 +41,7 @@
           <el-button icon="el-icon-plus" type="primary" @click="handleEdit">
             添加
           </el-button>
-          <el-button @click="handleEdit"> 重置 </el-button>
+          <el-button @click="handleReset"> 重置 </el-button>
         </el-form-item>
       </template>
       <template #table-self>
@@ -81,6 +82,12 @@ import Edit from "./components/StoreEdit";
 import Show from "./components/StoreShow";
 import ElTablePlus from "@/components/ElTablePlus";
 
+const originStoreQueryInfo = Object.freeze({
+  storeName: null, // 门店名称
+  storeAreacode: null, // 门店区域编码
+  enableMark: null, // 门店状态
+});
+
 export default {
   name: "StoreManagement",
 
@@ -103,11 +110,7 @@ export default {
         },
       ],
 
-      queryForm: {
-        storeName: null, // 门店名称
-        storeAreacode: null, // 门店区域编码
-        enableMark: null, // 门店状态
-      },
+      queryForm: { ...originStoreQueryInfo },
     };
   },
 
@@ -120,6 +123,12 @@ export default {
       } else {
         this.$refs["edit"].showEdit();
       }
+    },
+
+    async handleReset() {
+      Object.assign(this.queryForm, originStoreQueryInfo);
+
+      await this.queryData();
     },
 
     handleShow(row) {

@@ -87,6 +87,7 @@
 import { doEdit, doAdd } from "@/api/store";
 import BaseAreaSelect from "@/components/BaseAreaSelect";
 import BasePoliceSelect from "@/components/BasePoliceSelect";
+import { isIdCard, isPhone } from "@/utils/validate";
 
 export default {
   name: "StoreEdit",
@@ -114,6 +115,13 @@ export default {
         ],
         managerIdcard: [
           { required: true, trigger: "blur", message: "请输入经营者身份证号" },
+          {
+            validator: (_, value, cb) => {
+              if (!isIdCard(value)) return cb(new Error("身份证号码格式错误"));
+
+              return cb();
+            },
+          },
         ],
         storeDetails: [
           { required: true, trigger: "blur", message: "请输入详细地址" },
@@ -123,6 +131,14 @@ export default {
         ],
         managerPhone: [
           { required: true, trigger: "blur", message: "请输入经营者手机号" },
+          {
+            trigger: "blur",
+            validator: (_, value, cb) => {
+              if (!isPhone(value)) return cb(new Error("手机号码不正确"));
+
+              return cb();
+            },
+          },
         ],
       },
       title: "",
