@@ -85,7 +85,7 @@ export const asyncRoutes = [
         name: "orderManagement",
         component: () => import("@/views/order"),
         meta: {
-          title: "订单管理-开发中",
+          title: "订单管理",
           remixIcon: "order-play-line",
         },
       },
@@ -94,7 +94,7 @@ export const asyncRoutes = [
         name: "checkinManagement",
         component: () => import("@/views/checkin"),
         meta: {
-          title: "入住信息-开发中",
+          title: "入住信息",
           remixIcon: "airplay-line",
         },
       },
