@@ -1,123 +1,84 @@
 <template>
-  <div class="userManagement-container">
-    <vab-query-form>
-      <vab-query-form-left-panel :span="4">
-        <el-button icon="el-icon-plus" type="primary" @click="handleEdit">
-          添加
-        </el-button>
-      </vab-query-form-left-panel>
-      <vab-query-form-right-panel :span="20">
-        <el-form :inline="true" :model="queryForm" @submit.native.prevent>
-          <el-form-item label="姓名:">
-            <el-input
-              v-model.trim="queryForm.objectName"
-              clearable
-              placeholder="请输入姓名"
-            />
-          </el-form-item>
-          <el-form-item label="手机号:">
-            <el-input
-              v-model.trim="queryForm.objectPhone"
-              clearable
-              placeholder="请输入手机号"
-            />
-          </el-form-item>
-          <el-form-item label="mac地址:">
-            <el-input
-              v-model.trim="queryForm.objectMac"
-              clearable
-              placeholder="请输入mac地址"
-            />
-          </el-form-item>
-          <el-form-item label="身份证号:">
-            <el-input
-              v-model.trim="queryForm.objectIdcard"
-              clearable
-              placeholder="请输入身份证号"
-            />
-          </el-form-item>
-          <el-form-item label="关注内容:">
-            <el-input
-              v-model.trim="queryForm.followContent"
-              clearable
-              placeholder="请输入关注内容"
-            />
-          </el-form-item>
-          <el-form-item>
-            <el-button icon="el-icon-search" type="primary" @click="queryData">
-              查询
-            </el-button>
-          </el-form-item>
-        </el-form>
-      </vab-query-form-right-panel>
-    </vab-query-form>
-
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      @selection-change="setSelectRows"
+  <div class="userManagement-container flex-column">
+    <!-- 自定义位置 -->
+    <el-table-plus
+      ref="followTable"
+      :is-index="true"
+      :search-form="true"
+      :query-params="queryForm"
+      :table-props="followTableProps"
+      :data-method="_initStoreInfo"
+      class="grow"
     >
-      <el-table-column
-        align="center"
-        show-overflow-tooltip
-        type="selection"
-      ></el-table-column>
-      <el-table-column align="center" label="序号" width="55">
-        <template #default="{ $index }">
-          {{ $index + 1 }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        label="姓名"
-        prop="objectName"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        align="center"
-        label="身份证"
-        prop="objectIdcard"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        align="center"
-        label="关注内容"
-        prop="followContent"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        align="center"
-        label="Mac地址"
-        prop="objectMac"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        align="center"
-        label="手机号"
-        prop="objectPhone"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        align="center"
-        label="操作"
-        show-overflow-tooltip
-        width="120"
-      >
-        <template #default="{ row }">
-          <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-          <el-button type="text" @click="handleDelete(row)">取消关注</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      :current-page="queryForm.pageIndex"
-      :layout="layout"
-      :page-size="queryForm.pageSize"
-      :total="total"
-      background
-      @current-change="handleCurrentChange"
-      @size-change="handleSizeChange"
-    ></el-pagination>
+      <template #search-form>
+        <el-form-item class="grow-1 res-select-middle">
+          <el-input
+            v-model.trim="queryForm.objectName"
+            clearable
+            placeholder="请输入姓名"
+          />
+        </el-form-item>
+        <el-form-item class="grow-1 res-select-middle">
+          <el-input
+            v-model.trim="queryForm.objectPhone"
+            clearable
+            placeholder="请输入手机号"
+          />
+        </el-form-item>
+        <el-form-item class="grow-1 res-select-middle">
+          <el-input
+            v-model.trim="queryForm.objectMac"
+            clearable
+            placeholder="请输入mac地址"
+          />
+        </el-form-item>
+
+        <el-form-item class="grow-1 res-select-middle">
+          <el-input
+            v-model.trim="queryForm.objectIdcard"
+            clearable
+            placeholder="请输入身份证号"
+          />
+        </el-form-item>
+
+        <el-form-item class="grow-1 res-select-middle">
+          <el-input
+            v-model.trim="queryForm.followContent"
+            clearable
+            placeholder="请输入关注内容"
+          />
+        </el-form-item>
+
+        <el-form-item>
+          <el-button icon="el-icon-search" type="primary" @click="queryData">
+            查询
+          </el-button>
+        </el-form-item>
+        <el-form-item class="grow-1 justify-self-end">
+          <el-button icon="el-icon-plus" type="primary" @click="handleEdit">
+            添加
+          </el-button>
+          <el-button @click="handleReset"> 重置 </el-button>
+        </el-form-item>
+      </template>
+      <template #table-self>
+        <el-table-column
+          align="center"
+          label="操作"
+          show-overflow-tooltip
+          width="120"
+        >
+          <template #default="{ row }">
+            <el-button type="text" @click="handleEdit(row)">编辑</el-button>
+            <el-button type="text" @click="handleDelete(row)"
+              >取消关注</el-button
+            >
+          </template>
+        </el-table-column>
+      </template>
+    </el-table-plus>
+    <!--    -->
+
     <edit ref="edit" @fetch-data="fetchData"></edit>
   </div>
 </template>
@@ -125,45 +86,41 @@
 <script>
 import { doDelete, queryPage } from "@/api/followObject";
 import Edit from "./components/followObjectEdit";
+import ElTablePlus from "@/components/ElTablePlus";
+
+const followQueryInfo = Object.freeze({
+  followContent: null,
+  objectIdcard: null,
+  objectMac: null,
+  objectName: null,
+  objectPhone: null,
+});
 
 export default {
   name: "FollowObjectManagement",
-  components: { Edit },
+  components: { Edit, ElTablePlus },
   data() {
     return {
-      list: [],
-      listLoading: true,
-      layout: "total, sizes, prev, pager, next, jumper",
-      total: 0,
-      selectRows: "",
-      queryForm: {
-        pageIndex: 1,
-        pageSize: 10,
-        followContent: "",
-        objectIdcard: "",
-        objectMac: "",
-        objectName: "",
-        objectPhone: "",
-      },
+      followTableProps: [
+        { name: "姓名", prop: "objectName" },
+        { name: "身份证", prop: "objectIdcard" },
+        { name: "关注内容", prop: "followContent" },
+        { name: "Mac地址", prop: "objectMac" },
+        { name: "手机号", prop: "objectPhone" },
+      ],
+      queryForm: { ...followQueryInfo },
     };
   },
   created() {
     this.fetchData();
   },
   methods: {
-    setSelectRows(val) {
-      this.selectRows = val;
-    },
+    _initStoreInfo: queryPage,
     handleEdit(row) {
       if (row.objectId) {
         this.$refs["edit"].showEdit(row);
       } else {
         this.$refs["edit"].showEdit();
-      }
-    },
-    handleShow(row) {
-      if (row.objectId) {
-        this.$refs["show"].showEdit(row);
       }
     },
     handleDelete(row) {
@@ -175,24 +132,18 @@ export default {
         });
       }
     },
-    handleSizeChange(val) {
-      this.queryForm.pageSize = val;
-      this.fetchData();
+
+    async handleReset() {
+      Object.assign(this.queryForm, followQueryInfo);
+      await this.queryData();
     },
-    handleCurrentChange(val) {
-      this.queryForm.pageIndex = val;
-      this.fetchData();
+
+    async queryData() {
+      await this.$refs.followTable.flashTable();
     },
-    queryData() {
-      this.queryForm.pageIndex = 1;
-      this.fetchData();
-    },
+
     async fetchData() {
-      this.listLoading = true;
-      const { data, pageTotal } = await queryPage(this.queryForm);
-      this.list = data;
-      this.total = pageTotal;
-      this.listLoading = false;
+      await this.queryData();
     },
   },
 };

@@ -10,7 +10,7 @@
         <el-input v-model.trim="form.objectName"></el-input>
       </el-form-item>
       <el-form-item label="身份证：" prop="objectIdcard">
-        <el-input v-model.trim="form.objectIdcard"></el-input>
+        <el-input v-model.trim="form.objectIdcard" disabled="true"></el-input>
       </el-form-item>
       <el-form-item label="Mac地址：" prop="objectMac">
         <el-input v-model.trim="form.objectMac"></el-input>
@@ -37,6 +37,7 @@
 
 <script>
 import { doEdit, doAdd } from "@/api/followObject";
+import { isIdCard, isPhone } from "@/utils/validate";
 
 export default {
   name: "StoreEdit",
@@ -53,9 +54,21 @@ export default {
         ],
         objectPhone: [
           { required: true, trigger: "blur", message: "请输入手机号码" },
+          {
+            validator: (_, value, cb) => {
+              if (!isPhone(value)) return cb(new Error("手机号码格式错误"));
+              return cb();
+            },
+          },
         ],
         objectIdcard: [
           { required: true, trigger: "blur", message: "请输入身份证号" },
+          {
+            validator: (_, value, cb) => {
+              if (!isIdCard(value)) return cb(new Error("身份证号码格式错误"));
+              return cb();
+            },
+          },
         ],
       },
       title: "",
@@ -83,8 +96,6 @@ export default {
       this.$refs["form"].resetFields();
       this.form = this.$options.data().form;
       this.dialogFormVisible = false;
-      this.form.storeAreaname = null;
-      this.form.storeAreacode = null;
     },
 
     save() {
@@ -93,10 +104,25 @@ export default {
           this.form.followContent = this.checkList.join(",");
           if (this.isAdd) {
             const res = await doAdd(this.form);
-            this.$baseMessage("添加成功!", "success");
+            if (res.ok) {
+              this.$baseMessage("添加成功!", "success");
+            } else {
+              this.$baseMessage("添加失败!", "error");
+            }
           } else {
-            const res = await doEdit(this.form);
-            this.$baseMessage("修改成功", "success");
+            var editData = {};
+            editData.objectPhone = this.form.objectPhone;
+            editData.objectName = this.form.objectName;
+            editData.objectMac = this.form.objectMac;
+            editData.objectId = this.form.objectId;
+            editData.followContent = this.form.followContent;
+            editData.description = this.form.description;
+            const res = await doEdit(editData);
+            if (res.ok) {
+              this.$baseMessage("修改成功", "success");
+            } else {
+              this.$baseMessage("修改失败!", "error");
+            }
           }
 
           this.$emit("fetch-data");

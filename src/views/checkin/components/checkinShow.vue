@@ -44,7 +44,7 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col> {{ form.checkInTime }}{{}} </el-col>
+        <el-col> {{ form.checkInTime }}入住 </el-col>
       </el-row>
 
       <el-row>
@@ -98,13 +98,13 @@ export default {
     showEdit(row) {
       if (row) {
         var result = Object.assign({}, row);
-        this.fetchData(result.reserveId);
+        this.fetchData(result.objectId);
       }
       this.dialogFormVisible = true;
     },
-    async fetchData(reserveId) {
+    async fetchData(objectId) {
       this.listLoading = true;
-      const { data } = await getObjects(reserveId);
+      const { data } = await getObjects(objectId);
       if (data.length >= 1) {
         this.form = data[0];
       }
