@@ -58,7 +58,7 @@ export const asyncRoutes = [
     component: Layout,
     meta: {
       title: "网约房管理",
-      remixIcon: "user-settings-line",
+      remixIcon: "command-line",
       roles: ["admin"],
     },
     children: [
@@ -68,7 +68,7 @@ export const asyncRoutes = [
         component: () => import("@/views/store"),
         meta: {
           title: "门店管理-开发中",
-          remixIcon: "user-3-line",
+          remixIcon: "ancient-pavilion-line",
         },
       },
       {
@@ -77,7 +77,7 @@ export const asyncRoutes = [
         component: () => import("@/views/room"),
         meta: {
           title: "房间管理-开发中",
-          remixIcon: "admin-line",
+          remixIcon: "archive-line",
         },
       },
       {
@@ -86,7 +86,7 @@ export const asyncRoutes = [
         component: () => import("@/views/order"),
         meta: {
           title: "订单管理-开发中",
-          remixIcon: "admin-line",
+          remixIcon: "order-play-line",
         },
       },
       {
@@ -95,7 +95,7 @@ export const asyncRoutes = [
         component: () => import("@/views/checkin"),
         meta: {
           title: "入住信息-开发中",
-          remixIcon: "admin-line",
+          remixIcon: "airplay-line",
         },
       },
       {
@@ -104,7 +104,7 @@ export const asyncRoutes = [
         component: () => import("@/views/warning"),
         meta: {
           title: "预警记录-开发中",
-          remixIcon: "admin-line",
+          remixIcon: "signal-wifi-error-line",
         },
       },
     ],
@@ -116,7 +116,7 @@ export const asyncRoutes = [
     redirect: "/auth/userManagement",
     meta: {
       title: "系统管理",
-      remixIcon: "user-settings-line",
+      remixIcon: "settings-4-line",
       roles: ["admin"],
     },
     children: [
@@ -126,7 +126,7 @@ export const asyncRoutes = [
         component: () => import("@/views/user"),
         meta: {
           title: "用户管理-开发中",
-          remixIcon: "user-3-line",
+          remixIcon: "file-user-line",
         },
       },
       {
@@ -135,7 +135,7 @@ export const asyncRoutes = [
         component: () => import("@/views/role"),
         meta: {
           title: "角色管理-开发中",
-          remixIcon: "admin-line",
+          remixIcon: "award-line",
         },
       },
       {
@@ -153,7 +153,7 @@ export const asyncRoutes = [
         component: () => import("@/views/zone"),
         meta: {
           title: "行政区划管理-开发中",
-          remixIcon: "admin-line",
+          remixIcon: "align-justify",
         },
       },
       {
@@ -162,7 +162,7 @@ export const asyncRoutes = [
         component: () => import("@/views/followObject"),
         meta: {
           title: "关注对象",
-          remixIcon: "admin-line",
+          remixIcon: "bubble-chart-fill",
         },
       },
     ],

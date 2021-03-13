@@ -22,3 +22,10 @@ export function queryReserve(params) {
     method: "get",
   });
 }
+
+export function getObjects(params) {
+  return request({
+    url: "/reserves/objects/" + params,
+    method: "get",
+  });
+}

@@ -1,35 +1,48 @@
 <template>
   <div class="userManagement-container">
     <vab-query-form>
-      <vab-query-form-left-panel :span="12"> </vab-query-form-left-panel>
-      <vab-query-form-right-panel :span="12">
+      <vab-query-form-left-panel :span="0"> </vab-query-form-left-panel>
+      <vab-query-form-right-panel :span="24">
         <el-form :inline="true" :model="queryForm" @submit.native.prevent>
           <el-form-item>
             <el-input
-              v-model.trim="queryForm.username"
+              v-model.trim="queryForm.keyword"
               clearable
-              placeholder="请输入用户名"
+              placeholder="姓名/手机号码/身份证号码"
             />
           </el-form-item>
+
+          <el-form-item>
+            <el-date-picker
+              v-model="queryForm.startTime"
+              type="date"
+              placeholder="选择开始日期"
+            >
+            </el-date-picker>
+          </el-form-item>
+
+          <el-form-item>
+            <el-date-picker
+              v-model="queryForm.endTime"
+              type="date"
+              placeholder="选择介素日期"
+            >
+            </el-date-picker>
+          </el-form-item>
+
           <el-form-item>
             <el-button icon="el-icon-search" type="primary" @click="queryData">
               查询
+            </el-button>
+            <el-button icon="el-icon-search" type="primary" @click="resetData">
+              重置
             </el-button>
           </el-form-item>
         </el-form>
       </vab-query-form-right-panel>
     </vab-query-form>
 
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      @selection-change="setSelectRows"
-    >
-      <el-table-column
-        align="center"
-        show-overflow-tooltip
-        type="selection"
-      ></el-table-column>
+    <el-table v-loading="listLoading" :data="list">
       <el-table-column align="center" label="序号" width="55">
         <template #default="{ $index }">
           {{ $index + 1 }}
@@ -58,7 +71,14 @@
         label="性别"
         prop="objectGender"
         show-overflow-tooltip
-      ></el-table-column>
+      >
+        <template #default="{ row }">
+          <span>
+            {{ row.objectGender == 1 ? "男" : "女" }}
+          </span>
+        </template>
+      </el-table-column>
+
       <el-table-column
         align="center"
         label="籍贯"
@@ -113,7 +133,9 @@ export default {
       queryForm: {
         currentPage: 1,
         pageSize: 10,
-        username: "",
+        keyword: null,
+        startTime: null,
+        endTime: null,
       },
     };
   },
@@ -139,6 +161,13 @@ export default {
     },
     queryData() {
       this.queryForm.currentPage = 1;
+      this.fetchData();
+    },
+    resetData() {
+      this.queryForm.currentPage = 1;
+      this.queryForm.startTime = null;
+      this.queryData.endTime = null;
+      this.queryData.keyword = null;
       this.fetchData();
     },
     async fetchData() {
