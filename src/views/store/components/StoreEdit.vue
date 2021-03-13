@@ -76,6 +76,7 @@
         <el-input v-model.trim="form.managerIdcard"></el-input>
       </el-form-item>
     </el-form>
+
     <div slot="footer" class="dialog-footer">
       <el-button @click="close">取 消</el-button>
       <el-button type="primary" @click="save">确 定</el-button>

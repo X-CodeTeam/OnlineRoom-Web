@@ -6,8 +6,11 @@
     @close="close"
   >
     <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-      <el-form-item label="上级名称：" prop="username">
-        <el-input v-model.trim="form.username"></el-input>
+      <el-form-item label="上级名称：" prop="parentZoneCode">
+        <el-area-tree
+          :zone-code.sync="form.parentZoneCode"
+          :zone-name.sync="form.parentZoneName"
+        ></el-area-tree>
       </el-form-item>
       <el-form-item label="编号：" prop="zoneCode">
         <el-input v-model.trim="form.zoneCode"></el-input>
@@ -24,24 +27,38 @@
 </template>
 
 <script>
-import { doEdit, doAdd } from "@/api/store";
-// import BasePoliceSelect from "@/components/BasePoliceSelect";
+import { addZone, modifyZone } from "@/api/zones";
+import ElAreaTree from "@/components/ElAreaTree";
+import { isNumber } from "@/utils/validate";
 
 export default {
   name: "StoreEdit",
 
   components: {
-    // BasePoliceSelect,
+    ElAreaTree,
   },
 
   data() {
     return {
       form: {},
       rules: {
-        zoneName: [{ required: true, trigger: "blur", message: "请输入名称" }],
-        zoneCode: [{ required: true, trigger: "blur", message: "请输入编号" }],
-        zoneId: [
-          { required: true, trigger: "blur", message: "请选择管辖派出所" },
+        parentZoneCode: [
+          {
+            required: true,
+            trigger: ["blur", "change"],
+            message: "请选择上级行政区划",
+          },
+        ],
+        zoneCode: [
+          { required: true, trigger: "blur", message: "请输入编号" },
+          {
+            validator: (_, val, cb) => {
+              return isNumber(val) ? cb() : cb(new Error("编号只能为数字"));
+            },
+          },
+        ],
+        zoneName: [
+          { required: true, trigger: "blur", message: "请输入行政区划名称" },
         ],
       },
       title: "",
@@ -79,11 +96,13 @@ export default {
       this.$refs["form"].validate(async (valid) => {
         if (valid) {
           if (this.isAdd) {
-            const res = await doAdd(this.form);
-            this.$baseMessage(res.message, "success");
+            const res = await addZone(this.form);
+
+            res.ok && this.$baseMessage(res.message, "success");
           } else {
-            const res = await doEdit(this.form);
-            this.$baseMessage(res.message, "success");
+            const res = await modifyZone(this.form);
+
+            res.ok && this.$baseMessage(res.message, "success");
           }
 
           this.$emit("fetch-data");

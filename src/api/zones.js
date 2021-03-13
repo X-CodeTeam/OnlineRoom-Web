@@ -36,3 +36,10 @@ export function modifyZone(body) {
     data: body,
   });
 }
+
+export function queryZoneChild(params) {
+  return request({
+    url: "/zones/childes",
+    params,
+  });
+}

@@ -2,8 +2,12 @@
   <div class="userManagement-container flex-column">
     <el-table-plus
       ref="zoneTable"
-      :is-index="true"
+      row-key="zoneCode"
+      :lazy="true"
+      :load="lazyLoad"
+      :tree-props="{ children: 'children', hasChildren: 'hasChild' }"
       :search-form="true"
+      :query-params="zoneQueryForm"
       :table-props="zoneTableProps"
       :data-method="_initZonesInfo"
       class="grow"
@@ -22,7 +26,11 @@
           </el-button>
         </el-form-item>
         <el-form-item>
-          <el-button icon="el-icon-plus" type="primary" @click="handleEdit">
+          <el-button
+            icon="el-icon-plus"
+            type="primary"
+            @click="handleEdit(false)"
+          >
             添加
           </el-button>
         </el-form-item>
@@ -47,9 +55,9 @@
 </template>
 
 <script>
-import { doDelete, queryPage } from "@/api/zoom";
-import { queryPagingZones } from "@/api/zones";
+import { queryZoneChild, deleteZone } from "@/api/zones";
 import Edit from "./components/zoneEdit";
+import config from "@/config/config";
 
 export default {
   name: "ZoomManagement",
@@ -59,40 +67,38 @@ export default {
   data() {
     return {
       zoneTableProps: [
-        { name: "行政区划名称", prop: "zoneName" },
+        { name: "行政区划名称", prop: "zoneName", align: "left" },
         { name: "行政区划编码", prop: "zoneCode" },
         { name: "行政区划id", prop: "zoneId" },
         { name: "父级行政区划名称", prop: "parentZoneName" },
         { name: "负责人姓名", prop: "principalName" },
       ],
 
-      zoneQueryForm: {},
+      zoneQueryForm: {
+        parentZoneCode: config.defaultRootParentAreaCode,
+      },
+
+      loadResolve: null,
     };
   },
 
   methods: {
-    _initZonesInfo: queryPagingZones,
+    _initZonesInfo: queryZoneChild,
 
     handleEdit(row) {
-      if (row.userId) {
+      if (row) {
         this.$refs["edit"].showEdit(row);
       } else {
         this.$refs["edit"].showEdit();
       }
     },
 
-    handleShow(row) {
-      if (row.storeId) {
-        this.$refs["show"].showEdit(row);
-      }
-    },
-
     handleDelete(row) {
-      if (row.userId) {
+      if (row) {
         this.$baseConfirm("你确定要删除当前项吗", null, async () => {
-          const res = await doDelete({ zoneManagerId: row.userId });
+          const res = await deleteZone(row.zoneId);
 
-          this.$baseMessage(res.message, "success");
+          res.ok && this.$baseMessage("操作成功", "success");
 
           await this.queryData();
         });
@@ -101,6 +107,22 @@ export default {
 
     async queryData() {
       await this.$refs.zoneTable.flashTable();
+
+      await this.$store.dispatch("zones/_initZones", true);
+    },
+
+    async lazyLoad(tree, treeNode, resolve) /* 点击节点、点击节点列表（树） */ {
+      if (!this.loadResolve) this.loadResolve = resolve;
+
+      const { zoneCode } = tree;
+
+      const { data: areaData } = await queryZoneChild({
+        parentZoneCode: zoneCode,
+      });
+
+      if (areaData && areaData.length) {
+        resolve(areaData);
+      }
     },
   },
 };
