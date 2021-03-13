@@ -202,7 +202,7 @@ html {
       margin: $base-padding 0 0 0;
       font-weight: normal;
       color: $base-color-black;
-      text-align: center;
+      text-align: right;
     }
 
     /* el-menu菜单开始 */
@@ -240,3 +240,55 @@ html {
     }
   }
 }
+
+.flex-column {
+  display: flex;
+  flex-flow: column nowrap;
+
+  .grow {
+    flex: 1;
+  }
+}
+
+.flex-row-warp {
+  display: flex;
+  flex-flow: row wrap;
+
+  @for $i from 1 through 3 {
+    .grow-#{$i} {
+      flex-grow: $i
+    }
+
+    .shrink-#{$i} {
+      flex-shrink: $i
+    }
+  }
+
+  .res-width {
+    min-width: 260px;
+    max-width: 330px;
+  }
+
+  .res-select-mini {
+    min-width: 60px;
+    max-width: 100px;
+  }
+
+  .res-select-middle {
+    min-width: 100px;
+    max-width: 180px;
+  }
+
+  .res-select-large {
+    min-width: 180px;
+    max-width: 260px;
+  }
+
+  .justify-self-end {
+    .el-form-item__content {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+}
+

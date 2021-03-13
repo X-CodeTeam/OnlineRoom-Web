@@ -1,115 +1,75 @@
 <template>
-  <div class="userManagement-container">
-    <vab-query-form>
-      <vab-query-form-left-panel :span="12">
-        <el-button icon="el-icon-plus" type="primary" @click="handleEdit">
-          添加
-        </el-button>
-      </vab-query-form-left-panel>
-      <vab-query-form-right-panel :span="12">
-        <el-form :inline="true" :model="queryForm" @submit.native.prevent>
-          <el-form-item>
-            <el-input
-              v-model.trim="queryForm.username"
-              clearable
-              placeholder="请输入门店名称"
-            />
-          </el-form-item>
-          <el-form-item>
-            <el-button icon="el-icon-search" type="primary" @click="queryData">
-              查询
-            </el-button>
-          </el-form-item>
-        </el-form>
-      </vab-query-form-right-panel>
-    </vab-query-form>
-
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      @selection-change="setSelectRows"
+  <div class="userManagement-container flex-column">
+    <!-- 自定义位置 -->
+    <el-table-plus
+      ref="storeTable"
+      :search-form="true"
+      :query-params="queryForm"
+      :table-props="storeTableProps"
+      :data-method="_initStoreInfo"
+      class="grow"
     >
-      <el-table-column
-        align="center"
-        show-overflow-tooltip
-        type="selection"
-      ></el-table-column>
-      <el-table-column align="center" label="序号" width="55">
-        <template #default="{ $index }">
-          {{ $index + 1 }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        label="门店名称"
-        prop="storeName"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        align="center"
-        label="门店区域"
-        prop="storeAreaname"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        align="center"
-        label="门店地点"
-        prop="storeDetails"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        align="center"
-        label="经营者姓名"
-        prop="managerName"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        align="center"
-        label="经营者手机号"
-        prop="managerPhone"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        align="center"
-        label="状态"
-        prop="enableMark"
-        show-overflow-tooltip
-      >
-        <template #default="{ row }">
-          <span>
-            {{ row.enableMark ? "正常" : "注销" }}
-          </span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        label="操作"
-        show-overflow-tooltip
-        width="120"
-      >
-        <template #default="{ row }">
-          <el-button type="text" @click="handleShow(row)">详情</el-button>
-          <el-button v-if="row.enableMark" type="text" @click="handleEdit(row)"
-            >编辑</el-button
-          >
-          <el-button
-            v-if="row.enableMark"
-            type="text"
-            @click="handleDelete(row)"
-            >注销</el-button
-          >
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      :current-page="queryForm.pageIndex"
-      :layout="layout"
-      :page-size="queryForm.pageSize"
-      :total="total"
-      background
-      @current-change="handleCurrentChange"
-      @size-change="handleSizeChange"
-    ></el-pagination>
+      <template #search-form>
+        <el-form-item class="grow-1 res-width">
+          <el-input
+            v-model.trim="queryForm.storeName"
+            clearable
+            placeholder="请输入门店名称"
+          />
+        </el-form-item>
+        <el-form-item class="grow-1 res-select-middle">
+          <el-area-select
+            :zone-code.sync="queryForm.storeAreacode"
+            clearable
+            placeholder="门店区划"
+          />
+        </el-form-item>
+        <el-form-item class="grow-1 res-select-mini">
+          <el-dics
+            type-code="STORE_STATUS"
+            :value-prop-name.sync="queryForm.enableMark"
+            style="width: 100%"
+          ></el-dics>
+        </el-form-item>
+        <el-form-item>
+          <el-button icon="el-icon-search" type="primary" @click="queryData">
+            查询
+          </el-button>
+        </el-form-item>
+        <el-form-item class="grow-1 justify-self-end">
+          <el-button icon="el-icon-plus" type="primary" @click="handleEdit">
+            添加
+          </el-button>
+          <el-button @click="handleEdit"> 重置 </el-button>
+        </el-form-item>
+      </template>
+      <template #table-self>
+        <el-table-column
+          align="center"
+          label="操作"
+          show-overflow-tooltip
+          width="120"
+        >
+          <template #default="{ row }">
+            <el-button type="text" @click="handleShow(row)">详情</el-button>
+            <el-button
+              v-if="row.enableMark"
+              type="text"
+              @click="handleEdit(row)"
+              >编辑</el-button
+            >
+            <el-button
+              v-if="row.enableMark"
+              type="text"
+              @click="handleDelete(row)"
+              >注销</el-button
+            >
+          </template>
+        </el-table-column>
+      </template>
+    </el-table-plus>
+    <!--    -->
+
     <edit ref="edit" @fetch-data="fetchData"></edit>
     <show ref="show" @fetch-data="fetchData"></show>
   </div>
@@ -119,31 +79,41 @@
 import { doLogout, queryPage } from "@/api/store";
 import Edit from "./components/StoreEdit";
 import Show from "./components/StoreShow";
+import ElTablePlus from "@/components/ElTablePlus";
 
 export default {
   name: "StoreManagement",
-  components: { Edit, Show },
+
+  components: { Edit, Show, ElTablePlus },
+
   data() {
     return {
-      list: [],
-      listLoading: true,
-      layout: "total, sizes, prev, pager, next, jumper",
-      total: 0,
-      selectRows: "",
+      storeTableProps: [
+        { name: "门店名称", prop: "storeName" },
+        { name: "门店区域", prop: "storeAreaname" },
+        { name: "门店地点", prop: "storeDetails" },
+        { name: "经营者姓名", prop: "managerName" },
+        { name: "经营者手机号", prop: "managerPhone" },
+        {
+          name: "状态",
+          prop: "enableMark",
+          formatter: (row) => {
+            return row.enableMark ? "正常" : "注销";
+          },
+        },
+      ],
+
       queryForm: {
-        pageIndex: 1,
-        pageSize: 10,
-        username: "",
+        storeName: null, // 门店名称
+        storeAreacode: null, // 门店区域编码
+        enableMark: null, // 门店状态
       },
     };
   },
-  created() {
-    this.fetchData();
-  },
+
   methods: {
-    setSelectRows(val) {
-      this.selectRows = val;
-    },
+    _initStoreInfo: queryPage,
+
     handleEdit(row) {
       if (row.storeId) {
         this.$refs["edit"].showEdit(row);
@@ -151,43 +121,33 @@ export default {
         this.$refs["edit"].showEdit();
       }
     },
+
     handleShow(row) {
       if (row.storeId) {
         this.$refs["show"].showEdit(row);
       }
     },
+
     handleDelete(row) {
       if (row.storeId) {
         this.$baseConfirm("你确定要注销当前项吗", null, async () => {
           const res = await doLogout({ storeId: row.storeId });
           if (res.ok) {
             this.$baseMessage("注销成功！", "success");
-            await this.fetchData();
           } else {
             this.$baseMessage("注销失败！", "error");
-            await this.fetchData();
           }
+          await this.queryData();
         });
       }
     },
-    handleSizeChange(val) {
-      this.queryForm.pageSize = val;
-      this.fetchData();
+
+    async queryData() {
+      await this.$refs.storeTable.flashTable();
     },
-    handleCurrentChange(val) {
-      this.queryForm.pageIndex = val;
-      this.fetchData();
-    },
-    queryData() {
-      this.queryForm.pageIndex = 1;
-      this.fetchData();
-    },
+
     async fetchData() {
-      this.listLoading = true;
-      const { data, pageTotal } = await queryPage(this.queryForm);
-      this.list = data;
-      this.total = pageTotal;
-      this.listLoading = false;
+      await this.queryData();
     },
   },
 };

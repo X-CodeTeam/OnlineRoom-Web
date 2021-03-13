@@ -7,6 +7,8 @@ import "./assets/styles/xcode.scss";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/display.css";
 import "@/assets/styles/element-variables.scss";
+import BaseAreaSelect from "@/components/BaseAreaSelect";
+import ElDics from "@/components/ElDics";
 // 加载图标
 import "@/icon";
 
@@ -21,6 +23,9 @@ requireComponent.keys().forEach((fileName) => {
 });
 
 Vue.prototype.$lodash = lodash;
+
+Vue.component("ElAreaSelect", BaseAreaSelect);
+Vue.component("ElDics", ElDics);
 
 // 加载插件
 const requirePlugin = require.context("./plugins", true, /\.js$/);
