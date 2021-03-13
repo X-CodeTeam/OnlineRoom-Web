@@ -37,6 +37,32 @@
           </el-form-item>
         </el-col>
       </el-row>
+
+      <el-row>
+        {{ form.reserveStartTime }}至{{ form.reserveEndTime }}({{
+          form.reserveStatusString
+        }})
+      </el-row>
+
+      <li v-for="order in form.reserveObjects" :key="order">
+        <el-row>
+          <el-col :span="6">
+            <el-form-item label="预定人："
+              >{{ order.objectName }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="手机号："
+              >{{ order.objectPhone }}
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="身份证号："
+              >{{ order.objectIdcard }}
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </li>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="close">取 消</el-button>
