@@ -40,7 +40,7 @@ export default {
       rules: {
         zoneName: [{ required: true, trigger: "blur", message: "请输入名称" }],
         zoneCode: [{ required: true, trigger: "blur", message: "请输入编号" }],
-        zoneName: [
+        zoneId: [
           { required: true, trigger: "blur", message: "请选择管辖派出所" },
         ],
       },

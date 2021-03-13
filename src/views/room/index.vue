@@ -1,136 +1,131 @@
 <template>
-  <div class="userManagement-container">
-    <vab-query-form>
-      <vab-query-form-left-panel :span="12">
-        <el-button icon="el-icon-plus" type="primary" @click="handleEdit">
-          添加
-        </el-button>
-      </vab-query-form-left-panel>
-      <vab-query-form-right-panel :span="12">
-        <el-form :inline="true" :model="queryForm" @submit.native.prevent>
-          <el-form-item>
-            <el-input
-              v-model.trim="queryForm.username"
-              clearable
-              placeholder="请输入用户名"
-            />
-          </el-form-item>
-          <el-form-item>
-            <el-button icon="el-icon-search" type="primary" @click="queryData">
-              查询
-            </el-button>
-          </el-form-item>
-        </el-form>
-      </vab-query-form-right-panel>
-    </vab-query-form>
-
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      @selection-change="setSelectRows"
+  <div class="userManagement-container flex-column">
+    <el-table-plus
+      ref="roomTable"
+      :is-index="true"
+      :search-form="true"
+      :query-params="roomQueryForm"
+      :table-props="roomTableProps"
+      :data-method="_initRoomsInfo"
+      class="grow"
     >
-      <el-table-column
-        align="center"
-        show-overflow-tooltip
-        type="selection"
-      ></el-table-column>
-      <el-table-column align="center" label="序号" width="55">
-        <template #default="{ $index }">
-          {{ $index + 1 }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        label="门店名称"
-        prop="storeName"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        align="center"
-        label="门店地点"
-        prop="storeLocation"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        align="center"
-        label="楼栋号"
-        prop="buildingNumber"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        align="center"
-        label="房间号"
-        prop="roomNo"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        align="center"
-        label="房间别名"
-        prop="roomAlias"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        align="center"
-        label="户型"
-        prop="roomHouseTypeString"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        align="center"
-        label="操作"
-        show-overflow-tooltip
-        width="120"
-      >
-        <template #default="{ row }">
-          <el-button type="text" @click="handleShow(row)">详情</el-button>
-          <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-          <el-button type="text" @click="handleDelete(row)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      :current-page="queryForm.pageIndex"
-      :layout="layout"
-      :page-size="queryForm.pageSize"
-      :total="total"
-      background
-      @current-change="handleCurrentChange"
-      @size-change="handleSizeChange"
-    ></el-pagination>
-    <edit ref="edit" @fetch-data="fetchData"></edit>
-    <show ref="show" @fetch-data="fetchData"></show>
+      <template #search-form>
+        <el-form-item>
+          <el-input
+            v-model.trim="roomQueryForm.keyworld"
+            clearable
+            placeholder="房间号 / 房间别名"
+          />
+        </el-form-item>
+        <el-form-item v-if="false">
+          <base-area-select
+            :zone-code.sync="cache.areaCode"
+            placeholder="行政区划"
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-select
+            v-model.trim="roomQueryForm.storeId"
+            clearable
+            placeholder="所属门店"
+          >
+            <el-option
+              v-for="store in options.belongStore"
+              :key="store.storeId"
+              :label="store.storeName"
+              :value="store.storeId"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button icon="el-icon-search" type="primary" @click="queryData">
+            查询
+          </el-button>
+        </el-form-item>
+        <el-form-item>
+          <el-button icon="el-icon-plus" type="primary" @click="handleEdit">
+            添加
+          </el-button>
+          <el-button @click="handleReset"> 重置 </el-button>
+        </el-form-item>
+      </template>
+      <template #table-self>
+        <el-table-column
+          align="center"
+          label="操作"
+          show-overflow-tooltip
+          width="120"
+        >
+          <template #default="{ row }">
+            <el-button type="text" @click="handleShow(row)">详情</el-button>
+            <el-button type="text" @click="handleEdit(row)">编辑</el-button>
+            <el-button type="text" @click="handleDelete(row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </template>
+    </el-table-plus>
+
+    <edit ref="edit" @fetch-data="queryData"></edit>
+    <show ref="show" @fetch-data="queryData"></show>
   </div>
 </template>
 
 <script>
 import { doDelete, queryPage } from "@/api/room";
+import { queryStorePage } from "@/api/store";
 import Edit from "./components/roomEdit";
 import show from "./components/roomShow";
+import BaseAreaSelect from "@/components/BaseAreaSelect";
+
+const originRoomQueryInfo = Object.freeze({
+  keyworld: null, // 房间别名
+  storeId: null, // 所属门店
+});
 
 export default {
   name: "UserManagement",
-  components: { Edit, show },
+
+  components: { BaseAreaSelect, Edit, show },
+
   data() {
     return {
-      list: [],
-      listLoading: true,
-      layout: "total, sizes, prev, pager, next, jumper",
-      total: 0,
-      selectRows: "",
-      queryForm: {
-        pageIndex: 1,
-        pageSize: 10,
-        username: "",
+      roomTableProps: [
+        { name: "门店名称", prop: "storeName" },
+        { name: "门店地点", prop: "storeLocation" },
+        { name: "楼栋号", prop: "buildingNumber" },
+        { name: "房间号", prop: "roomNo" },
+        { name: "房间别名", prop: "roomAlias" },
+        { name: "户型", prop: "roomHouseTypeString" },
+      ],
+
+      roomQueryForm: { ...originRoomQueryInfo },
+
+      cache: {
+        areaCode: null,
+      },
+
+      options: {
+        belongStore: [],
       },
     };
   },
-  created() {
-    this.fetchData();
+
+  async created() {
+    await this._initStoreOptions();
   },
+
   methods: {
-    setSelectRows(val) {
-      this.selectRows = val;
+    _initRoomsInfo: queryPage,
+
+    async _initStoreOptions() {
+      const { data: storeData } = await queryStorePage({
+        pageSize: 999,
+        pageIndex: 1,
+      });
+
+      this.options.belongStore = storeData;
     },
+
     handleEdit(row) {
       if (row.roomId) {
         this.$refs["edit"].showEdit(row);
@@ -138,38 +133,33 @@ export default {
         this.$refs["edit"].showEdit();
       }
     },
+
     handleShow(row) {
       if (row.roomId) {
         this.$refs["show"].showEdit(row);
       }
     },
+
+    async handleReset() {
+      Object.assign(this.roomQueryForm, originRoomQueryInfo);
+
+      await this.queryData();
+    },
+
     handleDelete(row) {
       if (row.roomId) {
         this.$baseConfirm("你确定要删除当前项吗", null, async () => {
           const res = await doDelete({ roomId: row.roomId });
+
           this.$baseMessage(res.message, "success");
-          await this.fetchData();
+
+          await this.queryData();
         });
       }
     },
-    handleSizeChange(val) {
-      this.queryForm.pageSize = val;
-      this.fetchData();
-    },
-    handleCurrentChange(val) {
-      this.queryForm.pageIndex = val;
-      this.fetchData();
-    },
-    queryData() {
-      this.queryForm.pageIndex = 1;
-      this.fetchData();
-    },
-    async fetchData() {
-      this.listLoading = true;
-      const { data, pageTotal } = await queryPage(this.queryForm);
-      this.list = data;
-      this.total = pageTotal;
-      this.listLoading = false;
+
+    async queryData() {
+      await this.$refs.roomTable?.flashTable();
     },
   },
 };

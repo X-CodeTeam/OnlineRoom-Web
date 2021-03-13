@@ -26,18 +26,18 @@ import logoImage from "@/assets/logo.png";
 export default {
   name: "Logo",
 
+  data() {
+    return {
+      logoImage,
+    };
+  },
+
   computed: {
     ...mapGetters({
       logo: "settings/logo",
       layout: "settings/layout",
       title: "settings/title",
     }),
-  },
-
-  data() {
-    return {
-      logoImage,
-    };
   },
 };
 </script>

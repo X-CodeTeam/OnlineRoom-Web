@@ -1,6 +1,6 @@
 import request from "@/utils/request";
 
-export function queryPage(params) {
+export function queryStorePage(params) {
   return request({
     url: "/stores",
     method: "get",
@@ -29,5 +29,12 @@ export function doLogout(data) {
     url: "/stores/logout",
     method: "put",
     params: data,
+  });
+}
+
+// 保留接口，根据行政区划查询门店
+export function queryStoreWithZone() {
+  return request({
+    url: "/stores/",
   });
 }

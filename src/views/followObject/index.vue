@@ -114,6 +114,7 @@ export default {
 
   methods: {
     _initStoreInfo: queryPage,
+
     handleEdit(row) {
       if (row.objectId) {
         this.$refs["edit"].showEdit(row);
@@ -121,6 +122,7 @@ export default {
         this.$refs["edit"].showEdit();
       }
     },
+
     handleDelete(row) {
       if (row.objectId) {
         this.$baseConfirm("你确定要取消关注吗？", null, async () => {
