@@ -125,7 +125,11 @@ export default {
       if (row.objectId) {
         this.$baseConfirm("你确定要取消关注吗？", null, async () => {
           const res = await doDelete({ objectId: row.objectId });
-          this.$baseMessage("取消成功！", "success");
+          if (res.ok) {
+            this.$baseMessage("取消成功", "success");
+          } else {
+            this.$baseMessage("取消失败", "success");
+          }
           await this.fetchData();
         });
       }
