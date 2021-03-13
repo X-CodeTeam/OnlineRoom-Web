@@ -15,9 +15,9 @@
       <template #search-form>
         <el-form-item>
           <el-input
-            v-model.trim="zoneQueryForm.username"
+            v-model.trim="zoneQueryForm.zoneName"
             clearable
-            placeholder="请输入门店名称"
+            placeholder="请输入关键字"
           />
         </el-form-item>
         <el-form-item>
@@ -25,7 +25,7 @@
             查询
           </el-button>
         </el-form-item>
-        <el-form-item>
+        <el-form-item class="grow-1 justify-self-end">
           <el-button
             icon="el-icon-plus"
             type="primary"

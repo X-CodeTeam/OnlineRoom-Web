@@ -2,10 +2,10 @@
   <el-dialog
     :title="title"
     :visible.sync="dialogFormVisible"
-    width="500px"
+    width="600px"
     @close="close"
   >
-    <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+    <el-form ref="form" :model="form" :rules="rules" label-width="120px">
       <el-form-item label="上级名称：" prop="parentZoneCode">
         <el-area-tree
           :zone-code.sync="form.parentZoneCode"
@@ -17,6 +17,9 @@
       </el-form-item>
       <el-form-item label="名称：" prop="zoneName"
         ><el-input v-model.trim="form.zoneName"></el-input>
+      </el-form-item>
+      <el-form-item label="负责人姓名：" prop="principalName"
+        ><el-input v-model.trim="form.principalName"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
