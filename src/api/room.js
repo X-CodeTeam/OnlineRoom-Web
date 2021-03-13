@@ -11,7 +11,7 @@ export function queryPage(params) {
 export function doEdit(data) {
   return request({
     url: "/rooms",
-    method: "post",
+    method: "put",
     data,
   });
 }

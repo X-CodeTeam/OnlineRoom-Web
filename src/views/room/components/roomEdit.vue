@@ -8,7 +8,7 @@
     <el-form ref="form" :model="form" :rules="rules" label-width="160px">
       <el-row>
         <el-col :span="12">
-          <el-form-item label="所属门店：" prop="storeName">
+          <el-form-item label="所属门店：" prop="storeId">
             <el-select
               v-model.trim="form.storeId"
               clearable
@@ -47,12 +47,24 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="户型：" prop="roomHouseType">
-            <el-input v-model.trim="form.roomHouseType"></el-input>
+            <el-dics
+              :is-query="false"
+              type-code="HOUSE_TYPE"
+              :value-prop-name.sync="form.roomHouseType"
+              style="width: 100%"
+            >
+            </el-dics>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="房屋类型：" prop="roomType">
-            <el-input v-model.trim="form.roomType"></el-input>
+            <el-dics
+              :is-query="false"
+              type-code="ROOM_TYPE"
+              :value-prop-name.sync="form.roomType"
+              style="width: 100%"
+            >
+            </el-dics>
           </el-form-item>
         </el-col>
       </el-row>
@@ -101,9 +113,12 @@ export default {
 
   data() {
     return {
-      form: {},
+      form: {
+        roomHouseType: null,
+        roomType: null,
+      },
       rules: {
-        storeName: [
+        storeId: [
           { required: true, trigger: "blur", message: "请选择所属门店" },
         ],
         roomNo: [{ required: true, trigger: "blur", message: "请输入房间号" }],
@@ -143,11 +158,13 @@ export default {
       this.$refs["form"].validate(async (valid) => {
         if (valid) {
           if (this.isAdd) {
-            (await doAdd(this.form)) &&
-              this.$baseMessage(res.message, "success");
+            const res = await doAdd(this.form);
+
+            res.ok && this.$baseMessage("操作成功", "success");
           } else {
             const res = await doEdit(this.form);
-            this.$baseMessage(res.message, "success");
+
+            res.ok && this.$baseMessage("操作成功", "success");
           }
 
           this.$emit("fetch-data");
