@@ -85,7 +85,7 @@ export const asyncRoutes = [
         name: "orderManagement",
         component: () => import("@/views/order"),
         meta: {
-          title: "订单管理-开发中",
+          title: "订单管理",
           remixIcon: "order-play-line",
         },
       },
@@ -94,19 +94,19 @@ export const asyncRoutes = [
         name: "checkinManagement",
         component: () => import("@/views/checkin"),
         meta: {
-          title: "入住信息-开发中",
+          title: "入住信息",
           remixIcon: "airplay-line",
         },
       },
-      {
-        path: "warning",
-        name: "warningManagement",
-        component: () => import("@/views/warning"),
-        meta: {
-          title: "预警记录-开发中",
-          remixIcon: "signal-wifi-error-line",
-        },
-      },
+      // {
+      //   path: "warning",
+      //   name: "warningManagement",
+      //   component: () => import("@/views/warning"),
+      //   meta: {
+      //     title: "预警记录-开发中",
+      //     remixIcon: "signal-wifi-error-line",
+      //   },
+      // },
     ],
   },
   {
@@ -129,15 +129,15 @@ export const asyncRoutes = [
           remixIcon: "file-user-line",
         },
       },
-      {
-        path: "role",
-        name: "roleManagement",
-        component: () => import("@/views/role"),
-        meta: {
-          title: "角色管理-开发中",
-          remixIcon: "award-line",
-        },
-      },
+      // {
+      //   path: "role",
+      //   name: "roleManagement",
+      //   component: () => import("@/views/role"),
+      //   meta: {
+      //     title: "角色管理-开发中",
+      //     remixIcon: "award-line",
+      //   },
+      // },
       {
         path: "zoom",
         name: "zoomManagement",

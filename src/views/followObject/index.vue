@@ -111,9 +111,7 @@ export default {
       queryForm: { ...followQueryInfo },
     };
   },
-  created() {
-    this.fetchData();
-  },
+
   methods: {
     _initStoreInfo: queryPage,
 
