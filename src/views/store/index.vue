@@ -13,9 +13,9 @@
       <template #search-form>
         <el-form-item class="grow-1 res-width">
           <el-input
-            v-model.trim="queryForm.storeName"
+            v-model.trim="queryForm.keyworld"
             clearable
-            placeholder="请输入门店名称"
+            placeholder="门店名称 / 单位名称"
           />
         </el-form-item>
         <el-form-item class="grow-1 res-select-middle">
@@ -77,13 +77,13 @@
 </template>
 
 <script>
-import { doLogout, queryPage } from "@/api/store";
+import { doLogout, queryStorePage } from "@/api/store";
 import Edit from "./components/StoreEdit";
 import Show from "./components/StoreShow";
 import ElTablePlus from "@/components/ElTablePlus";
 
 const originStoreQueryInfo = Object.freeze({
-  storeName: null, // 门店名称
+  keyworld: null, // 门店名称
   storeAreacode: null, // 门店区域编码
   enableMark: null, // 门店状态
 });
@@ -115,7 +115,7 @@ export default {
   },
 
   methods: {
-    _initStoreInfo: queryPage,
+    _initStoreInfo: queryStorePage,
 
     handleEdit(row) {
       if (row.storeId) {

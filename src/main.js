@@ -9,6 +9,7 @@ import "element-ui/lib/theme-chalk/display.css";
 import "@/assets/styles/element-variables.scss";
 import BaseAreaSelect from "@/components/BaseAreaSelect";
 import ElDics from "@/components/ElDics";
+import ElTablePlus from "@/components/ElTablePlus";
 // 加载图标
 import "@/icon";
 
@@ -26,6 +27,7 @@ Vue.prototype.$lodash = lodash;
 
 Vue.component("ElAreaSelect", BaseAreaSelect);
 Vue.component("ElDics", ElDics);
+Vue.component("ElTablePlus", ElTablePlus);
 
 // 加载插件
 const requirePlugin = require.context("./plugins", true, /\.js$/);
