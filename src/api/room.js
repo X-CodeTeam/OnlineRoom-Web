@@ -31,3 +31,10 @@ export function doDelete(data) {
     params: data,
   });
 }
+
+export function getRoom(params) {
+  return request({
+    url: "/rooms/" + params,
+    method: "get",
+  });
+}

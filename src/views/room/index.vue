@@ -41,12 +41,12 @@
           <el-button icon="el-icon-search" type="primary" @click="queryData">
             查询
           </el-button>
+          <el-button @click="handleReset"> 重置 </el-button>
         </el-form-item>
-        <el-form-item>
+        <el-form-item class="grow-1 justify-self-end">
           <el-button icon="el-icon-plus" type="primary" @click="handleEdit">
             添加
           </el-button>
-          <el-button @click="handleReset"> 重置 </el-button>
         </el-form-item>
       </template>
       <template #table-self>
@@ -154,9 +154,9 @@ export default {
       if (row.roomId) {
         this.$baseConfirm("你确定要删除当前项吗", null, async () => {
           const res = await doDelete({ roomId: row.roomId });
-
-          this.$baseMessage(res.message, "success");
-
+          if (res.ok) {
+            this.$baseMessage("删除成功！", "success");
+          }
           await this.queryData();
         });
       }
