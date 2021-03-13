@@ -45,7 +45,7 @@
           height: 36px;
           line-height: 36px;
           border-radius: 5px;
-          background-color: rgba(0, 0, 0, 0.3);
+          background-color: rgba(242, 242, 242, 1);
           margin: 10px 0;
         "
       >

@@ -76,7 +76,7 @@ export const asyncRoutes = [
         name: "roomManagement",
         component: () => import("@/views/room"),
         meta: {
-          title: "房间管理-开发中",
+          title: "房间管理",
           remixIcon: "archive-line",
         },
       },
