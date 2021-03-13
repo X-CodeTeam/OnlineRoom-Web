@@ -98,15 +98,15 @@ export const asyncRoutes = [
           remixIcon: "airplay-line",
         },
       },
-      {
-        path: "warning",
-        name: "warningManagement",
-        component: () => import("@/views/warning"),
-        meta: {
-          title: "预警记录-开发中",
-          remixIcon: "signal-wifi-error-line",
-        },
-      },
+      // {
+      //   path: "warning",
+      //   name: "warningManagement",
+      //   component: () => import("@/views/warning"),
+      //   meta: {
+      //     title: "预警记录-开发中",
+      //     remixIcon: "signal-wifi-error-line",
+      //   },
+      // },
     ],
   },
   {
@@ -129,15 +129,15 @@ export const asyncRoutes = [
           remixIcon: "file-user-line",
         },
       },
-      {
-        path: "role",
-        name: "roleManagement",
-        component: () => import("@/views/role"),
-        meta: {
-          title: "角色管理-开发中",
-          remixIcon: "award-line",
-        },
-      },
+      // {
+      //   path: "role",
+      //   name: "roleManagement",
+      //   component: () => import("@/views/role"),
+      //   meta: {
+      //     title: "角色管理-开发中",
+      //     remixIcon: "award-line",
+      //   },
+      // },
       {
         path: "zoom",
         name: "zoomManagement",
