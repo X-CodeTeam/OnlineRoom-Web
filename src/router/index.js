@@ -67,7 +67,7 @@ export const asyncRoutes = [
         name: "StoreManagement",
         component: () => import("@/views/store"),
         meta: {
-          title: "门店管理-开发中",
+          title: "门店管理",
           remixIcon: "ancient-pavilion-line",
         },
       },
@@ -125,7 +125,7 @@ export const asyncRoutes = [
         name: "userManagement",
         component: () => import("@/views/user"),
         meta: {
-          title: "用户管理-开发中",
+          title: "用户管理",
           remixIcon: "file-user-line",
         },
       },
@@ -143,7 +143,7 @@ export const asyncRoutes = [
         name: "zoomManagement",
         component: () => import("@/views/zoom"),
         meta: {
-          title: "网格员管理-开发中",
+          title: "网格员管理",
           remixIcon: "admin-line",
         },
       },
@@ -152,7 +152,7 @@ export const asyncRoutes = [
         name: "zoneManagement",
         component: () => import("@/views/zone"),
         meta: {
-          title: "行政区划管理-开发中",
+          title: "行政区划管理",
           remixIcon: "align-justify",
         },
       },
