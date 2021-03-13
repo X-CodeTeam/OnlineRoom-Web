@@ -130,7 +130,7 @@
 </template>
 
 <script>
-import { doDelete, getList } from "@/api/userManagement";
+import { doDelete, getList } from "@/api/roleManagement";
 import Edit from "./components/warningEdit";
 
 export default {

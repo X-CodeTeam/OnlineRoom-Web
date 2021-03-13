@@ -43,10 +43,18 @@
           <el-form-item label="订单信息："></el-form-item>
         </el-col>
       </el-row>
-      <el-row>
-        <el-col> {{ form.checkInTime }}入住 </el-col>
+      <el-row
+        style="
+          text-align: center;
+          height: 36px;
+          line-height: 36px;
+          border-radius: 5px;
+          background-color: rgba(242, 242, 242, 1);
+          margin: 10px 0;
+        "
+      >
+        {{ form.checkInTime }} 入住
       </el-row>
-
       <el-row>
         <el-col :span="12">
           <el-form-item label="姓名：">{{ form.objectName }} </el-form-item>

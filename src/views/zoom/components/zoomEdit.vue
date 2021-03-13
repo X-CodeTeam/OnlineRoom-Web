@@ -2,10 +2,10 @@
   <el-dialog
     :title="title"
     :visible.sync="dialogFormVisible"
-    width="500px"
+    width="600px"
     @close="close"
   >
-    <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+    <el-form ref="form" :model="form" :rules="rules" label-width="120px">
       <el-form-item label="姓名：" prop="username">
         <el-input v-model.trim="form.username"></el-input>
       </el-form-item>

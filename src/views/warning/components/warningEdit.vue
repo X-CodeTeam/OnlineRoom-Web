@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { doEdit, doAdd } from "@/api/userManagement";
+import { doEdit, doAdd } from "@/api/store";
 
 export default {
   name: "UserManagementEdit",

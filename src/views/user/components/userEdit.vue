@@ -2,24 +2,42 @@
   <el-dialog
     :title="title"
     :visible.sync="dialogFormVisible"
-    width="500px"
+    width="600px"
     @close="close"
   >
-    <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-      <el-form-item label="用户名" prop="account">
-        <el-input v-model.trim="form.account"></el-input>
+    <el-form ref="form" :model="form" :rules="rules" label-width="120px">
+      <el-form-item label="用户类型:" prop="userType">
+        <el-radio v-model="form.userType" label="1">超级管理员</el-radio>
+        <el-radio v-model="form.userType" label="2">普通管理员</el-radio>
       </el-form-item>
-      <el-form-item label="真实姓名" prop="name">
-        <el-input v-model.trim="form.name"></el-input>
+      <el-form-item label="昵称:" prop="nickname">
+        <el-input v-model.trim="form.nickname"></el-input>
       </el-form-item>
-      <el-form-item label="用户昵称" prop="nickName">
-        <el-input v-model.trim="form.nickName"></el-input>
+      <el-form-item label="登录名:" prop="loginUser">
+        <el-input v-model.trim="form.loginUser"></el-input>
       </el-form-item>
-      <el-form-item label="手机号码" prop="phoneNumber">
-        <el-input v-model.trim="form.phoneNumber"></el-input>
+      <el-form-item label="登录密码:" prop="loginPassword">
+        <el-input v-model.trim="form.loginPassword" type="password"></el-input>
       </el-form-item>
-      <el-form-item label="邮箱" prop="email">
+      <el-form-item label="再次确认密码:" prop="comfirmLoginPassword">
+        <el-input
+          v-model.trim="comfirmLoginPassword"
+          type="password"
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="邮箱:" prop="email">
         <el-input v-model.trim="form.email"></el-input>
+      </el-form-item>
+      <el-form-item label="手机号:" prop="phone">
+        <el-input v-model.trim="form.phone"></el-input>
+      </el-form-item>
+      <el-form-item label="状态:" prop="status">
+        <el-radio v-model="form.status" label="1">禁用</el-radio>
+        <el-radio v-model="form.status" label="2">正常</el-radio>
+        <el-radio v-model="form.status" label="3">锁定</el-radio>
+      </el-form-item>
+      <el-form-item label="描述:" prop="description">
+        <el-input v-model.trim="form.description"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -30,17 +48,30 @@
 </template>
 
 <script>
-import { doEdit, doAdd } from "@/api/userManagement";
+import { doEdit, doAdd } from "@/api/sysUser";
 
 export default {
   name: "UserManagementEdit",
   data() {
     return {
       form: {},
+      comfirmLoginPassword: "",
       rules: {
-        account: [{ required: true, trigger: "blur", message: "请输入用户名" }],
-        email: [{ required: true, trigger: "blur", message: "请输入邮箱" }],
-        nickName: [{ required: true, trigger: "blur", message: "请选择昵称" }],
+        userType: [
+          { required: true, trigger: "blur", message: "请输入用户类型" },
+        ],
+        // comfirmLoginPassword: [
+        //   { required: true, trigger: "blur", message: "请输入确认密码" },
+        // ],
+        loginUser: [
+          { required: true, trigger: "blur", message: "请输入登录名" },
+        ],
+        nickname: [{ required: true, trigger: "blur", message: "请输入昵称" }],
+        loginPassword: [
+          { required: true, trigger: "blur", message: "请输入密码" },
+        ],
+        phone: [{ required: true, trigger: "blur", message: "请输入手机号" }],
+        status: [{ required: true, trigger: "blur", message: "请选择状态" }],
       },
       title: "",
       dialogFormVisible: false,

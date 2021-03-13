@@ -1,8 +1,8 @@
 import request from "@/utils/request";
 
-export function getList(params) {
+export function queryPage(params) {
   return request({
-    url: "/Admin/User/GetPage",
+    url: "/sysUsers",
     method: "get",
     params,
   });
@@ -10,7 +10,7 @@ export function getList(params) {
 
 export function doEdit(data) {
   return request({
-    url: "/Admin/User/Update",
+    url: "/sysUsers",
     method: "post",
     data,
   });
@@ -18,7 +18,7 @@ export function doEdit(data) {
 
 export function doAdd(data) {
   return request({
-    url: "/Admin/User/Add",
+    url: "/sysUsers",
     method: "post",
     data,
   });
@@ -26,7 +26,7 @@ export function doAdd(data) {
 
 export function doDelete(data) {
   return request({
-    url: "/Admin/User/Delete",
+    url: "/sysUsers",
     method: "post",
     data,
   });

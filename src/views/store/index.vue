@@ -36,12 +36,12 @@
           <el-button icon="el-icon-search" type="primary" @click="queryData">
             查询
           </el-button>
+          <el-button @click="handleReset"> 重置 </el-button>
         </el-form-item>
         <el-form-item class="grow-1 justify-self-end">
           <el-button icon="el-icon-plus" type="primary" @click="handleEdit">
             添加
           </el-button>
-          <el-button @click="handleReset"> 重置 </el-button>
         </el-form-item>
       </template>
       <template #table-self>
