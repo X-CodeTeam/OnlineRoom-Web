@@ -51,8 +51,8 @@
 </template>
 
 <script>
-import { doDelete, queryPage } from "@/api/role";
-import Edit from "./components/roleEdit";
+import { doDelete, queryPage } from "@/api/menu";
+import Edit from "./components/menuEdit";
 import ElTablePlus from "@/components/ElTablePlus";
 
 const roleQueryInfo = Object.freeze({

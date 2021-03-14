@@ -134,7 +134,16 @@ export const asyncRoutes = [
         name: "roleManagement",
         component: () => import("@/views/role"),
         meta: {
-          title: "角色管理-开发中",
+          title: "角色管理",
+          remixIcon: "award-line",
+        },
+      },
+      {
+        path: "menu",
+        name: "menuManagement",
+        component: () => import("@/views/menu"),
+        meta: {
+          title: "菜单管理",
           remixIcon: "award-line",
         },
       },
