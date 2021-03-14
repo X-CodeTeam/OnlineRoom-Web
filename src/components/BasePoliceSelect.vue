@@ -1,19 +1,29 @@
 <template>
-  <el-select
-    ref="policeSelect"
-    v-model="select"
+  <!--  <el-select-->
+  <!--    ref="policeSelect"-->
+  <!--    v-model="select"-->
+  <!--    v-bind="$attrs"-->
+  <!--    style="width: 100%"-->
+  <!--    filterable-->
+  <!--    @change="handleSelect"-->
+  <!--  >-->
+  <!--    <el-option-->
+  <!--      v-for="zone in zoneData"-->
+  <!--      :key="zone['zoneId']"-->
+  <!--      :label="zone['zoneName']"-->
+  <!--      :value="zone['zoneId']"-->
+  <!--    />-->
+  <el-cascader
+    ref="areaCascader"
     v-bind="$attrs"
+    :key="diffKey"
+    v-model="select"
+    :options="zoneData"
+    :props="Object.assign(defaultProps, loadProps)"
+    clearable
     style="width: 100%"
-    filterable
     @change="handleSelect"
-  >
-    <el-option
-      v-for="zone in zoneData"
-      :key="zone['zoneId']"
-      :label="zone['zoneName']"
-      :value="zone['zoneId']"
-    />
-  </el-select>
+  />
 </template>
 
 <script>
@@ -35,35 +45,63 @@ export default {
       type: Array,
       default: () => [],
     },
+
+    loadProps: {
+      type: Object,
+      default: () => {},
+    },
   },
 
   data() {
     return {
       select: "",
+
+      diffKey: 1,
+
+      defaultProps: {
+        children: "child",
+        label: "zoneName",
+        value: "zoneId",
+        leaf: "leaf",
+        emitPath: false,
+      },
     };
   },
 
   watch: {
     zoneData: {
       handler(res) {
+        this.diffKey += 1;
+
         if (!res.length) {
-          this.select = null;
+          this.select = [];
         }
       },
       deep: true,
       immediate: true,
     },
+
+    policeZoneId: {
+      handler(zoneId) {
+        if (zoneId) {
+          this.select = zoneId;
+        }
+      },
+      immediate: true,
+    },
   },
 
   methods: {
-    handleSelect(res) {
-      const _res = this.zoneData.find((item) => {
-        return item.zoneId === res;
-      });
+    handleSelect() {
+      const _res = this.$lodash.last(this.$refs.areaCascader.getCheckedNodes());
 
-      this.$emit("update:policeZoneId", _res.zoneId);
+      const { data } = _res || [];
 
-      this.$emit("update:policeZoneName", _res.zoneName);
+      if (!data) return;
+
+      this.$emit("update:policeZoneId", data.zoneId);
+
+      this.$emit("update:policeZoneName", data.zoneName);
     },
   },
 };

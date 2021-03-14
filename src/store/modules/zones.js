@@ -38,13 +38,17 @@ const actions = {
     const { data } = zones;
 
     if (data) {
-      omitNullChild(data, "child");
+      commit("setZones", omitNullChild(data, "child"));
 
-      commit("setZones", data);
+      commit(
+        "setAreaZones",
+        omitNullChild(splitLevelToLevel(data, 0, 1), "child")
+      );
 
-      commit("setAreaZones", splitLevelToLevel(data, 0, 1));
-
-      commit("setPoliceZones", splitLeaveNode(data));
+      commit(
+        "setPoliceZones",
+        omitNullChild(splitLevelToLevel(data, 2, 3), "child")
+      );
     }
   },
 
@@ -61,6 +65,8 @@ export default {
 
 export function omitNullChild(root, key) {
   const _omit = (node) => {
+    if (!node) return;
+
     for (let i = 0; i < node.length; i++) {
       if (node[i].child && !node[i].child.length) {
         node[i] = omit(node[i], key);
@@ -71,7 +77,9 @@ export function omitNullChild(root, key) {
     }
   };
 
-  return _omit(root);
+  _omit(root);
+
+  return root;
 }
 
 export function splitLevelToLevel(root, startLevel, endLevel) {
@@ -79,12 +87,12 @@ export function splitLevelToLevel(root, startLevel, endLevel) {
 
   const _splitHead = (nodes, deep = 0) => {
     for (const item of nodes) {
-      if (item.child && item.child.length) {
-        if (deep === startLevel) {
-          return newRoot.push(cloneDeep(item));
-        }
-
+      if (deep < startLevel && item.child && item.child.length) {
         _splitHead(item.child, deep + 1);
+      }
+
+      if (deep === startLevel) {
+        newRoot.push(cloneDeep(item));
       }
     }
   };

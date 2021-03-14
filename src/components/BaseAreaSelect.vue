@@ -83,15 +83,24 @@ export default {
       }
     },
 
-    zoneCode(res) {
-      if (!res) {
-        this.select = null;
-      }
+    zoneCode: {
+      handler(res) {
+        if (!res) {
+          this.select = null;
+        } else {
+          this.select = res;
+
+          this.upPoliceZoneData(this.zoneCode); // 一开始时为police加载数据
+        }
+      },
+      immediate: true,
     },
 
     zoneId(res) {
       if (!res) {
         this.select = null;
+      } else {
+        this.select = res.split(",");
       }
     },
   },
@@ -102,6 +111,14 @@ export default {
 
   methods: {
     ...mapActions("zones", ["_initZones"]),
+
+    upPoliceZoneData: function (zoneCode) {
+      const _policeZoneData = this.policeZones.filter((item) => {
+        return zoneCode === item.parentZoneCode;
+      });
+
+      this.$emit("update:policeZoneData", _policeZoneData);
+    },
 
     _handleAreaCode() {
       const pinJie = (areaList, key) => {
@@ -122,11 +139,7 @@ export default {
 
       this.$emit("update:zoneId", pinJie(lastData, "zoneId"));
 
-      const _policeZoneData = this.policeZones.filter((item) => {
-        return lastData[0].data.zoneCode === item.parentZoneCode;
-      });
-
-      this.$emit("update:policeZoneData", _policeZoneData);
+      this.upPoliceZoneData(lastData[0].data.zoneCode);
     },
   },
 };
