@@ -102,7 +102,7 @@ export default {
           name: "性别",
           prop: "gender",
           formatter: (row) => {
-            return row.gender === 1 ? "男" : "女";
+            return row.gender == 1 ? "男" : "女";
           },
         },
       ],

@@ -10,7 +10,10 @@
         <el-input v-model.trim="form.objectName"></el-input>
       </el-form-item>
       <el-form-item label="身份证：" prop="objectIdcard">
-        <el-input v-model.trim="form.objectIdcard" disabled="true"></el-input>
+        <el-input
+          v-model.trim="form.objectIdcard"
+          :disabled="!isAdd"
+        ></el-input>
       </el-form-item>
       <el-form-item label="Mac地址：" prop="objectMac">
         <el-input v-model.trim="form.objectMac"></el-input>
