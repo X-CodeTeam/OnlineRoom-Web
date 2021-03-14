@@ -1,132 +1,103 @@
 <template>
-  <div class="roleManagement-container">
-    <vab-query-form>
-      <vab-query-form-left-panel :span="12">
-        <el-button icon="el-icon-plus" type="primary" @click="handleEdit">
-          添加
-        </el-button>
-        <el-button icon="el-icon-delete" type="danger" @click="handleDelete">
-          批量删除
-        </el-button>
-      </vab-query-form-left-panel>
-      <vab-query-form-right-panel :span="12">
-        <el-form :inline="true" :model="queryForm" @submit.native.prevent>
-          <el-form-item>
-            <el-input
-              v-model.trim="queryForm.name"
-              clearable
-              placeholder="请输入角色"
-            />
-          </el-form-item>
-          <el-form-item>
-            <el-button icon="el-icon-search" type="primary" @click="queryData">
-              查询
-            </el-button>
-          </el-form-item>
-        </el-form>
-      </vab-query-form-right-panel>
-    </vab-query-form>
-
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      @selection-change="setSelectRows"
+  <div class="userManagement-container flex-column">
+    <!-- 自定义位置 -->
+    <el-table-plus
+      ref="sysUserTable"
+      :is-index="true"
+      :search-form="true"
+      :query-params="queryForm"
+      :table-props="sysUserTableProps"
+      :data-method="_initStoreInfo"
+      class="grow"
     >
-      <el-table-column
-        align="center"
-        show-overflow-tooltip
-        type="selection"
-      ></el-table-column>
-      <el-table-column align="center" label="序号" width="55">
-        <template #default="{ $index }">
-          {{ $index + 1 }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        label="名称"
-        prop="name"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        align="center"
-        label="是否系统角色"
-        show-overflow-tooltip
-      >
-        <template #default="{ row }">
-          <span>
-            {{ row.isSystem ? "是" : "否" }}
-          </span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="是否启用" show-overflow-tooltip>
-        <template #default="{ row }">
-          <span>
-            {{ row.isEnable ? "是" : "否" }}
-          </span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        label="备注"
-        prop="remarks"
-        show-overflow-tooltip
-      ></el-table-column>
-      <el-table-column
-        align="center"
-        label="操作"
-        show-overflow-tooltip
-        width="85"
-      >
-        <template #default="{ row }">
-          <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-          <el-button type="text" @click="handleDelete(row)">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-      :current-page="queryForm.pageNo"
-      :layout="layout"
-      :page-size="queryForm.pageSize"
-      :total="total"
-      background
-      @current-change="handleCurrentChange"
-      @size-change="handleSizeChange"
-    ></el-pagination>
+      <template #search-form>
+        <el-form-item class="grow-1 res-select-middle">
+          <el-input
+            v-model.trim="queryForm.loginUser"
+            clearable
+            placeholder="请输入登录名"
+          />
+        </el-form-item>
+        <el-form-item class="grow-1 res-select-middle">
+          <el-input
+            v-model.trim="queryForm.phone"
+            clearable
+            placeholder="请输入手机号"
+          />
+        </el-form-item>
+        <el-form-item class="grow-1 res-select-middle">
+          <el-input
+            v-model.trim="queryForm.email"
+            clearable
+            placeholder="请输入邮箱"
+          />
+        </el-form-item>
+
+        <el-form-item>
+          <el-button icon="el-icon-search" type="primary" @click="queryData">
+            查询
+          </el-button>
+          <el-button @click="handleReset"> 重置 </el-button>
+        </el-form-item>
+        <el-form-item class="grow-1 justify-self-end">
+          <el-button icon="el-icon-plus" type="primary" @click="handleEdit">
+            添加
+          </el-button>
+        </el-form-item>
+      </template>
+      <template #table-self>
+        <el-table-column
+          align="center"
+          label="操作"
+          show-overflow-tooltip
+          width="120"
+        >
+          <template #default="{ row }">
+            <el-button type="text" @click="handleEdit(row)">编辑</el-button>
+            <el-button type="text" @click="handleDelete(row)">删除</el-button>
+          </template>
+        </el-table-column>
+      </template>
+    </el-table-plus>
+    <!--    -->
+
     <edit ref="edit" @fetch-data="fetchData"></edit>
   </div>
 </template>
 
 <script>
-import { doDelete, getList } from "@/api/roleManagement";
-import Edit from "./components/roleEdit";
+import { doDelete, queryPage } from "@/api/sysUser";
+import Edit from "./components/userEdit";
+import ElTablePlus from "@/components/ElTablePlus";
+
+const sysUserQueryInfo = Object.freeze({
+  loginUser: null,
+  email: null,
+  phone: null,
+});
 
 export default {
-  name: "RoleManagement",
-  components: { Edit },
+  name: "UserManagement",
+  components: { Edit, ElTablePlus },
   data() {
     return {
-      list: [],
-      listLoading: true,
-      layout: "total, sizes, prev, pager, next, jumper",
-      total: 0,
-      selectRows: "",
-      queryForm: {
-        currentPage: 1,
-        pageSize: 10,
-        name: "",
-      },
+      sysUserTableProps: [
+        { name: "登录名", prop: "loginUser" },
+        { name: "昵称", prop: "nickname" },
+        { name: "邮箱", prop: "email" },
+        { name: "手机号", prop: "phone" },
+        { name: "状态", prop: "statusString" },
+        { name: "描述", prop: "description" },
+      ],
+      queryForm: { ...sysUserQueryInfo },
     };
   },
-  created() {
-    this.fetchData();
-  },
+
   methods: {
-    setSelectRows(val) {
-      this.selectRows = val;
-    },
+    _initStoreInfo: queryPage,
+
     handleEdit(row) {
-      if (row.id) {
+      if (row.userId) {
         this.$refs["edit"].showEdit(row);
       } else {
         this.$refs["edit"].showEdit();
@@ -153,24 +124,17 @@ export default {
         }
       }
     },
-    handleSizeChange(val) {
-      this.queryForm.pageSize = val;
-      this.fetchData();
+    async handleReset() {
+      Object.assign(this.queryForm, sysUserQueryInfo);
+      await this.queryData();
     },
-    handleCurrentChange(val) {
-      this.queryForm.currentPage = val;
-      this.fetchData();
+
+    async queryData() {
+      this.$refs.sysUserTable && (await this.$refs.sysUserTable.flashTable());
     },
-    queryData() {
-      this.queryForm.currentPage = 1;
-      this.fetchData();
-    },
+
     async fetchData() {
-      this.listLoading = true;
-      const { data } = await getList(this.queryForm);
-      this.list = data.data;
-      this.total = data.total;
-      this.listLoading = false;
+      await this.queryData();
     },
   },
 };
