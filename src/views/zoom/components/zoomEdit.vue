@@ -12,17 +12,20 @@
       <el-form-item label="手机号码：" prop="phone">
         <el-input v-model.trim="form.phone"></el-input>
       </el-form-item>
-      <el-form-item label="身份证：" prop="idcard"
-        ><el-input v-model.trim="form.idcard"></el-input>
+      <el-form-item label="身份证：" prop="idcard">
+        <el-input v-model.trim="form.idcard" :disabled="!isAdd"></el-input>
       </el-form-item>
       <el-form-item label="管辖区域：" prop="zoneName">
-        <base-police-select
-          :zone-data="org.policeZoneData"
-          :police-zone-id.sync="form.zoneId"
-          :police-zone-name.sync="form.zoneName"
-        ></base-police-select>
+        <base-area-select
+          :zone-name.sync="form.zoneName"
+          :zone-id.sync="form.zoneId"
+          :level="[0, 2]"
+          :show-all-levels="false"
+          :load-props="{ multiple: true }"
+        />
       </el-form-item>
     </el-form>
+
     <div slot="footer" class="dialog-footer">
       <el-button @click="close">取 消</el-button>
       <el-button type="primary" @click="save">确 定</el-button>
@@ -31,35 +34,65 @@
 </template>
 
 <script>
-import { doEdit, doAdd } from "@/api/store";
-import BasePoliceSelect from "@/components/BasePoliceSelect";
+import { addZoom, modifyZoom } from "@/api/zoom";
+import { isIdCard, isPhone } from "@/utils/validate";
+import BaseAreaSelect from "@/components/BaseAreaSelect";
 
 export default {
   name: "StoreEdit",
 
   components: {
-    BasePoliceSelect,
+    BaseAreaSelect,
   },
 
   data() {
     return {
-      form: {},
+      form: {
+        description: null,
+        idcard: null,
+        phone: null,
+        username: null,
+        zoneId: null,
+        zoneName: null,
+      },
+
       rules: {
         username: [{ required: true, trigger: "blur", message: "请输入姓名" }],
-        phone: [{ required: true, trigger: "blur", message: "请输入手机号" }],
+        phone: [
+          { required: true, trigger: "blur", message: "请输入手机号" },
+          {
+            trigger: "blur",
+            validator: (_, value, cb) => {
+              if (!isPhone(value)) return cb(new Error("手机号码不正确"));
+
+              return cb();
+            },
+          },
+        ],
         idcard: [
           { required: true, trigger: "blur", message: "请输入身份证号" },
+          {
+            validator: (_, value, cb) => {
+              if (!isIdCard(value)) return cb(new Error("身份证号码格式错误"));
+
+              return cb();
+            },
+          },
         ],
         zoneName: [
-          { required: true, trigger: "blur", message: "请选择管辖派出所" },
+          {
+            required: true,
+            trigger: ["blur", "change"],
+            message: "请选择管辖派出所",
+          },
         ],
       },
+
       title: "",
+
       dialogFormVisible: false,
+
       isAdd: false,
-      org: {
-        policeZoneData: [],
-      },
     };
   },
 
@@ -80,7 +113,6 @@ export default {
       this.$refs["form"].resetFields();
       this.form = this.$options.data().form;
       this.dialogFormVisible = false;
-      this.org.policeZoneData = [];
       this.form.storeAreaname = null;
       this.form.storeAreacode = null;
     },
@@ -89,11 +121,13 @@ export default {
       this.$refs["form"].validate(async (valid) => {
         if (valid) {
           if (this.isAdd) {
-            const res = await doAdd(this.form);
-            this.$baseMessage(res.message, "success");
+            const res = await addZoom(this.form);
+            res.ok && this.$baseMessage("操作成功", "success");
           } else {
-            const res = await doEdit(this.form);
-            this.$baseMessage(res.message, "success");
+            const res = await modifyZoom(
+              this.$lodash.omit(this.form, ["idcard"])
+            );
+            res.ok && this.$baseMessage("操作成功", "success");
           }
 
           this.$emit("fetch-data");

@@ -1,6 +1,6 @@
 import request from "@/utils/request";
 
-export function queryPage(params) {
+export function queryZoomPage(params) {
   return request({
     url: "/zoneManagers",
     method: "get",
@@ -8,23 +8,23 @@ export function queryPage(params) {
   });
 }
 
-export function doEdit(data) {
+export function modifyZoom(data) {
   return request({
-    url: "/stores",
+    url: "/zoneManagers",
     method: "put",
     data,
   });
 }
 
-export function doAdd(data) {
+export function addZoom(data) {
   return request({
-    url: "/stores",
+    url: "/zoneManagers",
     method: "post",
     data,
   });
 }
 
-export function doDelete(data) {
+export function deleteZoom(data) {
   return request({
     url: "/zoneManagers",
     method: "delete",

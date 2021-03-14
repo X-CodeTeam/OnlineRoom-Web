@@ -16,7 +16,7 @@
       <el-tree
         v-if="inputTreeVisible"
         ref="areaCascader"
-        :data="zones"
+        :data="levelZones"
         :props="defaultProps"
         clearable
         style="width: 100%"
@@ -28,6 +28,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import { splitLevelToLevel } from "@/store/modules/zones";
 
 export default {
   name: "ElAreaTree",
@@ -35,6 +36,11 @@ export default {
   inheritAttrs: false,
 
   props: {
+    multiple: {
+      type: Boolean,
+      default: false,
+    },
+
     zoneName: {
       type: String,
       default: null,
@@ -48,6 +54,16 @@ export default {
     zoneId: {
       type: Number,
       default: null,
+    },
+
+    level: {
+      type: Array,
+      default: null,
+    },
+
+    isLeave: {
+      type: Boolean,
+      default: false,
     },
   },
 
@@ -63,13 +79,17 @@ export default {
   },
 
   computed: {
-    ...mapGetters("zones", ["areaZones", "policeZones", "zones"]),
+    ...mapGetters("zones", ["zones"]),
+
+    levelZones() {
+      return !this.level
+        ? this.zones
+        : splitLevelToLevel(this.zones, this.level[0], this.level[1]);
+    },
   },
 
   async created() {
     await this._initZones();
-
-    console.log(this.zoneName, "name");
   },
 
   mounted() {
@@ -89,14 +109,16 @@ export default {
       }
     },
 
-    handleNodeClick(data) {
-      this.$emit("update:zoneName", data.zoneName);
+    handleNodeClick(data, node) {
+      if (!this.level || (this.isLeave && node.isLeaf)) {
+        this.$emit("update:zoneName", data.zoneName);
 
-      this.$emit("update:zoneCode", data.zoneCode);
+        this.$emit("update:zoneCode", data.zoneCode);
 
-      this.$emit("update:zoneId", data.zoneId);
+        this.$emit("update:zoneId", data.zoneId);
 
-      this.inputTreeVisible = false;
+        this.inputTreeVisible = false;
+      }
     },
 
     handleClear() {

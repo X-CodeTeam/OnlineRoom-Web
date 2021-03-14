@@ -75,18 +75,22 @@
 </template>
 
 <script>
-import { doDelete, queryPage } from "@/api/zoom";
+import { deleteZoom, queryZoomPage } from "@/api/zoom";
 import Edit from "./components/zoomEdit";
 import ElTablePlus from "@/components/ElTablePlus";
+
 const zoomQueryInfo = Object.freeze({
   username: null,
   nickname: null,
   phone: null,
   idcard: null,
 });
+
 export default {
   name: "ZoomManagement",
+
   components: { Edit, ElTablePlus },
+
   data() {
     return {
       zoomTableProps: [
@@ -98,16 +102,17 @@ export default {
           name: "性别",
           prop: "gender",
           formatter: (row) => {
-            return row.gender == 1 ? "男" : "女";
+            return row.gender === 1 ? "男" : "女";
           },
         },
       ],
+
       queryForm: { ...zoomQueryInfo },
     };
   },
 
   methods: {
-    _initStoreInfo: queryPage,
+    _initStoreInfo: queryZoomPage,
 
     handleEdit(row) {
       if (row.userId) {
@@ -116,15 +121,17 @@ export default {
         this.$refs["edit"].showEdit();
       }
     },
+
     handleShow(row) {
       if (row.storeId) {
         this.$refs["show"].showEdit(row);
       }
     },
+
     handleDelete(row) {
       if (row.userId) {
         this.$baseConfirm("你确定要删除当前项吗", null, async () => {
-          const res = await doDelete({ zoneManagerId: row.userId });
+          const res = await deleteZoom({ zoneManagerId: row.userId });
           if (res.ok) {
             this.$baseMessage("删除成功", "success");
           } else {
@@ -137,8 +144,10 @@ export default {
 
     async handleReset() {
       Object.assign(this.queryForm, zoomQueryInfo);
+
       await this.queryData();
     },
+
     async queryData() {
       this.$refs.zoomTable && (await this.$refs.zoomTable.flashTable());
     },

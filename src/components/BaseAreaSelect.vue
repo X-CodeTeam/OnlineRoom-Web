@@ -3,8 +3,8 @@
     ref="areaCascader"
     v-model="select"
     v-bind="$attrs"
-    :options="areaZones"
-    :props="defaultProps"
+    :options="levelZones"
+    :props="Object.assign(defaultProps, loadProps)"
     clearable
     style="width: 100%"
     @change="_handleAreaCode"
@@ -13,9 +13,12 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import { splitLevelToLevel } from "@/store/modules/zones";
 
 export default {
   name: "BaseAreaSelect",
+
+  inheritAttrs: false,
 
   props: {
     zoneName: {
@@ -26,6 +29,21 @@ export default {
     zoneCode: {
       type: String,
       default: "",
+    },
+
+    zoneId: {
+      type: String,
+      default: "",
+    },
+
+    level: {
+      type: Array,
+      default: null,
+    },
+
+    loadProps: {
+      type: Object,
+      default: () => {},
     },
 
     policeZoneData: {
@@ -44,13 +62,18 @@ export default {
         value: "zoneCode",
         leaf: "leaf",
         emitPath: false,
-        checkStrictly: true,
       },
     };
   },
 
   computed: {
-    ...mapGetters("zones", ["areaZones", "policeZones"]),
+    ...mapGetters("zones", ["zones", "areaZones", "policeZones"]),
+
+    levelZones() {
+      return !this.level
+        ? this.areaZones
+        : splitLevelToLevel(this.zones, this.level[0], this.level[1]);
+    },
   },
 
   watch: {
@@ -65,6 +88,12 @@ export default {
         this.select = null;
       }
     },
+
+    zoneId(res) {
+      if (!res) {
+        this.select = null;
+      }
+    },
   },
 
   async created() {
@@ -75,21 +104,26 @@ export default {
     ...mapActions("zones", ["_initZones"]),
 
     _handleAreaCode() {
-      const { data: lastData } = this.$lodash.last(
-        this.$refs.areaCascader.getCheckedNodes()
-      ) || {
-        data: {
-          zoneName: null,
-          zoneCode: null,
-        },
+      const pinJie = (areaList, key) => {
+        const dataList = [];
+
+        areaList.forEach((item) => {
+          dataList.push(item.data[key]);
+        });
+
+        return dataList.join(",");
       };
 
-      this.$emit("update:zoneName", lastData.zoneName);
+      const lastData = this.$refs.areaCascader.getCheckedNodes();
 
-      this.$emit("update:zoneCode", lastData.zoneCode);
+      this.$emit("update:zoneName", pinJie(lastData, "zoneName"));
+
+      this.$emit("update:zoneCode", pinJie(lastData, "zoneCode"));
+
+      this.$emit("update:zoneId", pinJie(lastData, "zoneId"));
 
       const _policeZoneData = this.policeZones.filter((item) => {
-        return lastData.zoneCode === item.parentZoneCode;
+        return lastData[0].data.zoneCode === item.parentZoneCode;
       });
 
       this.$emit("update:policeZoneData", _policeZoneData);

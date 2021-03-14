@@ -59,7 +59,7 @@ export default {
   actions,
 };
 
-function omitNullChild(root, key) {
+export function omitNullChild(root, key) {
   const _omit = (node) => {
     for (let i = 0; i < node.length; i++) {
       if (node[i].child && !node[i].child.length) {
@@ -74,7 +74,7 @@ function omitNullChild(root, key) {
   return _omit(root);
 }
 
-function splitLevelToLevel(root, startLevel, endLevel) {
+export function splitLevelToLevel(root, startLevel, endLevel) {
   const newRoot = [];
 
   const _splitHead = (nodes, deep = 0) => {
@@ -110,7 +110,7 @@ function splitLevelToLevel(root, startLevel, endLevel) {
   return newRoot;
 }
 
-function splitLeaveNode(root) {
+export function splitLeaveNode(root) {
   const newRoot = [];
 
   const _split = (nodes) => {
