@@ -100,12 +100,10 @@ export default {
         if (valid) {
           if (this.isAdd) {
             const res = await addZone(this.form);
-
-            res.ok && this.$baseMessage(res.message, "success");
+            res.ok && this.$baseMessage("添加成功!", "success");
           } else {
             const res = await modifyZone(this.form);
-
-            res.ok && this.$baseMessage(res.message, "success");
+            res.ok && this.$baseMessage("修改成功!", "success");
           }
 
           this.$emit("fetch-data");

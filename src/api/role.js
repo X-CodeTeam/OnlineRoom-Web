@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 export function queryPage(params) {
   return request({
-    url: "/users",
+    url: "/roles",
     method: "get",
     params,
   });
@@ -10,7 +10,7 @@ export function queryPage(params) {
 
 export function doEdit(data) {
   return request({
-    url: "/Admin/User/Update",
+    url: "/roles",
     method: "post",
     data,
   });
@@ -18,7 +18,7 @@ export function doEdit(data) {
 
 export function doAdd(data) {
   return request({
-    url: "/Admin/User/Add",
+    url: "/roles",
     method: "post",
     data,
   });
@@ -26,7 +26,7 @@ export function doAdd(data) {
 
 export function doDelete(data) {
   return request({
-    url: "/Admin/User/Delete",
+    url: "/roles",
     method: "post",
     data,
   });

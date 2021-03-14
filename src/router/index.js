@@ -129,15 +129,15 @@ export const asyncRoutes = [
           remixIcon: "file-user-line",
         },
       },
-      // {
-      //   path: "role",
-      //   name: "roleManagement",
-      //   component: () => import("@/views/role"),
-      //   meta: {
-      //     title: "角色管理-开发中",
-      //     remixIcon: "award-line",
-      //   },
-      // },
+      {
+        path: "role",
+        name: "roleManagement",
+        component: () => import("@/views/role"),
+        meta: {
+          title: "角色管理-开发中",
+          remixIcon: "award-line",
+        },
+      },
       {
         path: "zoom",
         name: "zoomManagement",

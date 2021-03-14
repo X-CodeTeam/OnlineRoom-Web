@@ -2,34 +2,20 @@
   <div class="userManagement-container flex-column">
     <!-- 自定义位置 -->
     <el-table-plus
-      ref="sysUserTable"
+      ref="roleTable"
       :is-index="true"
       :search-form="true"
       :query-params="queryForm"
-      :table-props="sysUserTableProps"
+      :table-props="roleTableProps"
       :data-method="_initStoreInfo"
       class="grow"
     >
       <template #search-form>
         <el-form-item class="grow-1 res-select-middle">
           <el-input
-            v-model.trim="queryForm.loginUser"
+            v-model.trim="queryForm.roleName"
             clearable
-            placeholder="请输入登录名"
-          />
-        </el-form-item>
-        <el-form-item class="grow-1 res-select-middle">
-          <el-input
-            v-model.trim="queryForm.phone"
-            clearable
-            placeholder="请输入手机号"
-          />
-        </el-form-item>
-        <el-form-item class="grow-1 res-select-middle">
-          <el-input
-            v-model.trim="queryForm.email"
-            clearable
-            placeholder="请输入邮箱"
+            placeholder="请输入角色名称"
           />
         </el-form-item>
 
@@ -37,7 +23,6 @@
           <el-button icon="el-icon-search" type="primary" @click="queryData">
             查询
           </el-button>
-          <el-button @click="handleReset"> 重置 </el-button>
         </el-form-item>
         <el-form-item class="grow-1 justify-self-end">
           <el-button icon="el-icon-plus" type="primary" @click="handleEdit">
@@ -66,30 +51,26 @@
 </template>
 
 <script>
-import { doDelete, queryPage } from "@/api/sysUser";
-import Edit from "./components/userEdit";
+import { doDelete, queryPage } from "@/api/role";
+import Edit from "./components/roleEdit";
 import ElTablePlus from "@/components/ElTablePlus";
 
-const sysUserQueryInfo = Object.freeze({
-  loginUser: null,
-  email: null,
-  phone: null,
+const roleQueryInfo = Object.freeze({
+  roleName: null,
 });
 
 export default {
-  name: "UserManagement",
+  name: "RoleManagement",
   components: { Edit, ElTablePlus },
   data() {
     return {
-      sysUserTableProps: [
-        { name: "登录名", prop: "loginUser" },
-        { name: "昵称", prop: "nickname" },
-        { name: "邮箱", prop: "email" },
-        { name: "手机号", prop: "phone" },
-        { name: "状态", prop: "statusString" },
+      roleTableProps: [
+        { name: "角色名称", prop: "roleName" },
+        { name: "角色编码", prop: "roleCode" },
+        { name: "状态", prop: "enableMark" },
         { name: "描述", prop: "description" },
       ],
-      queryForm: { ...sysUserQueryInfo },
+      queryForm: { ...roleQueryInfo },
     };
   },
 
@@ -110,27 +91,10 @@ export default {
           this.$baseMessage(res.message, "success");
           await this.fetchData();
         });
-      } else {
-        if (this.selectRows.length > 0) {
-          const ids = this.selectRows.map((item) => item.id);
-          this.$baseConfirm("你确定要删除选中项吗", null, async () => {
-            const res = await doDelete({ ids });
-            this.$baseMessage(res.message, "success");
-            await this.fetchData();
-          });
-        } else {
-          this.$baseMessage("未选中任何行", "error");
-          return false;
-        }
       }
     },
-    async handleReset() {
-      Object.assign(this.queryForm, sysUserQueryInfo);
-      await this.queryData();
-    },
-
     async queryData() {
-      this.$refs.sysUserTable && (await this.$refs.sysUserTable.flashTable());
+      this.$refs.roleTable && (await this.$refs.roleTable.flashTable());
     },
 
     async fetchData() {
