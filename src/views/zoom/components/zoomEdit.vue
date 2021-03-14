@@ -16,12 +16,13 @@
         <el-input v-model.trim="form.idcard" :disabled="!isAdd"></el-input>
       </el-form-item>
       <el-form-item label="管辖区域：" prop="zoneName">
+        <!--   不能同时改变code和id     -->
         <base-area-select
           :zone-name.sync="form.zoneName"
           :zone-id.sync="form.zoneId"
           :level="[0, 2]"
           :show-all-levels="false"
-          :load-props="{ multiple: true }"
+          :load-props="{ multiple: true, value: 'zoneId' }"
         />
       </el-form-item>
     </el-form>
