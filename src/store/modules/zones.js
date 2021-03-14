@@ -49,8 +49,6 @@ const actions = {
         "setPoliceZones",
         omitNullChild(splitLevelToLevel(data, 2, 3), "child")
       );
-
-      // console.log(state.policeZones, "areaZones");
     }
   },
 

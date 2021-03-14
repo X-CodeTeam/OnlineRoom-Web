@@ -61,7 +61,7 @@ export default {
       defaultProps: {
         children: "child",
         label: "zoneName",
-        value: "zoneCode",
+        value: "zoneId",
         leaf: "leaf",
         emitPath: false,
       },
@@ -71,15 +71,22 @@ export default {
   watch: {
     zoneData: {
       handler(res) {
-        console.log(res, "res");
-
         this.diffKey += 1;
 
         if (!res.length) {
-          this.select = null;
+          this.select = [];
         }
       },
       deep: true,
+      immediate: true,
+    },
+
+    policeZoneId: {
+      handler(zoneId) {
+        if (zoneId) {
+          this.select = zoneId;
+        }
+      },
       immediate: true,
     },
   },
@@ -88,7 +95,9 @@ export default {
     handleSelect() {
       const _res = this.$lodash.last(this.$refs.areaCascader.getCheckedNodes());
 
-      const { data } = _res;
+      const { data } = _res || [];
+
+      if (!data) return;
 
       this.$emit("update:policeZoneId", data.zoneId);
 

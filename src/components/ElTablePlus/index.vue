@@ -233,8 +233,6 @@ export default {
 
       this.localData = res.data; // 保证数据的始终在正确范围
 
-      // console.log(this.localData, "lo");
-
       this.mountedPaging(res);
 
       this.scrollToTop();

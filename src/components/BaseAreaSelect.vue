@@ -90,11 +90,7 @@ export default {
         } else {
           this.select = res;
 
-          const lastData =
-            this.$refs.areaCascader &&
-            this.$refs.areaCascader.getCheckedNodes();
-
-          console.log(lastData, "lastData");
+          this.upPoliceZoneData(this.zoneCode); // 一开始时为police加载数据
         }
       },
       immediate: true,
@@ -116,9 +112,9 @@ export default {
   methods: {
     ...mapActions("zones", ["_initZones"]),
 
-    upPoliceZoneData: function (lastData) {
+    upPoliceZoneData: function (zoneCode) {
       const _policeZoneData = this.policeZones.filter((item) => {
-        return lastData[0].data.zoneCode === item.parentZoneCode;
+        return zoneCode === item.parentZoneCode;
       });
 
       this.$emit("update:policeZoneData", _policeZoneData);
@@ -143,7 +139,7 @@ export default {
 
       this.$emit("update:zoneId", pinJie(lastData, "zoneId"));
 
-      this.upPoliceZoneData(lastData);
+      this.upPoliceZoneData(lastData[0].data.zoneCode);
     },
   },
 };
