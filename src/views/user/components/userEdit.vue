@@ -19,9 +19,9 @@
       <el-form-item label="登录密码:" prop="loginPassword">
         <el-input v-model.trim="form.loginPassword" type="password"></el-input>
       </el-form-item>
-      <el-form-item label="再次确认密码:" prop="comfirmLoginPassword">
+      <el-form-item label="再次确认密码:" prop="confirmLoginPassword">
         <el-input
-          v-model.trim="comfirmLoginPassword"
+          v-model.trim="form.confirmLoginPassword"
           type="password"
         ></el-input>
       </el-form-item>
@@ -40,6 +40,7 @@
         <el-input v-model.trim="form.description"></el-input>
       </el-form-item>
     </el-form>
+
     <div slot="footer" class="dialog-footer">
       <el-button @click="close">取 消</el-button>
       <el-button type="primary" @click="save">确 定</el-button>
@@ -49,35 +50,57 @@
 
 <script>
 import { doEdit, doAdd } from "@/api/sysUser";
+import { isPassword } from "@/utils/validate";
 
 export default {
   name: "UserManagementEdit",
+
   data() {
     return {
       form: {},
-      comfirmLoginPassword: "",
+
       rules: {
         userType: [
           { required: true, trigger: "blur", message: "请输入用户类型" },
         ],
-        // comfirmLoginPassword: [
-        //   { required: true, trigger: "blur", message: "请输入确认密码" },
-        // ],
+        confirmLoginPassword: [
+          { required: true, trigger: "blur", message: "请输入确认密码112" },
+          {
+            trigger: "blur",
+            validator: (_, val, cb) => {
+              return this.form.loginPassword !== val
+                ? cb(new Error("两次密码不匹配，请重新输入"))
+                : cb();
+            },
+          },
+        ],
         loginUser: [
           { required: true, trigger: "blur", message: "请输入登录名" },
         ],
         nickname: [{ required: true, trigger: "blur", message: "请输入昵称" }],
         loginPassword: [
           { required: true, trigger: "blur", message: "请输入密码" },
+          {
+            trigger: "blur",
+            validator: (_, val, cb) => {
+              return isPassword(val)
+                ? cb()
+                : cb(new Error("密码不能少于6位数"));
+            },
+          },
         ],
         phone: [{ required: true, trigger: "blur", message: "请输入手机号" }],
         status: [{ required: true, trigger: "blur", message: "请选择状态" }],
       },
+
       title: "",
+
       dialogFormVisible: false,
+
       isAdd: false,
     };
   },
+
   methods: {
     showEdit(row) {
       if (!row) {
