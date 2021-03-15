@@ -45,7 +45,7 @@
           <el-input
             v-model.trim="queryForm.followContent"
             clearable
-            placeholder="请输入关注内容"
+            placeholder="请输入关注原因"
           />
         </el-form-item>
 
@@ -104,7 +104,7 @@ export default {
       followTableProps: [
         { name: "姓名", prop: "objectName" },
         { name: "身份证", prop: "objectIdcard" },
-        { name: "关注内容", prop: "followContent" },
+        { name: "关注原因", prop: "followContent" },
         { name: "Mac地址", prop: "objectMac" },
         { name: "手机号", prop: "objectPhone" },
       ],

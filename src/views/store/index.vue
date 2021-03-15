@@ -15,7 +15,7 @@
           <el-input
             v-model.trim="queryForm.keyworld"
             clearable
-            placeholder="门店名称 / 单位名称"
+            placeholder="门店名称"
           />
         </el-form-item>
         <el-form-item class="grow-1 res-select-middle">
@@ -139,7 +139,7 @@ export default {
 
     handleDelete(row) {
       if (row.storeId) {
-        this.$baseConfirm("你确定要注销当前项吗", null, async () => {
+        this.$baseConfirm("注销后不可恢复，请谨慎操作", null, async () => {
           const res = await doLogout({ storeId: row.storeId });
           if (res.ok) {
             this.$baseMessage("注销成功！", "success");

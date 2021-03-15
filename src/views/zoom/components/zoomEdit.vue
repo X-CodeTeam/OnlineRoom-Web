@@ -84,7 +84,7 @@ export default {
           {
             required: true,
             trigger: ["blur", "change"],
-            message: "请选择管辖派出所",
+            message: "请选择管辖警务区",
           },
         ],
       },

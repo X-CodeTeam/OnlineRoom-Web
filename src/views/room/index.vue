@@ -96,7 +96,7 @@ export default {
       roomTableProps: [
         { name: "门店名称", prop: "storeName" },
         { name: "门店地点", prop: "storeLocation" },
-        { name: "楼栋号", prop: "buildingNumber" },
+        { name: "楼栋层", prop: "buildingNumber" },
         { name: "房间号", prop: "roomNo" },
         { name: "房间别名", prop: "roomAlias" },
         { name: "户型", prop: "roomHouseTypeString" },

@@ -85,7 +85,7 @@ export const asyncRoutes = [
         name: "orderManagement",
         component: () => import("@/views/order"),
         meta: {
-          title: "订单管理",
+          title: "订单信息",
           remixIcon: "order-play-line",
         },
       },

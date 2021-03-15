@@ -21,7 +21,7 @@
       <el-form-item label="手机号：" prop="objectPhone">
         <el-input v-model.trim="form.objectPhone"></el-input>
       </el-form-item>
-      <el-form-item label="关注内容：" prop="followContent">
+      <el-form-item label="关注原因：" prop="followContent">
         <el-checkbox-group v-model="checkList">
           <el-checkbox label="孤寡老人"></el-checkbox>
           <el-checkbox label="涉毒前科"></el-checkbox>

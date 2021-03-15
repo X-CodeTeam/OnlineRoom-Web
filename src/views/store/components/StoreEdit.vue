@@ -14,7 +14,10 @@
         </el-col>
         <el-col :span="12">
           <el-form-item label="门店地点：" prop="storeLocation">
-            <el-input v-model.trim="form.storeLocation"></el-input>
+            <el-input
+              v-model.trim="form.storeLocation"
+              placeholder="所在大楼或小区名称"
+            ></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -29,7 +32,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="管辖派出所：" prop="policeZoneName">
+          <el-form-item label="管辖警务区：" prop="policeZoneName">
             <base-police-select
               :zone-data="org.policeZoneData"
               :police-zone-id.sync="form.policeZoneId"
@@ -106,13 +109,13 @@ export default {
           { required: true, trigger: "blur", message: "请输入门店名称" },
         ],
         storeLocation: [
-          { required: true, trigger: "blur", message: "请输入门店地址" },
+          { required: true, trigger: "blur", message: "请输入门店地点" },
         ],
         storeAreaname: [
           { required: true, trigger: "blur", message: "请选择行政区域" },
         ],
         policeZoneName: [
-          { required: true, trigger: "blur", message: "请选择管辖派出所" },
+          { required: true, trigger: "blur", message: "请选择管辖警务区" },
         ],
         managerIdcard: [
           { required: true, trigger: "blur", message: "请输入经营者身份证号" },

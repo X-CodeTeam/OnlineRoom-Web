@@ -15,7 +15,7 @@
           <el-input
             v-model.trim="queryForm.storeLocation"
             clearable
-            placeholder="门店地址"
+            placeholder="门店地点"
           />
         </el-form-item>
 

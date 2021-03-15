@@ -86,7 +86,7 @@ export default {
     return {
       optionValues: [],
 
-      defaultSelected: [{ label: "全部", value: null }],
+      defaultSelected: [{ label: "全部状态", value: null }],
     };
   },
 

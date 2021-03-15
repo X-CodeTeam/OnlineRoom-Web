@@ -13,7 +13,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="楼栋号："
+          <el-form-item label="楼栋层："
             >{{ form.buildingNumber }}
           </el-form-item>
         </el-col>

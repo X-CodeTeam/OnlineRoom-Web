@@ -25,8 +25,11 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="楼栋号：" prop="buildingNumber">
-            <el-input v-model.trim="form.buildingNumber"></el-input>
+          <el-form-item label="楼栋层：" prop="buildingNumber">
+            <el-input
+              v-model.trim="form.buildingNumber"
+              placeholder="几栋几单元几楼"
+            ></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -72,7 +75,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="面积：" prop="area">
-            <el-input v-model.trim="form.area"></el-input>
+            <el-input v-model.trim="form.area" placeholder="m²"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">

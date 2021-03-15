@@ -23,7 +23,7 @@
           }}</el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="管辖派出所："
+          <el-form-item label="管辖警务区："
             >{{ form.policeZoneName }}
           </el-form-item>
         </el-col>
