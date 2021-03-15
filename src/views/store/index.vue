@@ -16,6 +16,7 @@
             v-model.trim="queryForm.keyworld"
             clearable
             placeholder="门店名称"
+            maxlength="50"
           />
         </el-form-item>
         <el-form-item class="grow-1 res-select-middle">

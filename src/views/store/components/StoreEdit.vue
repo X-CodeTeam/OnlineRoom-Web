@@ -9,7 +9,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="门店名称：" prop="storeName">
-            <el-input v-model.trim="form.storeName"></el-input>
+            <el-input v-model.trim="form.storeName" maxlength="50"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -17,6 +17,7 @@
             <el-input
               v-model.trim="form.storeLocation"
               placeholder="所在大楼或小区名称"
+              maxlength="50"
             ></el-input>
           </el-form-item>
         </el-col>
@@ -43,13 +44,16 @@
       </el-row>
 
       <el-form-item label="详细地址：" prop="storeDetails">
-        <el-input v-model.trim="form.storeDetails"></el-input>
+        <el-input v-model.trim="form.storeDetails" maxlength="50"></el-input>
       </el-form-item>
 
       <el-row>
         <el-col :span="12">
           <el-form-item label="所属企业名称：" prop="corporateName">
-            <el-input v-model.trim="form.corporateName"></el-input>
+            <el-input
+              v-model.trim="form.corporateName"
+              maxlength="50"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
@@ -65,7 +69,7 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="经营者姓名：" prop="managerName">
-            <el-input v-model.trim="form.managerName"></el-input>
+            <el-input v-model.trim="form.managerName" maxlength="50"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">

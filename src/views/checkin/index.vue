@@ -13,9 +13,9 @@
       <template #search-form>
         <el-form-item class="grow-1 res-select-middle">
           <el-input
-            v-model.trim="queryForm.storeLocation"
+            v-model.trim="queryForm.keyword"
             clearable
-            placeholder="门店地点"
+            placeholder="姓名/手机号/身份证号"
           />
         </el-form-item>
 
