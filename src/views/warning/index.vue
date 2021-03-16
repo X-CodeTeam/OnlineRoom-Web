@@ -1,36 +1,39 @@
 <template>
-  <div class="userManagement-container flex-column">
+  <div class="warningManagement-container flex-column">
     <!-- 自定义位置 -->
     <el-table-plus
-      ref="sysUserTable"
+      ref="warningTable"
       :is-index="true"
       :search-form="true"
       :query-params="queryForm"
-      :table-props="sysUserTableProps"
+      :table-props="warningTableProps"
       :data-method="_initStoreInfo"
       class="grow"
     >
       <template #search-form>
         <el-form-item class="grow-1 res-select-middle">
           <el-input
-            v-model.trim="queryForm.loginUser"
+            v-model.trim="queryForm.warningType"
             clearable
-            placeholder="请输入登录名"
+            placeholder="姓名/手机号/身份证号"
           />
         </el-form-item>
-        <el-form-item class="grow-1 res-select-middle">
-          <el-input
-            v-model.trim="queryForm.phone"
-            clearable
-            placeholder="请输入手机号"
-          />
+
+        <el-form-item>
+          <el-date-picker
+            v-model="queryForm.startTime"
+            type="date"
+            placeholder="选择开始日期"
+          >
+          </el-date-picker>
         </el-form-item>
-        <el-form-item class="grow-1 res-select-middle">
-          <el-input
-            v-model.trim="queryForm.email"
-            clearable
-            placeholder="请输入邮箱"
-          />
+        <el-form-item>
+          <el-date-picker
+            v-model="queryForm.endTime"
+            type="date"
+            placeholder="选择结束日期"
+          >
+          </el-date-picker>
         </el-form-item>
 
         <el-form-item>
@@ -38,11 +41,6 @@
             查询
           </el-button>
           <el-button @click="handleReset"> 重置 </el-button>
-        </el-form-item>
-        <el-form-item class="grow-1 justify-self-end">
-          <el-button icon="el-icon-plus" type="primary" @click="handleEdit">
-            添加
-          </el-button>
         </el-form-item>
       </template>
       <template #table-self>
@@ -53,84 +51,64 @@
           width="120"
         >
           <template #default="{ row }">
-            <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-            <el-button type="text" @click="handleDelete(row)">删除</el-button>
+            <el-button type="text" @click="handleShow(row)">详情</el-button>
           </template>
         </el-table-column>
       </template>
     </el-table-plus>
     <!--    -->
-
-    <edit ref="edit" @fetch-data="fetchData"></edit>
+    <show ref="show" @fetch-data="fetchData"></show>
   </div>
 </template>
 
 <script>
-import { doDelete, queryPage } from "@/api/sysUser";
-import Edit from "./components/userEdit";
+import { queryPage } from "@/api/warning";
+import show from "./components/warningShow";
 import ElTablePlus from "@/components/ElTablePlus";
 
-const sysUserQueryInfo = Object.freeze({
-  loginUser: null,
-  email: null,
-  phone: null,
+const warningQueryInfo = Object.freeze({
+  keyword: null,
+  startTime: null,
+  endTime: null,
 });
 
 export default {
   name: "UserManagement",
-  components: { Edit, ElTablePlus },
+  components: { show, ElTablePlus },
   data() {
     return {
-      sysUserTableProps: [
-        { name: "登录名", prop: "loginUser" },
-        { name: "昵称", prop: "nickname" },
-        { name: "邮箱", prop: "email" },
-        { name: "手机号", prop: "phone" },
-        { name: "状态", prop: "statusString" },
-        { name: "描述", prop: "description" },
+      warningTableProps: [
+        { name: "预警时间", prop: "warningTime" },
+        { name: "预警类型", prop: "warningTypeString" },
+        { name: "姓名", prop: "warningObjectName" },
+        { name: "手机号", prop: "warningObjectPhone" },
+        { name: "身份证号", prop: "warningObjectIdcard" },
+        {
+          name: "性别",
+          prop: "warningObjectGender",
+          formatter: (row) => {
+            return row.objectGender == 1 ? "男" : "女";
+          },
+        },
       ],
-      queryForm: { ...sysUserQueryInfo },
+      queryForm: { ...warningQueryInfo },
     };
   },
 
   methods: {
     _initStoreInfo: queryPage,
+    handleShow(row) {
+      if (row.reserveId) {
+        this.$refs["show"].showEdit(row);
+      }
+    },
 
-    handleEdit(row) {
-      if (row.userId) {
-        this.$refs["edit"].showEdit(row);
-      } else {
-        this.$refs["edit"].showEdit();
-      }
-    },
-    handleDelete(row) {
-      if (row.id) {
-        this.$baseConfirm("你确定要删除当前项吗", null, async () => {
-          const res = await doDelete({ ids: [row.id] });
-          this.$baseMessage(res.message, "success");
-          await this.fetchData();
-        });
-      } else {
-        if (this.selectRows.length > 0) {
-          const ids = this.selectRows.map((item) => item.id);
-          this.$baseConfirm("你确定要删除选中项吗", null, async () => {
-            const res = await doDelete({ ids });
-            this.$baseMessage(res.message, "success");
-            await this.fetchData();
-          });
-        } else {
-          this.$baseMessage("未选中任何行", "error");
-          return false;
-        }
-      }
-    },
     async handleReset() {
-      Object.assign(this.queryForm, sysUserQueryInfo);
+      Object.assign(this.queryForm, warningQueryInfo);
       await this.queryData();
     },
-
     async queryData() {
-      this.$refs.sysUserTable && (await this.$refs.sysUserTable.flashTable());
+      this.$refs.warningTable && (await this.$refs.warningTable.flashTable());
     },
 
     async fetchData() {

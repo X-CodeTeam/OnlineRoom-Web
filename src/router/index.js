@@ -98,15 +98,15 @@ export const asyncRoutes = [
           remixIcon: "airplay-line",
         },
       },
-      // {
-      //   path: "warning",
-      //   name: "warningManagement",
-      //   component: () => import("@/views/warning"),
-      //   meta: {
-      //     title: "预警记录-开发中",
-      //     remixIcon: "signal-wifi-error-line",
-      //   },
-      // },
+      {
+        path: "warning",
+        name: "warningManagement",
+        component: () => import("@/views/warning"),
+        meta: {
+          title: "预警记录",
+          remixIcon: "signal-wifi-error-line",
+        },
+      },
     ],
   },
   {
