@@ -16,10 +16,10 @@
         <el-input v-model.trim="form.zoneCode"></el-input>
       </el-form-item>
       <el-form-item label="名称：" prop="zoneName"
-        ><el-input v-model.trim="form.zoneName"></el-input>
+        ><el-input v-model.trim="form.zoneName" maxlength="50"></el-input>
       </el-form-item>
       <el-form-item label="负责人姓名：" prop="principalName"
-        ><el-input v-model.trim="form.principalName"></el-input>
+        ><el-input v-model.trim="form.principalName" maxlength="50"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">

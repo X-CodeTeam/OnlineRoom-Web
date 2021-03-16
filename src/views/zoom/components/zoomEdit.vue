@@ -7,7 +7,7 @@
   >
     <el-form ref="form" :model="form" :rules="rules" label-width="120px">
       <el-form-item label="姓名：" prop="username">
-        <el-input v-model.trim="form.username"></el-input>
+        <el-input v-model.trim="form.username" maxlength="50"></el-input>
       </el-form-item>
       <el-form-item label="手机号码：" prop="phone">
         <el-input v-model.trim="form.phone"></el-input>
@@ -64,7 +64,7 @@ export default {
           {
             trigger: "blur",
             validator: (_, value, cb) => {
-              if (!isPhone(value)) return cb(new Error("手机号码不正确"));
+              if (!isPhone(value)) return cb(new Error("手机号格式错误"));
 
               return cb();
             },
