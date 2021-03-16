@@ -10,8 +10,7 @@ export function queryPage(params) {
 
 export function queryWarnings(params) {
   return request({
-    url: "/exceptionWarnings/",
+    url: "/exceptionWarnings/" + params,
     method: "get",
-    params,
   });
 }

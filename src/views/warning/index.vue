@@ -100,7 +100,7 @@ export default {
   methods: {
     _initStoreInfo: queryPage,
     handleShow(row) {
-      if (row.reserveId) {
+      if (row.warningId) {
         this.$refs["show"].showEdit(row);
       }
     },
