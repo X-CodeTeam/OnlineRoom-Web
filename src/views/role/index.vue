@@ -20,16 +20,17 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button icon="el-icon-search" type="primary" @click="queryData">
+          <el-button icon="el-icon-search" type="primary" @click="fetchData">
             查询
           </el-button>
         </el-form-item>
         <el-form-item class="grow-1 justify-self-end">
-          <el-button icon="el-icon-plus" type="primary" @click="handleEdit">
+          <el-button icon="el-icon-plus" type="primary" @click="handleRoleEdit">
             添加
           </el-button>
         </el-form-item>
       </template>
+
       <template #table-self>
         <el-table-column
           align="center"
@@ -38,8 +39,15 @@
           width="120"
         >
           <template #default="{ row }">
-            <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-            <el-button type="text" @click="handleDelete(row)">删除</el-button>
+            <el-button type="text" @click="handleRoleEdit(row)">编辑</el-button>
+
+            <el-button type="text" @click="handleMenusEdit(row)"
+              >绑定</el-button
+            >
+
+            <el-button type="text" @click="handleRoleDelete(row)"
+              >删除</el-button
+            >
           </template>
         </el-table-column>
       </template>
@@ -47,12 +55,15 @@
     <!--    -->
 
     <edit ref="edit" @fetch-data="fetchData"></edit>
+
+    <bind-menus ref="bindMenus" />
   </div>
 </template>
 
 <script>
 import { doDelete, queryPage } from "@/api/role";
 import Edit from "./components/roleEdit";
+import BindMenus from "@/views/role/components/BindMenus";
 import ElTablePlus from "@/components/ElTablePlus";
 
 const roleQueryInfo = Object.freeze({
@@ -61,7 +72,9 @@ const roleQueryInfo = Object.freeze({
 
 export default {
   name: "RoleManagement",
-  components: { Edit, ElTablePlus },
+
+  components: { Edit, ElTablePlus, BindMenus },
+
   data() {
     return {
       roleTableProps: [
@@ -71,7 +84,7 @@ export default {
           name: "状态",
           prop: "enableMark",
           formatter: (row) => {
-            return row.enableMark == 1 ? "启用" : "禁用";
+            return row.enableMark === 1 ? "启用" : "禁用";
           },
         },
         { name: "描述", prop: "description" },
@@ -83,28 +96,32 @@ export default {
   methods: {
     _initStoreInfo: queryPage,
 
-    handleEdit(row) {
+    handleRoleEdit(row) {
       if (row.id) {
         this.$refs["edit"].showEdit(row);
       } else {
         this.$refs["edit"].showEdit();
       }
     },
-    handleDelete(row) {
+
+    handleRoleDelete(row) {
       if (row.id) {
         this.$baseConfirm("你确定要删除当前项吗", null, async () => {
           const res = await doDelete({ id: row.id });
+
           res.ok && this.$baseMessage("删除成功!", "success");
+
           await this.fetchData();
         });
       }
     },
-    async queryData() {
-      this.$refs.roleTable && (await this.$refs.roleTable.flashTable());
+
+    handleMenusEdit(row) {
+      this.$refs.bindMenus.showEdit();
     },
 
     async fetchData() {
-      await this.queryData();
+      this.$refs.roleTable && (await this.$refs.roleTable.flashTable());
     },
   },
 };

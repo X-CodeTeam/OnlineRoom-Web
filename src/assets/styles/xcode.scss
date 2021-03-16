@@ -241,6 +241,10 @@ html {
   }
 }
 
+.el-tree-node__content {
+  height: 36px !important;
+}
+
 .flex-column {
   display: flex;
   flex-flow: column nowrap;
@@ -352,3 +356,13 @@ html {
   }
 }
 
+// 是否严格居中（改变原先margin-top的布局）
+.dialog-center {
+  .el-dialog { /* 保证dialog处于居中 */
+    margin: 0 !important;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
