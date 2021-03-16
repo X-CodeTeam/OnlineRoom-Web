@@ -45,12 +45,12 @@
 
         <el-row
           style="
-            text-align: center;
             height: 36px;
-            line-height: 36px;
-            border-radius: 5px;
-            background-color: rgba(242, 242, 242, 1);
             margin: 10px 0;
+            line-height: 36px;
+            text-align: center;
+            background-color: rgba(242, 242, 242, 1);
+            border-radius: 5px;
           "
         >
           {{ form.checkInTime }} 入住
@@ -58,12 +58,12 @@
 
         <el-row
           style="
-            text-align: center;
             height: 36px;
-            line-height: 36px;
-            border-radius: 5px;
-            background-color: rgba(242, 242, 242, 1);
             margin: 10px 0;
+            line-height: 36px;
+            text-align: center;
+            background-color: rgba(242, 242, 242, 1);
+            border-radius: 5px;
           "
         >
           预警处置
@@ -152,12 +152,12 @@
 
         <el-row
           style="
-            text-align: center;
             height: 36px;
-            line-height: 36px;
-            border-radius: 5px;
-            background-color: rgba(242, 242, 242, 1);
             margin: 10px 0;
+            line-height: 36px;
+            text-align: center;
+            background-color: rgba(242, 242, 242, 1);
+            border-radius: 5px;
           "
         >
           {{ form.checkInTime }} 入住
@@ -165,12 +165,12 @@
 
         <el-row
           style="
-            text-align: center;
             height: 36px;
-            line-height: 36px;
-            border-radius: 5px;
-            background-color: rgba(242, 242, 242, 1);
             margin: 10px 0;
+            line-height: 36px;
+            text-align: center;
+            background-color: rgba(242, 242, 242, 1);
+            border-radius: 5px;
           "
         >
           预警处置
@@ -234,12 +234,12 @@
         </el-row>
         <el-row
           style="
-            text-align: center;
             height: 36px;
-            line-height: 36px;
-            border-radius: 5px;
-            background-color: rgba(242, 242, 242, 1);
             margin: 10px 0;
+            line-height: 36px;
+            text-align: center;
+            background-color: rgba(242, 242, 242, 1);
+            border-radius: 5px;
           "
         >
           {{ form.checkInTime }} 入住
@@ -247,12 +247,12 @@
 
         <el-row
           style="
-            text-align: center;
             height: 36px;
-            line-height: 36px;
-            border-radius: 5px;
-            background-color: rgba(242, 242, 242, 1);
             margin: 10px 0;
+            line-height: 36px;
+            text-align: center;
+            background-color: rgba(242, 242, 242, 1);
+            border-radius: 5px;
           "
         >
           预警处置
@@ -321,12 +321,12 @@
 
         <el-row
           style="
-            text-align: center;
             height: 36px;
-            line-height: 36px;
-            border-radius: 5px;
-            background-color: rgba(242, 242, 242, 1);
             margin: 10px 0;
+            line-height: 36px;
+            text-align: center;
+            background-color: rgba(242, 242, 242, 1);
+            border-radius: 5px;
           "
         >
           {{ form.checkInTime }} 入住
@@ -370,12 +370,12 @@
 
         <el-row
           style="
-            text-align: center;
             height: 36px;
-            line-height: 36px;
-            border-radius: 5px;
-            background-color: rgba(242, 242, 242, 1);
             margin: 10px 0;
+            line-height: 36px;
+            text-align: center;
+            background-color: rgba(242, 242, 242, 1);
+            border-radius: 5px;
           "
         >
           预警处置
