@@ -11,12 +11,14 @@
       class="grow"
     >
       <template #search-form>
-        <el-form-item class="grow-1 res-select-middle">
-          <el-input
-            v-model.trim="queryForm.warningType"
-            clearable
-            placeholder="姓名/手机号/身份证号"
-          />
+        <el-form-item prop="warningType">
+          <el-dics
+            :is-query="false"
+            type-code="EXCEPTION_WARNING_TYPE"
+            :value-prop-name.sync="queryForm.warningType"
+            style="width: 100%"
+          >
+          </el-dics>
         </el-form-item>
 
         <el-form-item>
@@ -67,7 +69,7 @@ import show from "./components/warningShow";
 import ElTablePlus from "@/components/ElTablePlus";
 
 const warningQueryInfo = Object.freeze({
-  keyword: null,
+  warningType: null,
   startTime: null,
   endTime: null,
 });
