@@ -27,6 +27,16 @@ export function isNumber(value) {
 }
 
 /**
+ * @description 判断是否为统一社会信用代码
+ * @param value
+ * @returns {boolean}
+ */
+export function isCreditCode(value) {
+  const reg = /[0-9A-HJ-NPQRTUWXY]{2}\d{6}[0-9A-HJ-NPQRTUWXY]{10}/;
+  return reg.test(value);
+}
+
+/**
  * @description 判断是否是名称
  * @param value
  * @returns {boolean}
@@ -133,6 +143,16 @@ export function isPhone(value) {
  */
 export function isIdCard(value) {
   const reg = /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
+  return reg.test(value);
+}
+
+/**
+ * @description Mac地址
+ * @param value
+ * @returns {boolean}
+ */
+export function isMac(value) {
+  const reg = /^([0-9a-fA-F]{2})(([/\s:][0-9a-fA-F]{2}){5})$/;
   return reg.test(value);
 }
 

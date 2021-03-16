@@ -7,7 +7,7 @@
   >
     <el-form ref="form" :model="form" :rules="rules" label-width="120px">
       <el-form-item label="姓名：" prop="objectName">
-        <el-input v-model.trim="form.objectName"></el-input>
+        <el-input v-model.trim="form.objectName" maxlength="50"></el-input>
       </el-form-item>
       <el-form-item label="身份证：" prop="objectIdcard">
         <el-input
@@ -40,7 +40,7 @@
 
 <script>
 import { doEdit, doAdd } from "@/api/followObject";
-import { isIdCard, isPhone } from "@/utils/validate";
+import { isIdCard, isPhone, isMac } from "@/utils/validate";
 
 export default {
   name: "StoreEdit",
@@ -69,6 +69,14 @@ export default {
           {
             validator: (_, value, cb) => {
               if (!isIdCard(value)) return cb(new Error("身份证号码格式错误"));
+              return cb();
+            },
+          },
+        ],
+        objectMac: [
+          {
+            validator: (_, value, cb) => {
+              if (!isMac(value)) return cb(new Error("Mac地址格式错误"));
               return cb();
             },
           },

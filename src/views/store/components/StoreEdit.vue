@@ -125,7 +125,8 @@ export default {
           { required: true, trigger: "blur", message: "请输入经营者身份证号" },
           {
             validator: (_, value, cb) => {
-              if (!isIdCard(value)) return cb(new Error("身份证号码格式错误"));
+              if (!isIdCard(value))
+                return cb(new Error("经营者身份证号格式错误"));
 
               return cb();
             },
@@ -142,7 +143,19 @@ export default {
           {
             trigger: "blur",
             validator: (_, value, cb) => {
-              if (!isPhone(value)) return cb(new Error("手机号码不正确"));
+              if (!isPhone(value)) return cb(new Error("经营者手机号格式错误"));
+
+              return cb();
+            },
+          },
+        ],
+
+        unifiedSocialCreditCode: [
+          {
+            trigger: "blur",
+            validator: (_, value, cb) => {
+              if (!isCreditCode(value))
+                return cb(new Error("统一社会信用代码格式错误"));
 
               return cb();
             },

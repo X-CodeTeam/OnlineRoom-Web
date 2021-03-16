@@ -29,6 +29,7 @@
             <el-input
               v-model.trim="form.buildingNumber"
               placeholder="几栋几单元几楼"
+              maxlength="50"
             ></el-input>
           </el-form-item>
         </el-col>
@@ -37,12 +38,16 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="房间号：" prop="roomNo">
-            <el-input v-model.trim="form.roomNo"></el-input>
+            <el-input
+              v-model.trim="form.roomNo"
+              maxlength="5"
+              type="number"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="房间别名：" prop="roomAlias">
-            <el-input v-model.trim="form.roomAlias"></el-input>
+            <el-input v-model.trim="form.roomAlias" maxlength="50"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -75,12 +80,20 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="面积：" prop="area">
-            <el-input v-model.trim="form.area" placeholder="m²"></el-input>
+            <el-input
+              v-model.trim="form.area"
+              placeholder="m²"
+              maxlength="3"
+              type="number"
+            ></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="房东姓名：" prop="landlordName">
-            <el-input v-model.trim="form.landlordName"></el-input>
+            <el-input
+              v-model.trim="form.landlordName"
+              maxlength="50"
+            ></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -130,6 +143,16 @@ export default {
         ],
         roomType: [
           { required: true, trigger: "blur", message: "请选择房屋类型" },
+        ],
+        landlordPhone: [
+          {
+            trigger: "blur",
+            validator: (_, value, cb) => {
+              if (!isPhone(value)) return cb(new Error("房东电话格式错误"));
+
+              return cb();
+            },
+          },
         ],
       },
       title: "",
