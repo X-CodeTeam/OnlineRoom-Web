@@ -62,7 +62,6 @@ export default {
         this.isAdd = false;
         this.title = "编辑";
         this.form = Object.assign({}, row);
-        console.log("form ", this.form);
       }
       this.dialogFormVisible = true;
     },

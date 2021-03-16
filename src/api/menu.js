@@ -1,6 +1,6 @@
 import request from "@/utils/request";
 
-export function queryPage(params) {
+export function queryMenuPage(params) {
   return request({
     url: "/menus",
     method: "get",
@@ -8,7 +8,15 @@ export function queryPage(params) {
   });
 }
 
-export function doEdit(data) {
+export function editMenus(data) {
+  return request({
+    url: "/menus",
+    method: "put",
+    data,
+  });
+}
+
+export function addMenus(data) {
   return request({
     url: "/menus",
     method: "post",
@@ -16,18 +24,22 @@ export function doEdit(data) {
   });
 }
 
-export function doAdd(data) {
-  return request({
-    url: "/menus",
-    method: "post",
-    data,
-  });
-}
-
-export function doDelete(data) {
+export function deleteMenus(menuId) {
   return request({
     url: "/menus",
     method: "delete",
-    params: data,
+    params: { id: menuId },
+  });
+}
+
+export function sysMenusTree() {
+  return request({
+    url: "/menus/sysMenuTree",
+  });
+}
+
+export function userMenusTree() {
+  return request({
+    url: "/menus/userMenuTree",
   });
 }

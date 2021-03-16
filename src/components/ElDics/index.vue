@@ -30,6 +30,10 @@ const selfTypeData = {
     },
     { label: "注销", value: false },
   ],
+  menusType: [
+    { label: "菜单", value: 0 },
+    { label: "菜单下按钮", value: 1 },
+  ],
 };
 
 export default {
@@ -111,8 +115,8 @@ export default {
 
     this.optionValues = this.optionValues.map((item) => {
       return {
-        value: item.value || item.dictValue,
-        label: item.label || item.dictLabel,
+        value: item.value ?? item.dictValue, // 排除 0 也是空的情况
+        label: item.label ?? item.dictLabel,
       };
     });
 
