@@ -10,17 +10,18 @@
         <el-input v-model.trim="form.roleName"></el-input>
       </el-form-item>
       <el-form-item label="角色编码:" prop="roleCode">
-        <el-input v-model.trim="form.roleCode"></el-input>
+        <el-input v-model.trim="form.roleCode" :disabled="!isAdd"></el-input>
       </el-form-item>
       <el-form-item label="描述:" prop="description">
         <el-input v-model.trim="form.description"></el-input>
       </el-form-item>
 
       <el-form-item label="状态:" prop="enableMark">
-        <el-radio v-model="form.enableMark" label="true">启用</el-radio>
-        <el-radio v-model="form.enableMark" label="false">禁用</el-radio>
+        <el-radio v-model="form.enableMark" :label="true">启用</el-radio>
+        <el-radio v-model="form.enableMark" :label="false">禁用</el-radio>
       </el-form-item>
     </el-form>
+
     <div slot="footer" class="dialog-footer">
       <el-button @click="close">取 消</el-button>
       <el-button type="primary" @click="save">确 定</el-button>
@@ -33,10 +34,15 @@ import { editRole, addRole } from "@/api/role";
 
 export default {
   name: "RoleManagementEdit",
+
   data() {
     return {
-      form: {},
+      form: {
+        enableMark: true,
+      },
+
       comfirmLoginPassword: "",
+
       rules: {
         roleName: [
           { required: true, trigger: "blur", message: "请输入角色名称" },
@@ -48,11 +54,15 @@ export default {
           { required: true, trigger: "blur", message: "请选择状态" },
         ],
       },
+
       title: "",
+
       dialogFormVisible: false,
+
       isAdd: false,
     };
   },
+
   methods: {
     showEdit(row) {
       if (!row) {
@@ -65,11 +75,13 @@ export default {
       }
       this.dialogFormVisible = true;
     },
+
     close() {
       this.$refs["form"].resetFields();
       this.form = this.$options.data().form;
       this.dialogFormVisible = false;
     },
+
     save() {
       this.$refs["form"].validate(async (valid) => {
         if (valid) {
@@ -77,7 +89,9 @@ export default {
             const res = await addRole(this.form);
             res.ok && this.$baseMessage("添加成功!", "success");
           } else {
-            const res = await editRole(this.form);
+            const res = await editRole(
+              this.$lodash.omit(this.form, ["roleCode"])
+            );
             res.ok && this.$baseMessage("修改成功!", "success");
           }
 

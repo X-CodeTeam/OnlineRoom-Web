@@ -84,7 +84,7 @@ export default {
           name: "状态",
           prop: "enableMark",
           formatter: (row) => {
-            return row.enableMark === 1 ? "启用" : "禁用";
+            return row.enableMark ? "启用" : "禁用";
           },
         },
         { name: "描述", prop: "description" },

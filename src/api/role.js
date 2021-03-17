@@ -11,7 +11,7 @@ export function queryRolesPage(params) {
 export function editRole(data) {
   return request({
     url: "/roles",
-    method: "post",
+    method: "put",
     data,
   });
 }
@@ -44,5 +44,11 @@ export function bindMenusToRole(roleCode, menuCodes) {
     url: "/roles/bind-menus",
     method: "put",
     data: { roleCode, menuCodes },
+  });
+}
+
+export function queryRoleMenus(roleCode) {
+  return request({
+    url: `/roles/${roleCode}/menus`,
   });
 }

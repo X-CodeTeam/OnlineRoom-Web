@@ -26,8 +26,8 @@
 </template>
 
 <script>
-import { queryMenusWithId, sysMenusTree } from "@/api/menu";
-import { bindMenusToRole, queryRoleWithId } from "@/api/role";
+import { sysMenusTree } from "@/api/menu";
+import { bindMenusToRole, queryRoleMenus } from "@/api/role";
 import { pickAttrFromArrObj } from "@/utils/tools";
 
 export default {
@@ -77,17 +77,11 @@ export default {
     async _initRoleWithMenuId() {
       if (!this.menuData["id"]) return;
 
-      console.log(this.menuData["id"], "id");
-
-      const { data: roleData } = await queryMenusWithId(this.menuData["id"]);
+      const { data: roleData } = await queryRoleMenus(
+        this.menuData["roleCode"]
+      );
 
       if (!roleData || !roleData?.length) return;
-
-      console.log(
-        roleData,
-        pickAttrFromArrObj(roleData, "menuCode"),
-        this.menuTree
-      );
 
       this.$refs.menusTree.setCheckedKeys(
         pickAttrFromArrObj(roleData, "menuCode")
@@ -95,15 +89,20 @@ export default {
     },
 
     async handleGrant() {
-      // console.log(this.menuData);
+      const keys = this.$refs.menusTree.getCheckedKeys();
 
-      const keys = this.$refs.menusTree.getCheckedKeys(true);
+      const halfKes = this.$refs.menusTree.getHalfCheckedKeys();
 
-      const { ok } = await bindMenusToRole(this.menuData.roleCode, keys);
+      const { ok } = await bindMenusToRole(
+        this.menuData.roleCode,
+        keys.concat(halfKes).filter((item) => item !== null)
+      );
 
       if (!ok) return;
 
       this.$baseMessage("操作成功", "success");
+
+      this.close();
     },
 
     showEdit(row) {
@@ -119,6 +118,8 @@ export default {
     },
 
     close() {
+      this.$refs.menusTree.setCheckedKeys([]);
+
       this.dialogFormVisible = false;
     },
 
