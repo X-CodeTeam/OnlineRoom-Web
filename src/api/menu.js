@@ -8,6 +8,12 @@ export function queryMenuPage(params) {
   });
 }
 
+export function queryMenusWithId(id) {
+  return request({
+    url: `/menus/${id}`,
+  });
+}
+
 export function editMenus(data) {
   return request({
     url: "/menus",

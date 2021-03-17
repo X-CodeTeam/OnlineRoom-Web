@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import { doEdit, doAdd } from "@/api/role";
+import { editRole, addRole } from "@/api/role";
 
 export default {
   name: "RoleManagementEdit",
@@ -74,10 +74,10 @@ export default {
       this.$refs["form"].validate(async (valid) => {
         if (valid) {
           if (this.isAdd) {
-            const res = await doAdd(this.form);
+            const res = await addRole(this.form);
             res.ok && this.$baseMessage("添加成功!", "success");
           } else {
-            const res = await doEdit(this.form);
+            const res = await editRole(this.form);
             res.ok && this.$baseMessage("修改成功!", "success");
           }
 

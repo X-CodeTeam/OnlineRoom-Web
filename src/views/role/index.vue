@@ -42,12 +42,12 @@
             <el-button type="text" @click="handleRoleEdit(row)">编辑</el-button>
 
             <el-button type="text" @click="handleMenusEdit(row)"
-              >绑定</el-button
-            >
+              >绑定
+            </el-button>
 
             <el-button type="text" @click="handleRoleDelete(row)"
-              >删除</el-button
-            >
+              >删除
+            </el-button>
           </template>
         </el-table-column>
       </template>
@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { doDelete, queryPage } from "@/api/role";
+import { deleteRole, queryRolesPage } from "@/api/role";
 import Edit from "./components/roleEdit";
 import BindMenus from "@/views/role/components/BindMenus";
 import ElTablePlus from "@/components/ElTablePlus";
@@ -94,7 +94,7 @@ export default {
   },
 
   methods: {
-    _initStoreInfo: queryPage,
+    _initStoreInfo: queryRolesPage,
 
     handleRoleEdit(row) {
       if (row.id) {
@@ -107,7 +107,7 @@ export default {
     handleRoleDelete(row) {
       if (row.id) {
         this.$baseConfirm("你确定要删除当前项吗", null, async () => {
-          const res = await doDelete({ id: row.id });
+          const res = await deleteRole({ id: row.id });
 
           res.ok && this.$baseMessage("删除成功!", "success");
 
@@ -117,7 +117,7 @@ export default {
     },
 
     handleMenusEdit(row) {
-      this.$refs.bindMenus.showEdit();
+      this.$refs.bindMenus.showEdit(row);
     },
 
     async fetchData() {

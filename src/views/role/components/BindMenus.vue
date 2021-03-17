@@ -8,23 +8,27 @@
   >
     <el-tree
       ref="menusTree"
-      :data="menusData"
+      :data="menuTree"
       :props="menusProps"
       default-expand-all
       show-checkbox
-      node-key="menuId"
+      node-key="menuCode"
       class="menus-tree"
-      :default-checked-keys="menusDefaultChecked"
     >
-      <span slot-scope="{ node }">
-        {{ node.label }}
+      <span slot-scope="{ node, data }">
+        {{ node.label }} {{ data.menuCode }}
       </span>
     </el-tree>
+    <template #footer>
+      <el-button type="primary" @click="handleGrant">授权</el-button>
+    </template>
   </el-dialog>
 </template>
 
 <script>
-import { sysMenusTree } from "@/api/menu";
+import { queryMenusWithId, sysMenusTree } from "@/api/menu";
+import { bindMenusToRole, queryRoleWithId } from "@/api/role";
+import { pickAttrFromArrObj } from "@/utils/tools";
 
 export default {
   name: "BindMenus",
@@ -37,16 +41,26 @@ export default {
 
       isAdd: false,
 
-      menusData: null,
+      menuTree: null,
+
+      menuData: {},
 
       menusProps: {
         children: "child",
         label: "menuName",
         isLeaf: "leaf",
       },
-
-      menusDefaultChecked: [],
     };
+  },
+
+  watch: {
+    dialogFormVisible: {
+      async handler(res) {
+        if (!res) return;
+
+        await this._initRoleWithMenuId();
+      },
+    },
   },
 
   async created() {
@@ -57,7 +71,39 @@ export default {
     async _initMenus() {
       const { data: menusData } = (await sysMenusTree()) || {};
 
-      if (menusData) this.menusData = menusData;
+      if (menusData) this.menuTree = menusData;
+    },
+
+    async _initRoleWithMenuId() {
+      if (!this.menuData["id"]) return;
+
+      console.log(this.menuData["id"], "id");
+
+      const { data: roleData } = await queryMenusWithId(this.menuData["id"]);
+
+      if (!roleData || !roleData?.length) return;
+
+      console.log(
+        roleData,
+        pickAttrFromArrObj(roleData, "menuCode"),
+        this.menuTree
+      );
+
+      this.$refs.menusTree.setCheckedKeys(
+        pickAttrFromArrObj(roleData, "menuCode")
+      );
+    },
+
+    async handleGrant() {
+      // console.log(this.menuData);
+
+      const keys = this.$refs.menusTree.getCheckedKeys(true);
+
+      const { ok } = await bindMenusToRole(this.menuData.roleCode, keys);
+
+      if (!ok) return;
+
+      this.$baseMessage("操作成功", "success");
     },
 
     showEdit(row) {
@@ -67,7 +113,7 @@ export default {
       } else {
         this.isAdd = false;
         this.title = "编辑";
-        this.form = Object.assign({}, row);
+        Object.assign(this.menuData, row);
       }
       this.dialogFormVisible = true;
     },
