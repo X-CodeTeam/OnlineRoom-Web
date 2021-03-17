@@ -34,7 +34,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button icon="el-icon-search" type="primary" @click="queryData">
+          <el-button icon="el-icon-search" type="primary" @click="fetchData">
             查询
           </el-button>
           <el-button @click="handleReset"> 重置 </el-button>
@@ -66,9 +66,8 @@
 </template>
 
 <script>
-import { doDelete, queryPage } from "@/api/sysUser";
+import { deleteSysUser, queryUsersPage } from "@/api/sysUser";
 import Edit from "./components/userEdit";
-import ElTablePlus from "@/components/ElTablePlus";
 
 const sysUserQueryInfo = Object.freeze({
   loginUser: null,
@@ -78,7 +77,9 @@ const sysUserQueryInfo = Object.freeze({
 
 export default {
   name: "UserManagement",
-  components: { Edit, ElTablePlus },
+
+  components: { Edit },
+
   data() {
     return {
       sysUserTableProps: [
@@ -89,12 +90,13 @@ export default {
         { name: "状态", prop: "statusString" },
         { name: "描述", prop: "description" },
       ],
+
       queryForm: { ...sysUserQueryInfo },
     };
   },
 
   methods: {
-    _initStoreInfo: queryPage,
+    _initStoreInfo: queryUsersPage,
 
     handleEdit(row) {
       if (row.userId) {
@@ -103,10 +105,11 @@ export default {
         this.$refs["edit"].showEdit();
       }
     },
+
     handleDelete(row) {
       if (row.id) {
         this.$baseConfirm("你确定要删除当前项吗", null, async () => {
-          const res = await doDelete({ ids: [row.id] });
+          const res = await deleteSysUser({ ids: [row.id] });
           this.$baseMessage(res.message, "success");
           await this.fetchData();
         });
@@ -114,7 +117,7 @@ export default {
         if (this.selectRows.length > 0) {
           const ids = this.selectRows.map((item) => item.id);
           this.$baseConfirm("你确定要删除选中项吗", null, async () => {
-            const res = await doDelete({ ids });
+            const res = await deleteSysUser({ ids });
             this.$baseMessage(res.message, "success");
             await this.fetchData();
           });
@@ -124,17 +127,14 @@ export default {
         }
       }
     },
+
     async handleReset() {
       Object.assign(this.queryForm, sysUserQueryInfo);
-      await this.queryData();
-    },
-
-    async queryData() {
-      this.$refs.sysUserTable && (await this.$refs.sysUserTable.flashTable());
+      await this.fetchData();
     },
 
     async fetchData() {
-      await this.queryData();
+      this.$refs.sysUserTable && (await this.$refs.sysUserTable.flashTable());
     },
   },
 };

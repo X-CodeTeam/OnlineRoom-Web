@@ -21,6 +21,7 @@
         <el-radio v-model="form.enableMark" label="false">禁用</el-radio>
       </el-form-item>
     </el-form>
+
     <div slot="footer" class="dialog-footer">
       <el-button @click="close">取 消</el-button>
       <el-button type="primary" @click="save">确 定</el-button>
@@ -33,6 +34,7 @@ import { editRole, addRole } from "@/api/role";
 
 export default {
   name: "RoleManagementEdit",
+
   data() {
     return {
       form: {},
@@ -53,6 +55,7 @@ export default {
       isAdd: false,
     };
   },
+
   methods: {
     showEdit(row) {
       if (!row) {

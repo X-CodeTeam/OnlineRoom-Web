@@ -1,6 +1,6 @@
 import request from "@/utils/request";
 
-export function queryPage(params) {
+export function queryUsersPage(params) {
   return request({
     url: "/sysUsers",
     method: "get",
@@ -8,7 +8,15 @@ export function queryPage(params) {
   });
 }
 
-export function doEdit(data) {
+export function editSysUser(data) {
+  return request({
+    url: "/sysUsers",
+    method: "put",
+    data,
+  });
+}
+
+export function addSysUser(data) {
   return request({
     url: "/sysUsers",
     method: "post",
@@ -16,18 +24,31 @@ export function doEdit(data) {
   });
 }
 
-export function doAdd(data) {
+export function deleteSysUser(data) {
   return request({
     url: "/sysUsers",
-    method: "post",
+    method: "delete",
     data,
   });
 }
 
-export function doDelete(data) {
+export function querySysUserWithUserId(userId) {
   return request({
-    url: "/sysUsers",
-    method: "post",
-    data,
+    url: `/sysUsers/${userId}`,
+  });
+}
+
+export function bindRolesToSysUser(body) {
+  return request({
+    url: "/sysUsers/bind-permissions",
+    method: "put",
+    data: body,
+  });
+}
+
+export function querySysUserPermission(params) {
+  return request({
+    url: "/sysUsers/permissions",
+    params,
   });
 }

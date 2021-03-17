@@ -81,12 +81,14 @@ const originMenuData = Object.freeze({
   description: null, // 描述信息
   enableMark: true, // 默认开启
   menuCode: null, // 菜单编码
+  menuIcon: null, // 菜单图标
   menuName: null, // 菜单名称
+  menuPath: null, // 菜单路径
   menuPermission: null, // 菜单权限
   menuType: 0, // 菜单类型
-  parentMenuName: null, // 上级菜单名称（自定义）
   parentMenuCode: null, // 上级菜单编号
   sortValue: 0, // 排序码
+  parentMenuName: null, // 上级菜单名称（自定义）
 });
 
 export default {
@@ -157,11 +159,11 @@ export default {
 
       this.setCurrentTag("修改");
 
-      Object.assign(this.menuDataForm, this.$lodash.omit(data, ["child"]));
+      this.menuDataForm = this.$lodash.omit(data, ["child"]);
     },
 
     setMenusDataFormToOrigin: function () {
-      Object.assign(this.menuDataForm, originMenuData); // 清空数据
+      this.menuDataForm = { ...originMenuData }; // 清空数据
     },
 
     echoAddMenuToPanel(data) {
