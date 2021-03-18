@@ -80,7 +80,7 @@ export default {
             const res = await addRole(this.form);
             res.ok && this.$baseMessage("添加成功!", "success");
           } else {
-            const res = await editRole(this.form);
+            const res = await editRole(Object.assign(this.form));
             res.ok && this.$baseMessage("修改成功!", "success");
           }
 

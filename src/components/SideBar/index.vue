@@ -4,6 +4,7 @@
     class="side-bar-container"
   >
     <logo v-if="layout === 'vertical'"></logo>
+
     <el-menu
       :active-text-color="variables['menu-color-active']"
       :background-color="variables['menu-background']"
@@ -24,6 +25,7 @@
     </el-menu>
   </el-scrollbar>
 </template>
+
 <script>
 import variables from "@/config/variables.scss";
 import { mapGetters } from "vuex";
@@ -31,18 +33,21 @@ import { defaultOpeneds, uniqueOpened } from "@/config";
 
 export default {
   name: "SideBar",
+
   props: {
     layout: {
       type: String,
       default: "vertical",
     },
   },
+
   data() {
     return {
       uniqueOpened,
       variables: variables,
     };
   },
+
   computed: {
     ...mapGetters({
       collapse: "settings/collapse",
@@ -62,6 +67,7 @@ export default {
   },
 };
 </script>
+
 <style lang="scss" scoped>
 @mixin active {
   &:hover {

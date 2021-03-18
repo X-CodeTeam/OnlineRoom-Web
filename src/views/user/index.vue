@@ -107,25 +107,12 @@ export default {
     },
 
     handleDelete(row) {
-      if (row.id) {
-        this.$baseConfirm("你确定要删除当前项吗", null, async () => {
-          const res = await deleteSysUser({ ids: [row.id] });
-          this.$baseMessage(res.message, "success");
-          await this.fetchData();
-        });
-      } else {
-        if (this.selectRows.length > 0) {
-          const ids = this.selectRows.map((item) => item.id);
-          this.$baseConfirm("你确定要删除选中项吗", null, async () => {
-            const res = await deleteSysUser({ ids });
-            this.$baseMessage(res.message, "success");
-            await this.fetchData();
-          });
-        } else {
-          this.$baseMessage("未选中任何行", "error");
-          return false;
-        }
-      }
+      console.log(row, "row");
+      this.$baseConfirm("你确定要删除当前项吗z", null, async () => {
+        const res = await deleteSysUser({ userId: row.userId });
+        res.ok && this.$baseMessage("操作成功", "success");
+        await this.fetchData();
+      });
     },
 
     async handleReset() {

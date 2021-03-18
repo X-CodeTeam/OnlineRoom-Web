@@ -52,6 +52,35 @@ export function filterRoutes(routes, baseUrl = "/") {
 }
 
 /**
+ * Filter asynchronous routing tables by recursion
+ * @param routes asyncRoutes
+ * @param roles
+ */
+export function filterAsyncRoutes(routes, roles) {
+  function _filter(_routes) {
+    const filterOneRoute = routes.filter((route) => {
+      return roles.some((role) => {
+        return role.menuPermission === route.name;
+      });
+    });
+
+    filterOneRoute.forEach((val) => {
+      val.children = val.children.filter((route) => {
+        return (
+          route.hidden === true ||
+          route.path === "" ||
+          roles.some((role) => role.menuPermission === route.name)
+        );
+      });
+    });
+
+    return filterOneRoute;
+  }
+
+  return _filter(routes);
+}
+
+/**
  * 根据当前页面firstMenu
  * @returns {string}
  */

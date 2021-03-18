@@ -186,14 +186,16 @@ export default {
           : await editMenus(
               Object.assign(
                 this.$lodash.omit(this.menuDataForm, ["menuCode"]),
-                { id: this.menuDataForm.menuId }
+                { id: this.menuDataForm.menuId, sortValue: 0 }
               )
             );
 
       if (!res.ok) return;
 
       this.currentInfo.addOrModifyTag === "增加"
-        ? this.appendMenuToTree(Object.assign({}, this.menuDataForm))
+        ? this.appendMenuToTree(
+            Object.assign({ menuId: res?.data[0] }, this.menuDataForm)
+          )
         : this.modifyMenuFromTree(this.currentInfo.menuData, this.menuDataForm);
 
       this.$baseMessage(`${this.currentInfo.addOrModifyTag}成功`, "success");

@@ -75,6 +75,7 @@ import { isPassword } from "@/utils/validate";
 
 export default {
   name: "Login",
+
   directives: {
     focus: {
       inserted(el) {
@@ -82,6 +83,7 @@ export default {
       },
     },
   },
+
   data() {
     const validateUsername = (rule, value, callback) => {
       if ("" === value) {
@@ -124,11 +126,13 @@ export default {
       redirect: undefined,
     };
   },
+
   computed: {
     ...mapGetters({
       title: "settings/title",
     }),
   },
+
   watch: {
     $route: {
       handler(route) {
@@ -141,17 +145,21 @@ export default {
   created() {
     document.body.style.overflow = "hidden";
   },
+
   beforeDestroy() {
     document.body.style.overflow = "auto";
   },
+
   mounted() {
     this.form.username = "testzhang";
     this.form.password = "123456";
   },
+
   methods: {
     ...mapActions({
       login: "user/login",
     }),
+
     handlePassword() {
       this.passwordType === "password"
         ? (this.passwordType = "")
@@ -160,11 +168,13 @@ export default {
         this.$refs.password.focus();
       });
     },
+
     handleRoute() {
       return this.redirect === "/404" || this.redirect === "/403"
         ? "/"
         : this.redirect;
     },
+
     handleLogin() {
       this.$refs.form.validate(async (valid) => {
         if (valid) {

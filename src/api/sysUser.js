@@ -24,11 +24,11 @@ export function addSysUser(data) {
   });
 }
 
-export function deleteSysUser(data) {
+export function deleteSysUser(params) {
   return request({
     url: "/sysUsers",
     method: "delete",
-    data,
+    params,
   });
 }
 

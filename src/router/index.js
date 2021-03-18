@@ -27,9 +27,6 @@ export const constantRoutes = [
     component: () => import("@/views/404"),
     hidden: true,
   },
-];
-
-export const asyncRoutes = [
   {
     path: "/",
     component: Layout,
@@ -52,6 +49,9 @@ export const asyncRoutes = [
       },
     ],
   },
+];
+
+export const asyncRoutes = [
   {
     path: "/room",
     name: "RoomManagement",

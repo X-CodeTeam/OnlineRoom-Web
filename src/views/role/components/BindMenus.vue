@@ -15,8 +15,8 @@
       node-key="menuCode"
       class="menus-tree"
     >
-      <span slot-scope="{ node, data }">
-        {{ node.label }} {{ data.menuCode }}
+      <span slot-scope="{ node }">
+        {{ node.label }}
       </span>
     </el-tree>
     <template #footer>

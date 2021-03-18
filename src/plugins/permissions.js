@@ -12,6 +12,7 @@ import {
   recordRoute,
   routesWhiteList,
 } from "@/config";
+import { userMenusTree } from "@/api/menu";
 
 VabProgress.configure({
   easing: "ease",
@@ -37,17 +38,18 @@ router.beforeEach(async (to, from, next) => {
         store.getters["acl/role"].length > 0 ||
         store.getters["acl/ability"].length > 0;
 
+      debugger;
+
       if (hasAccess) {
         next();
       } else {
         try {
-          if (loginInterception) await store.dispatch("user/getUserInfo");
-          //settings.js loginInterception为false（关闭登录拦截时）时，创建虚拟角色
-          else await store.dispatch("user/setVirtualRoles");
+          await store.dispatch("user/getUserInfo");
+
+          const { data: rolesData } = await userMenusTree();
+
           //根据路由模式添加路由
-          router.addRoutes(
-            await store.dispatch("routes/setRoutes", authentication)
-          );
+          router.addRoutes(await store.dispatch("routes/setRoutes", rolesData));
           next({ ...to, replace: true });
         } catch {
           await store.dispatch("user/resetAll");

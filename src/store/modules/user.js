@@ -75,10 +75,7 @@ const actions = {
   async login({ commit }, userInfo) {
     const { data } = await login(userInfo);
 
-    if (!data) {
-      Vue.prototype.$baseMessage("登录失败，请检查用户名或密码正确", "error");
-      return false;
-    }
+    if (!data) return false;
 
     const accessToken = data[0][tokenName];
 
