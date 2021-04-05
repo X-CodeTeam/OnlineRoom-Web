@@ -3,6 +3,7 @@ import path from "path";
 import { rolesControl } from "@/config";
 import { isExternal } from "@/utils/validate";
 import { hasRole } from "@/utils/hasRole";
+import fi from "element-ui/src/locale/lang/fi";
 
 /**
  * @description all模式渲染后端返回路由,支持包含views路径的所有页面
@@ -72,6 +73,12 @@ export function filterAsyncRoutes(routes, roles) {
           roles.some((role) => role.menuPermission === route.name)
         );
       });
+    });
+
+    filterOneRoute.push({
+      path: "*",
+      redirect: "/404",
+      hidden: true,
     });
 
     return filterOneRoute;
