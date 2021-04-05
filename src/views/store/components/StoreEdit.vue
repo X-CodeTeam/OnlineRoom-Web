@@ -95,7 +95,7 @@
 import { doEdit, doAdd } from "@/api/store";
 import BaseAreaSelect from "@/components/BaseAreaSelect";
 import BasePoliceSelect from "@/components/BasePoliceSelect";
-import { isIdCard, isPhone } from "@/utils/validate";
+import { isCreditCode, isIdCard, isPhone } from "@/utils/validate";
 
 export default {
   name: "StoreEdit",
@@ -149,18 +149,17 @@ export default {
             },
           },
         ],
-
-        unifiedSocialCreditCode: [
-          {
-            trigger: "blur",
-            validator: (_, value, cb) => {
-              if (!isCreditCode(value))
-                return cb(new Error("统一社会信用代码格式错误"));
-
-              return cb();
-            },
-          },
-        ],
+        // unifiedSocialCreditCode: [
+        //   {
+        //     trigger: "blur",
+        //     validator: (_, value, cb) => {
+        //       if (!isCreditCode(value))
+        //         return cb(new Error("统一社会信用代码格式错误"));
+        //
+        //       return cb();
+        //     },
+        //   },
+        // ],
       },
       title: "",
       dialogFormVisible: false,
@@ -198,10 +197,10 @@ export default {
         if (valid) {
           if (this.isAdd) {
             const res = await doAdd(this.form);
-            this.$baseMessage(res.message, "success");
+            res.ok && this.$baseMessage("操作成功", "success");
           } else {
             const res = await doEdit(this.form);
-            this.$baseMessage(res.message, "success");
+            res.ok && this.$baseMessage("操作成功", "success");
           }
 
           this.$emit("fetch-data");

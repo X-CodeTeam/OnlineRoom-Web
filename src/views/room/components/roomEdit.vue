@@ -112,6 +112,7 @@
 
 <script>
 import { doEdit, doAdd } from "@/api/room";
+import { isPhone } from "@/utils/validate";
 
 export default {
   name: "RoomEdit",
