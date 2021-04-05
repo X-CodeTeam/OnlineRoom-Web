@@ -2,7 +2,7 @@
  * @description 路由拦截状态管理，目前两种模式：all模式与fintelligence模式，其中partialRoutes是菜单暂未使用
  */
 import router, { asyncRoutes, constantRoutes } from "@/router";
-import { filterAsyncRoutes, filterRoutes } from "@/utils/routes";
+import { convertRouter, filterAsyncRoutes, filterRoutes } from "@/utils/routes";
 import { omit } from "lodash";
 
 /**

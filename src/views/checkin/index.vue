@@ -42,6 +42,14 @@
           </el-button>
           <el-button @click="handleReset"> 重置 </el-button>
         </el-form-item>
+
+        <el-form-item class="grow-1 justify-self-end">
+          <upload-file
+            action="/reserves/checkins/upload"
+            name="入住错误信息"
+            :flash="queryData"
+          ></upload-file>
+        </el-form-item>
       </template>
       <template #table-self>
         <el-table-column
@@ -65,6 +73,7 @@
 import { queryObjects } from "@/api/order";
 import show from "./components/checkinShow";
 import ElTablePlus from "@/components/ElTablePlus";
+import UploadFile from "@/components/UploadFile";
 
 const objectQueryInfo = Object.freeze({
   keyword: null,
@@ -74,7 +83,7 @@ const objectQueryInfo = Object.freeze({
 
 export default {
   name: "UserManagement",
-  components: { show, ElTablePlus },
+  components: { show, ElTablePlus, UploadFile },
   data() {
     return {
       objectTableProps: [

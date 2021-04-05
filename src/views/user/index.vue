@@ -107,7 +107,6 @@ export default {
     },
 
     handleDelete(row) {
-      console.log(row, "row");
       this.$baseConfirm("你确定要删除当前项吗z", null, async () => {
         const res = await deleteSysUser({ userId: row.userId });
         res.ok && this.$baseMessage("操作成功", "success");

@@ -43,6 +43,10 @@ const handleData = ({ config, data, status, statusText }) => {
   // 若code属于操作正常code，则status修改为200
   // if (codeVerificationArray.includes(code)) code = 200;
 
+  if (Object.prototype.toString.call(data) !== "[object FormData]") {
+    return data;
+  }
+
   // 如果令牌失效则自动条状到登录页面
   const { data: _data, err } = data;
 
@@ -91,6 +95,7 @@ instance.interceptors.request.use(
       config.data = qs.stringify(config.data);
     if (debounce.some((item) => config.url.includes(item)))
       loadingInstance = Vue.prototype.$baseLoading();
+
     return config;
   },
   (error) => {

@@ -37,9 +37,14 @@
           <el-button icon="el-icon-search" type="primary" @click="queryData">
             查询
           </el-button>
-          <el-button @click="handleReset"> 重置 </el-button>
+          <el-button @click="handleReset"> 重置</el-button>
         </el-form-item>
         <el-form-item class="grow-1 justify-self-end">
+          <upload-file
+            action="/stores/upload"
+            name="门店错误信息"
+            :flash="queryData"
+          ></upload-file>
           <el-button icon="el-icon-plus" type="primary" @click="handleEdit">
             添加
           </el-button>
@@ -58,14 +63,14 @@
               v-if="row.enableMark"
               type="text"
               @click="handleEdit(row)"
-              >编辑</el-button
-            >
+              >编辑
+            </el-button>
             <el-button
               v-if="row.enableMark"
               type="text"
               @click="handleDelete(row)"
-              >注销</el-button
-            >
+              >注销
+            </el-button>
           </template>
         </el-table-column>
       </template>
@@ -82,6 +87,7 @@ import { doLogout, queryStorePage } from "@/api/store";
 import Edit from "./components/StoreEdit";
 import Show from "./components/StoreShow";
 import ElTablePlus from "@/components/ElTablePlus";
+import UploadFile from "@/components/UploadFile";
 
 const originStoreQueryInfo = Object.freeze({
   keyworld: null, // 门店名称
@@ -92,7 +98,7 @@ const originStoreQueryInfo = Object.freeze({
 export default {
   name: "StoreManagement",
 
-  components: { Edit, Show, ElTablePlus },
+  components: { Edit, Show, ElTablePlus, UploadFile },
 
   data() {
     return {

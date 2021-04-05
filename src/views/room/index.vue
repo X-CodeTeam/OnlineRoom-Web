@@ -44,6 +44,11 @@
           <el-button @click="handleReset"> 重置 </el-button>
         </el-form-item>
         <el-form-item class="grow-1 justify-self-end">
+          <upload-file
+            action="/rooms/upload"
+            name="房间错误信息"
+            :flash="queryData"
+          ></upload-file>
           <el-button icon="el-icon-plus" type="primary" @click="handleEdit">
             添加
           </el-button>
@@ -80,6 +85,7 @@ import { queryStorePage } from "@/api/store";
 import Edit from "./components/roomEdit";
 import show from "./components/roomShow";
 import BaseAreaSelect from "@/components/BaseAreaSelect";
+import UploadFile from "@/components/UploadFile";
 
 const originRoomQueryInfo = Object.freeze({
   keyworld: null, // 房间别名
@@ -89,7 +95,7 @@ const originRoomQueryInfo = Object.freeze({
 export default {
   name: "UserManagement",
 
-  components: { BaseAreaSelect, Edit, show },
+  components: { BaseAreaSelect, Edit, show, UploadFile },
 
   data() {
     return {

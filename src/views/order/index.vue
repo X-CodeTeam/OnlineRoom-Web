@@ -42,6 +42,14 @@
           </el-button>
           <el-button @click="handleReset"> 重置 </el-button>
         </el-form-item>
+
+        <el-form-item class="grow-1 justify-self-end">
+          <upload-file
+            action="/reserves/upload"
+            name="订单错误信息"
+            :flash="queryData"
+          ></upload-file>
+        </el-form-item>
       </template>
       <template #table-self>
         <el-table-column
@@ -66,6 +74,7 @@
 import { queryPage } from "@/api/order";
 import show from "./components/orderShow";
 import ElTablePlus from "@/components/ElTablePlus";
+import UploadFile from "@/components/UploadFile";
 
 const orderQueryInfo = Object.freeze({
   storeLocation: null,
@@ -75,7 +84,9 @@ const orderQueryInfo = Object.freeze({
 
 export default {
   name: "UserManagement",
-  components: { show, ElTablePlus },
+
+  components: { show, ElTablePlus, UploadFile },
+
   data() {
     return {
       orderTableProps: [
