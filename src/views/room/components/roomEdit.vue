@@ -3,6 +3,7 @@
     :title="title"
     :visible.sync="dialogFormVisible"
     width="900px"
+    class="ly-room__dialog"
     @close="close"
   >
     <el-form ref="form" :model="form" :rules="rules" label-width="160px">
@@ -14,6 +15,7 @@
               clearable
               placeholder="所属门店"
               style="width: 100%"
+              filterable
             >
               <el-option
                 v-for="store in needData['stores']"

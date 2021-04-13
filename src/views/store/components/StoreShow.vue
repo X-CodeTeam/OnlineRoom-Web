@@ -3,6 +3,7 @@
     :title="title"
     :visible.sync="dialogFormVisible"
     width="900px"
+    class="ly-store__dialog"
     @close="close"
   >
     <el-form ref="form" :model="form" label-width="160px">

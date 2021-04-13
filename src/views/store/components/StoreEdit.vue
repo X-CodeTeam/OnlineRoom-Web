@@ -3,6 +3,7 @@
     :title="title"
     :visible.sync="dialogFormVisible"
     width="900px"
+    class="ly-store__dialog"
     @close="close"
   >
     <el-form ref="form" :model="form" :rules="rules" label-width="160px">
@@ -92,7 +93,7 @@
 </template>
 
 <script>
-import { doEdit, doAdd } from "@/api/store";
+import { doEditStore, doAddStore } from "@/api/store";
 import BaseAreaSelect from "@/components/BaseAreaSelect";
 import BasePoliceSelect from "@/components/BasePoliceSelect";
 import { isCreditCode, isIdCard, isPhone } from "@/utils/validate";
@@ -178,6 +179,7 @@ export default {
       } else {
         this.isAdd = false;
         this.title = "编辑";
+        this.$changeObjectToChar(row, ["---"], null);
         this.form = Object.assign({}, row);
       }
       this.dialogFormVisible = true;
@@ -196,10 +198,10 @@ export default {
       this.$refs["form"].validate(async (valid) => {
         if (valid) {
           if (this.isAdd) {
-            const res = await doAdd(this.form);
+            const res = await doAddStore(this.form);
             res.ok && this.$baseMessage("操作成功", "success");
           } else {
-            const res = await doEdit(this.form);
+            const res = await doEditStore(this.form);
             res.ok && this.$baseMessage("操作成功", "success");
           }
 

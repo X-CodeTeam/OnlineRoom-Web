@@ -12,6 +12,7 @@ import store from "@/store";
 import qs from "qs";
 import { isArray } from "@/utils/validate";
 import { Message } from "element-ui";
+import { changeObjectToChar } from "@/utils/tools";
 
 let loadingInstance;
 
@@ -38,12 +39,14 @@ const CODE_MESSAGE = {
 };
 
 const handleData = ({ config, data, status, statusText }) => {
+  const { isFilter } = config?.meta;
+
   if (loadingInstance) loadingInstance.close(); // ？？？没搞懂
   // 若data.code存在，覆盖默认code
   // 若code属于操作正常code，则status修改为200
   // if (codeVerificationArray.includes(code)) code = 200;
 
-  if (Object.prototype.toString.call(data) !== "[object FormData]") {
+  if (Object.prototype.toString.call(data) === "[object FormData]") {
     return data;
   }
 
@@ -66,6 +69,10 @@ const handleData = ({ config, data, status, statusText }) => {
     });
   }
 
+  const { data: resData } = data;
+
+  isFilter && changeObjectToChar(resData, ["", null, undefined, NaN], "---");
+
   return data;
 };
 
@@ -77,6 +84,10 @@ const instance = axios.create({
   timeout: requestTimeout,
   headers: {
     "Content-Type": contentType,
+  },
+  meta: {
+    mode: "",
+    isFilter: false,
   },
 });
 

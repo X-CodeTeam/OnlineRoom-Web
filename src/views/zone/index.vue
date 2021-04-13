@@ -33,6 +33,7 @@
           >
             添加
           </el-button>
+          <el-button class="test" @click="handleClick">测试</el-button>
         </el-form-item>
       </template>
       <template #table-self>
@@ -109,6 +110,10 @@ export default {
       await this.$refs.zoneTable.flashTable();
 
       await this.$store.dispatch("zones/_initZones", true);
+    },
+
+    handleClick() {
+      console.log(this.$refs.zoneTable.theTable);
     },
 
     async lazyLoad(tree, treeNode, resolve) /* 点击节点、点击节点列表（树） */ {

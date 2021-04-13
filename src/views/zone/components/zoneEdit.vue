@@ -3,6 +3,7 @@
     :title="title"
     :visible.sync="dialogFormVisible"
     width="600px"
+    class="ly-zone__dialog"
     @close="close"
   >
     <el-form ref="form" :model="form" :rules="rules" label-width="120px">
@@ -18,8 +19,12 @@
       <el-form-item label="名称：" prop="zoneName"
         ><el-input v-model.trim="form.zoneName" maxlength="50"></el-input>
       </el-form-item>
-      <el-form-item label="负责人姓名：" prop="principalName"
-        ><el-input v-model.trim="form.principalName" maxlength="50"></el-input>
+      <el-form-item label="负责人：" prop="principalName"
+        ><el-input
+          v-model.trim="form.principalName"
+          maxlength="50"
+          placeholder="请填写负责人姓名、联系方式等信息"
+        ></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -53,10 +58,12 @@ export default {
           },
         ],
         zoneCode: [
-          { required: true, trigger: "blur", message: "请输入编号" },
+          // { required: true, trigger: "blur", message: "请输入编号" },
           {
             validator: (_, val, cb) => {
-              return isNumber(val) ? cb() : cb(new Error("编号只能为数字"));
+              return val && !isNumber(val)
+                ? cb(new Error("编号只能为数字"))
+                : cb();
             },
           },
         ],

@@ -3,7 +3,7 @@
     :title="title"
     :visible.sync="dialogFormVisible"
     width="600px"
-    class="bind-menus"
+    class="bind-menus ly-role__dialog"
     @close="close"
   >
     <el-tree

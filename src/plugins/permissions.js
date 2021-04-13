@@ -38,8 +38,6 @@ router.beforeEach(async (to, from, next) => {
         store.getters["acl/role"].length > 0 ||
         store.getters["acl/ability"].length > 0;
 
-      debugger;
-
       if (hasAccess) {
         next();
       } else {
