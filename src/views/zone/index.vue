@@ -33,7 +33,7 @@
           >
             添加
           </el-button>
-          <el-button class="test" @click="handleClick">测试</el-button>
+          <el-button class="test" @click="changeArray">测试</el-button>
         </el-form-item>
       </template>
       <template #table-self>
@@ -101,6 +101,21 @@ export default {
 
           res.ok && this.$baseMessage("操作成功", "success");
 
+          const { parentZoneCode, zoneCode } = row;
+
+          // 动态更新树形表格的数据
+          if (parentZoneCode && zoneCode) {
+            const index = this.$refs.zoneTable.theTable.store.states.lazyTreeNodeMap[
+              parentZoneCode
+            ].findIndex((item) => item.zoneCode === zoneCode);
+
+            if (index >= 0)
+              this.$refs.zoneTable.theTable.store.states.lazyTreeNodeMap[
+                parentZoneCode
+              ].splice(index, 1);
+          }
+
+          // 更新整体Vuex中的数据，全局变化
           await this.queryData();
         });
       }
@@ -112,13 +127,11 @@ export default {
       await this.$store.dispatch("zones/_initZones", true);
     },
 
-    handleClick() {
-      console.log(this.$refs.zoneTable.theTable);
+    changeArray(row) {
+      console.log(this.$refs.zoneTable.theTable.store.states.lazyTreeNodeMap);
     },
 
     async lazyLoad(tree, treeNode, resolve) /* 点击节点、点击节点列表（树） */ {
-      if (!this.loadResolve) this.loadResolve = resolve;
-
       const { zoneCode } = tree;
 
       const { data: areaData } = await queryZoneChild({
