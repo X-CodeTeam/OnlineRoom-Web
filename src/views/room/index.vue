@@ -100,6 +100,7 @@ export default {
   data() {
     return {
       roomTableProps: [
+        { name: "房间编号", prop: "roomId" },
         { name: "门店名称", prop: "storeName" },
         { name: "门店地点", prop: "storeLocation" },
         { name: "楼栋层", prop: "buildingNumber" },

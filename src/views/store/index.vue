@@ -103,6 +103,7 @@ export default {
   data() {
     return {
       storeTableProps: [
+        { name: "门店编号", prop: "storeId" },
         { name: "门店名称", prop: "storeName" },
         { name: "门店区域", prop: "storeAreaname" },
         { name: "门店地点", prop: "storeDetails" },
