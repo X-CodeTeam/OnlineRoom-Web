@@ -28,7 +28,7 @@ const setting = {
   //版本号
   version: process.env.VUE_APP_VERSION,
   //pro版本copyright可随意修改
-  copyright: "Zero",
+  copyright: "湖南创想伟业科技发展有限公司",
   //缓存路由的最大数量
   keepAliveMaxNum: 99,
   //路由模式，可选值为 history 或 hash
