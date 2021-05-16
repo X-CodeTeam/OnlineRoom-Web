@@ -1,5 +1,5 @@
 <template>
-  <div class="paging-table hp-100 ly-panel">
+  <div class="paging-table hp-100 ly-panel ly-search-table">
     <el-form
       v-if="searchForm"
       :inline="true"
@@ -57,6 +57,10 @@
 </template>
 
 <script>
+import { compact } from "lodash";
+
+const [INIT_QUERY, MIN_HEIGHT] = [Symbol("initQuery"), Symbol.for("440")];
+
 export default {
   name: "PagingTable",
 
@@ -104,6 +108,12 @@ export default {
     },
 
     isPagingShow: {
+      type: Boolean,
+      default: true,
+    },
+
+    // 是否开启自动适应高度
+    isAutoHeight: {
       type: Boolean,
       default: true,
     },
@@ -172,6 +182,10 @@ export default {
         await this._initTableData();
       },
     },
+  },
+
+  updated() {
+    this.autoFillHeight();
   },
 
   methods: {
@@ -250,8 +264,77 @@ export default {
       await this._initTableData();
     },
 
+    // row选择
     selectionChange(rows) {
       this.$emit("selection-change", rows);
+    },
+
+    /**
+     * @description 自适应列表高度（只有设置isAutoHeight为true且数据长度为10时触发）
+     */
+    autoFillHeight() {
+      // 此处的三个return都是为了提高性能
+      // 设置自动适应高度属性和表格高度为10才能执行
+      if (!(this.isAutoHeight && this.localData?.length >= 3)) {
+        // 当不需要自适应高度的时候，恢复到正常值
+        this.cache.size = "medium";
+
+        this.cache.height = 1000;
+
+        return;
+      }
+
+      // 表头也会改变
+      const height = this.$el.querySelector(
+        ".ly-search-table > div"
+      ).offsetHeight;
+
+      // 是否能正常获取高度
+      if (height && height < Symbol.keyFor(MIN_HEIGHT))
+        return console.warn(
+          `${height} < ${Symbol.keyFor(
+            MIN_HEIGHT
+          )} 表格区域高度小于自适应的最小高度， 无法自适应高度`
+        );
+
+      const tdAndRrs = this.contentTdAndTr(
+        ".el-table__body-wrapper",
+        ".el-table__header-wrapper"
+      ).concat(
+        this.contentTdAndTr(
+          ".el-table__fixed-body-wrapper",
+          ".el-table__fixed-header-wrapper"
+        )
+      );
+
+      // 是否能获取到内部元素
+      if (!tdAndRrs.length) return;
+
+      const everyRowHeight = height / 11;
+
+      // 默认为最小的padding值
+      this.cache.size = "mini";
+
+      this.$el
+        .querySelector(".el-table__fixed-body-wrapper")
+        ?.setAttribute("style", `top: ${everyRowHeight}px`);
+
+      // 不设置固定高度
+      this.cache.height = null;
+
+      tdAndRrs.map((node) => {
+        return node.setAttribute(
+          "style",
+          `height: ${everyRowHeight}px !important`
+        );
+      });
+    },
+
+    contentTdAndTr(bodySelector, headerSelector) {
+      return compact([
+        ...this.$el.querySelectorAll(`${bodySelector} .el-table__row`),
+        this.$el.querySelector(`${headerSelector} > table > thead > tr`),
+      ]);
     },
   },
 };

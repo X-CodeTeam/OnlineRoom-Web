@@ -12,6 +12,7 @@ import ElDics from "@/components/ElDics";
 import ElTablePlus from "@/components/ElTablePlus";
 // 加载图标
 import "@/icon";
+import "@/assets/styles/search-table.scss";
 
 Vue.use(ElementUI, { size: "small" });
 

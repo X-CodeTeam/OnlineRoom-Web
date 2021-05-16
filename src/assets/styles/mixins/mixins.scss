@@ -1,0 +1,91 @@
+@import "config";
+@import "function";
+
+/* BEM
+ -------------------------------------*/
+
+// Block
+@mixin b($block) {
+  $B: $namespace + '-' + $block !global;
+
+  .#{$B} {
+    @content
+  }
+}
+
+// Element
+@mixin e($element) {
+  $E: $element !global;;
+  $selector: &;
+  $currentSelector: "";
+  @each $unit in $element {
+    $currentSelector: #{$currentSelector + '.' + $B + $element-separator + $unit + ','};
+  }
+
+  @if hitAllSpecialNestRule($selector) {
+    @at-root {
+      #{$selector} {
+        #{$currentSelector} {
+          @content
+        }
+      }
+    }
+  } @else {
+    @at-root {
+      #{$currentSelector} {
+        @content
+      }
+    }
+  }
+}
+
+@mixin m($modify) {
+  $selector: &;
+  $current-selector: "";
+  @each $unit in $modify {
+    $current-selector: #{$current-selector + & + $modifier-separator + $unit + ','}
+  }
+
+  @at-root {
+    #{$current-selector} {
+      @content
+    }
+  }
+}
+
+@mixin when($state) {
+  @at-root {
+    &.#{$state-prefix + $state} {
+      @content;
+    }
+  }
+}
+
+/* El BEM
+--------------------------------------*/
+$el-namespace: 'el';
+
+@mixin elb($block) {
+  $ELB: $el-namespace + '-' + $block !global;
+
+  .#{$ELB} {
+    @content
+  }
+}
+
+@mixin ele($element) {
+  $E: $element;
+  $selector: &;
+  $currentSelector: "";
+  @each $unit in $element {
+    $currentSelector: #{$currentSelector + '.' + $ELB + $element-separator + $unit + ','};
+  }
+
+  @at-root {
+    #{$selector} {
+      #{$currentSelector} {
+        @content
+      }
+    }
+  }
+}
