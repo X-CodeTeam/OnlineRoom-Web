@@ -150,10 +150,7 @@ export default {
     document.body.style.overflow = "auto";
   },
 
-  mounted() {
-    this.form.username = "testzhang";
-    this.form.password = "123456";
-  },
+  mounted() {},
 
   methods: {
     ...mapActions({
