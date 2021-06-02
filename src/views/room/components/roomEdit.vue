@@ -147,11 +147,10 @@ export default {
         ],
         landlordPhone: [
           {
+            required: false,
             trigger: "blur",
-            validator: (_, value, cb) => {
-              if (!isPhone(value)) return cb(new Error("房东电话格式错误"));
-
-              return cb();
+            validator: (r, v, b) => {
+              v && !isPhone(v) ? b("房东电话格式错误") : b();
             },
           },
         ],

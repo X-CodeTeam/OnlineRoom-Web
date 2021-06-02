@@ -73,14 +73,15 @@ export default {
             },
           },
         ],
-        // objectMac: [
-        //   {
-        //     validator: (_, value, cb) => {
-        //       if (!isMac(value)) return cb(new Error("Mac地址格式错误"));
-        //         return cb();
-        //     },
-        //   },
-        // ],
+        objectMac: [
+          {
+            required: false,
+            trigger: "blur",
+            validator: (r, v, b) => {
+              v && !isMac(v) ? b("Mac地址格式错误") : b();
+            },
+          },
+        ],
       },
       title: "",
       dialogFormVisible: false,

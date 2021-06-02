@@ -2,7 +2,6 @@
   <div class="userManagement-container flex-column">
     <el-table-plus
       ref="roomTable"
-      :is-index="true"
       :search-form="true"
       :query-params="roomQueryForm"
       :table-props="roomTableProps"
