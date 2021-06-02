@@ -3,7 +3,6 @@
     <!-- 自定义位置 -->
     <el-table-plus
       ref="storeTable"
-      :is-index="true"
       :search-form="true"
       :query-params="queryForm"
       :table-props="storeTableProps"
@@ -103,11 +102,13 @@ export default {
   data() {
     return {
       storeTableProps: [
+        { name: "门店编号", prop: "storeId" },
         { name: "门店名称", prop: "storeName" },
         { name: "门店区域", prop: "storeAreaname" },
         { name: "门店地点", prop: "storeDetails" },
         { name: "经营者姓名", prop: "managerName" },
         { name: "经营者手机号", prop: "managerPhone" },
+        { name: "门店房间数", prop: "roomNum" },
         {
           name: "状态",
           prop: "enableMark",

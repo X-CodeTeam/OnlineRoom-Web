@@ -2,7 +2,6 @@
   <div class="userManagement-container flex-column">
     <el-table-plus
       ref="roomTable"
-      :is-index="true"
       :search-form="true"
       :query-params="roomQueryForm"
       :table-props="roomTableProps"
@@ -100,6 +99,7 @@ export default {
   data() {
     return {
       roomTableProps: [
+        { name: "房间编号", prop: "roomId" },
         { name: "门店名称", prop: "storeName" },
         { name: "门店地点", prop: "storeLocation" },
         { name: "楼栋层", prop: "buildingNumber" },

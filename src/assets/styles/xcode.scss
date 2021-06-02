@@ -146,7 +146,6 @@ html {
         @include base-scrollbar;
 
         > [class*='-container'] {
-          padding: $base-padding;
           background: $base-color-white;
         }
       }
@@ -350,9 +349,9 @@ html {
   font-weight: 700 !important;
 
   &::before {
-    margin-right: 10px;
     content: "";
-    border-right: 4px solid #1890ff;
+    margin-right: 10px;
+    border-right: 4px;
   }
 }
 

@@ -14,6 +14,7 @@ import ElTablePlus from "@/components/ElTablePlus";
 import { changeObjectToChar } from "@/utils/tools";
 // 加载图标
 import "@/icon";
+import "@/assets/styles/search-table.scss";
 
 Vue.use(ElementUI, { size: "small" });
 

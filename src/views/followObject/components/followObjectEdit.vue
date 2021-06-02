@@ -22,20 +22,13 @@
         <el-input v-model.trim="form.objectPhone"></el-input>
       </el-form-item>
       <el-form-item label="关注原因：" prop="followContent">
-        <el-select v-model="checkList" multiple style="width: 100%">
-          <el-option label="孤寡老人" value="孤寡老人"></el-option>
-          <el-option label="涉毒前科" value="涉毒前科"></el-option>
-          <el-option label="涉盗前科" value="涉盗前科"></el-option>
-          <el-option label="残疾人士" value="残疾人士"></el-option>
-          <el-option label="其他成员" value="其他成员"></el-option>
-        </el-select>
-        <!--        <el-checkbox-group v-model="checkList">-->
-        <!--          <el-checkbox label="孤寡老人"></el-checkbox>-->
-        <!--          <el-checkbox label="涉毒前科"></el-checkbox>-->
-        <!--          <el-checkbox label="涉盗前科"></el-checkbox>-->
-        <!--          <el-checkbox label="残疾人士"></el-checkbox>-->
-        <!--          <el-checkbox label="其他成员"></el-checkbox>-->
-        <!--        </el-checkbox-group>-->
+        <el-checkbox-group v-model="checkList">
+          <el-checkbox label="孤寡老人"></el-checkbox>
+          <el-checkbox label="涉毒前科"></el-checkbox>
+          <el-checkbox label="涉盗前科"></el-checkbox>
+          <el-checkbox label="残疾人士"></el-checkbox>
+          <el-checkbox label="其他成员"></el-checkbox>
+        </el-checkbox-group>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -82,11 +75,10 @@ export default {
         ],
         objectMac: [
           {
-            validator: (_, value, cb) => {
-              if (value && !isMac(value))
-                return cb(new Error("Mac地址格式错误"));
-
-              return cb();
+            required: false,
+            trigger: "blur",
+            validator: (r, v, b) => {
+              v && !isMac(v) ? b("Mac地址格式错误") : b();
             },
           },
         ],
@@ -106,7 +98,7 @@ export default {
       } else {
         this.isAdd = false;
         this.title = "编辑";
-        this.form = { ...row };
+        this.form = Object.assign({}, row);
         this.checkList = this.form.followContent.split(",");
       }
       this.dialogFormVisible = true;

@@ -3,6 +3,7 @@
     <!-- 自定义位置 -->
     <el-table-plus
       ref="sysUserTable"
+      is-auto-height
       :is-index="true"
       :search-form="true"
       :query-params="queryForm"
