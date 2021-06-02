@@ -7,9 +7,11 @@ import "./assets/styles/xcode.scss";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/display.css";
 import "@/assets/styles/element-variables.scss";
+import "@/styles/index.scss";
 import BaseAreaSelect from "@/components/BaseAreaSelect";
 import ElDics from "@/components/ElDics";
 import ElTablePlus from "@/components/ElTablePlus";
+import { changeObjectToChar } from "@/utils/tools";
 // 加载图标
 import "@/icon";
 import "@/assets/styles/search-table.scss";
@@ -25,6 +27,8 @@ requireComponent.keys().forEach((fileName) => {
 });
 
 Vue.prototype.$lodash = lodash;
+Vue.prototype.$changeObjectToChar = changeObjectToChar;
+Vue.prototype.$defaltChar = "---";
 
 Vue.component("ElAreaSelect", BaseAreaSelect);
 Vue.component("ElDics", ElDics);

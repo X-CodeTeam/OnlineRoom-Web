@@ -1,0 +1,19 @@
+.ly-store {
+
+}
+
+$all-dialog: store room order checkIn warning user role menu zone object;
+
+@each $unit in $all-dialog {
+  $C: 'ly-' + $unit + '__dialog';
+
+  .#{$C} {
+    .el-dialog__body{
+      padding-bottom: 0 !important;
+    }
+
+    .el-dialog__footer {
+      padding-top: 0 !important;
+    }
+  }
+}

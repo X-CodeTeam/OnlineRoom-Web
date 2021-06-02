@@ -285,9 +285,8 @@ export default {
       }
 
       // 表头也会改变
-      const height = this.$el.querySelector(
-        ".ly-search-table > div"
-      ).offsetHeight;
+      const height = this.$el.querySelector(".ly-search-table > div")
+        .offsetHeight;
 
       // 是否能正常获取高度
       if (height && height < Symbol.keyFor(MIN_HEIGHT))

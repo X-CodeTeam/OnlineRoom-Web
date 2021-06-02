@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import { doLogout, queryStorePage } from "@/api/store";
+import { doLogoutStore, queryStorePage } from "@/api/store";
 import Edit from "./components/StoreEdit";
 import Show from "./components/StoreShow";
 import ElTablePlus from "@/components/ElTablePlus";
@@ -148,7 +148,7 @@ export default {
     handleDelete(row) {
       if (row.storeId) {
         this.$baseConfirm("注销后不可恢复，请谨慎操作", null, async () => {
-          const res = await doLogout({ storeId: row.storeId });
+          const res = await doLogoutStore({ storeId: row.storeId });
           if (res.ok) {
             this.$baseMessage("注销成功！", "success");
           } else {

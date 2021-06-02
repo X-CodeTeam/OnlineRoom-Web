@@ -5,10 +5,13 @@ export function queryStorePage(params) {
     url: "/stores",
     method: "get",
     params,
+    meta: {
+      isFilter: true,
+    },
   });
 }
 
-export function doEdit(data) {
+export function doEditStore(data) {
   return request({
     url: "/stores",
     method: "put",
@@ -16,7 +19,7 @@ export function doEdit(data) {
   });
 }
 
-export function doAdd(data) {
+export function doAddStore(data) {
   return request({
     url: "/stores",
     method: "post",
@@ -24,7 +27,7 @@ export function doAdd(data) {
   });
 }
 
-export function doLogout(data) {
+export function doLogoutStore(data) {
   return request({
     url: "/stores/logout",
     method: "put",

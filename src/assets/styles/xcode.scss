@@ -358,10 +358,23 @@ html {
 // 是否严格居中（改变原先margin-top的布局）
 .dialog-center {
   .el-dialog { /* 保证dialog处于居中 */
-    margin: 0 !important;
     position: absolute;
-    left: 50%;
     top: 50%;
+    left: 50%;
+    margin: 0 !important;
     transform: translate(-50%, -50%);
   }
+}
+
+/* change element ui style
+------------------------------------------*/
+$border-radius-base: 5px;
+
+.el-dialog {
+  border-radius: $border-radius-base !important;
+}
+
+.el-dialog__header {
+  background-color: #e7eaea;
+  border-radius: $border-radius-base;
 }
