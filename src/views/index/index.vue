@@ -1,71 +1,66 @@
 <template>
   <div class="index-container">
-    <el-row :gutter="20">
-      <page-header></page-header>
-    </el-row>
+    <div id="line" style="width: 50vw; height: 100vh"></div>
   </div>
 </template>
 
 <script>
-import PageHeader from "./components/PageHeader";
-
 export default {
-  name: "Index",
+  name: "HelloWorld",
 
-  components: {
-    PageHeader,
+  data() {
+    return {
+      option: {
+        xAxis: {
+          type: "category",
+          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        },
+        yAxis: {
+          type: "value",
+        },
+        series: [
+          {
+            data: [150, 230, 224, 218, 135, 147, 260],
+            type: "line",
+          },
+        ],
+      },
+    };
+  },
+
+  mounted() {
+    this.myEcharts();
+  },
+
+  methods: {
+    myEcharts() {
+      const myChart = this.$echarts.init(document.getElementById("line"));
+      //配置图表
+      const option = {
+        title: {
+          text: "echarts入门示例",
+        },
+        tooltip: {},
+        legend: {
+          data: ["销量"],
+        },
+        xAxis: {
+          data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
+        },
+        yAxis: {},
+        series: [
+          {
+            name: "销量",
+            type: "bar",
+            data: [5, 20, 36, 10, 10, 20],
+          },
+        ],
+      };
+
+      myChart.setOption(option);
+    },
   },
 };
 </script>
 
-<style lang="scss" scoped>
-.index-container {
-  padding: 0 !important;
-  margin: 0 !important;
-  background: #f5f7f8 !important;
-
-  ::v-deep {
-    .chart1,
-    .chart2,
-    .version-information {
-      min-height: 268px;
-    }
-
-    .el-card {
-      .el-card__header {
-        position: relative;
-
-        .card-header-tag {
-          position: absolute;
-          top: 15px;
-          right: $base-padding;
-        }
-
-        > div > span {
-          display: flex;
-          align-items: center;
-
-          i {
-            margin-right: 3px;
-          }
-        }
-      }
-
-      .el-card__body {
-        .echarts {
-          width: 100%;
-          height: 127px;
-        }
-      }
-    }
-
-    .bottom {
-      padding-top: 20px;
-      margin-top: 5px;
-      color: #595959;
-      text-align: left;
-      border-top: 1px solid $base-border-color;
-    }
-  }
-}
-</style>
+<style lang="scss" scoped></style>
