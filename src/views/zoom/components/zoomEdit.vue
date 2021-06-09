@@ -20,7 +20,7 @@
         <base-area-select
           :zone-name.sync="form.zoneName"
           :zone-id.sync="form.zoneId"
-          :level="[0, 2]"
+          :level="[0, 3]"
           :show-all-levels="false"
           :load-props="{ multiple: true, value: 'zoneId' }"
         />
