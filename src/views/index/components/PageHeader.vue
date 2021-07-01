@@ -1,17 +1,37 @@
 <template>
-  <el-col :span="24">
-    <el-card class="page-header" shadow="never">
-      <el-avatar :src="avatar" class="page-header-avatar"></el-avatar>
-      <div class="page-header-tip">
-        <p class="page-header-tip-title">{{ handleTips() }}</p>
-        <p class="page-header-tip-description">{{ description }}</p>
+  <div class="ly-echarts ds-row">
+    <div class="echart-container-left ds-col">
+      <div class="echart-line-one">
+        <div v-for="index in 6" :key="index" class="number-flex border" />
       </div>
-    </el-card>
-  </el-col>
+      <div class="echart-line-two">
+        <p>基本概况</p>
+        <div class="condition ds-row wrap">
+          <div class="count-item">经营单位总数：{{}}</div>
+          <div class="count-item">经营单位总数：{{}}</div>
+          <div class="count-item">经营单位总数：{{}}</div>
+          <div class="count-item">经营单位总数：{{}}</div>
+          <div class="count-item">经营单位总数：{{}}</div>
+          <div class="count-item">经营单位总数：{{}}</div>
+          <div class="count-item">经营单位总数：{{}}</div>
+          <div class="count-item">经营单位总数：{{}}</div>
+        </div>
+      </div>
+      <div class="echart-line-three ds-row">
+        <div class="mage-one border"></div>
+        <div class="mage-two border"></div>
+      </div>
+    </div>
+    <div class="echart-container-right ds-col">
+      <div class="echart-left-one border">sd</div>
+      <div class="echart-left-two border">sd</div>
+    </div>
+  </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+import echarts from "echarts";
 
 export default {
   data() {
@@ -27,53 +47,146 @@ export default {
     }),
   },
 
+  mounted() {
+    // this.initEcharts();
+  },
+
   methods: {
-    handleTips() {
-      const hour = new Date().getHours();
-      return hour < 8
-        ? `早上好 ${this.username}，又是元气满满的一天。`
-        : hour <= 11
-        ? `上午好 ${this.username}，看到你我好开心。`
-        : hour <= 13
-        ? `中午好 ${this.username}，忙碌了一上午，记得吃午饭哦。`
-        : hour < 18
-        ? `下午好 ${this.username}，你一定有些累了，喝杯咖啡提提神。`
-        : `晚上好 ${this.username}，愿你天黑有灯，下雨有伞。`;
+    initEcharts() {
+      const id = window.document.getElementById("echarts");
+
+      console.log(id, "id");
+
+      const myChart = echarts.init(id);
+
+      // 指定图表的配置项和数据
+      const option = {
+        title: {
+          text: "ECharts 入门示例",
+        },
+        tooltip: {},
+        legend: {
+          data: ["销量"],
+        },
+        xAxis: {
+          data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
+        },
+        yAxis: {},
+        series: [
+          {
+            name: "销量",
+            type: "bar",
+            data: [5, 20, 36, 10, 10, 20],
+          },
+        ],
+      };
+
+      myChart.setOption(option);
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.page-header {
-  ::v-deep {
-    .el-card__body {
-      display: flex;
-      align-items: center;
+.ly-echarts {
+  flex: 1;
+
+  height: 100%;
+  background: #ffffff !important;
+
+  .h-100 {
+    height: 100%;
+  }
+
+  .fx-1 {
+    flex: 1;
+  }
+
+  &.ds-col,
+  .ds-col {
+    display: flex;
+    flex-flow: column nowrap;
+  }
+
+  &.ds-row,
+  .ds-row {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+
+  .wrap {
+    flex-wrap: wrap !important;
+  }
+
+  .count-item {
+    width: 25%;
+    height: 50px;
+    line-height: 50px;
+  }
+
+  .echart-container-left {
+    box-sizing: border-box;
+    width: 65%;
+    padding: 10px 16px;
+  }
+
+  .echart-container-right {
+    box-sizing: border-box;
+    flex: 1;
+    padding: 10px 16px;
+  }
+
+  .echart-line-one {
+    display: flex;
+    flex-flow: row nowrap;
+
+    .number-flex {
+      flex: 1;
+      height: 150px;
+      margin-right: 16px;
+
+      &:last-child {
+        margin-right: 0;
+      }
     }
   }
 
-  &-avatar {
-    width: 64px;
-    height: 64px;
-    margin-right: 16px;
-    border-radius: 50%;
+  .echart-line-two {
+    margin: 16px 0;
   }
 
-  &-tip {
-    width: calc(100% - 80px);
-    vertical-align: middle;
+  .echart-line-three {
+    flex: 1;
 
-    &-title {
-      margin-bottom: 12px;
-      font-size: 20px;
-      font-weight: bold;
-      color: #3c4a54;
+    .mage-one {
+      flex: 1;
+      width: 50%;
+      height: 100%;
     }
 
-    &-description {
-      color: #808695;
+    .mage-two {
+      flex: 1;
+      height: 100%;
+      margin-left: 16px;
     }
+  }
+
+  .echart-left-one {
+    height: 350px;
+  }
+
+  .echart-left-two {
+    flex: 1;
+    margin-top: 16px;
+  }
+
+  .border {
+    border: 1px solid black;
+  }
+
+  .echart-item {
+    width: 300px;
+    height: 300px;
   }
 }
 </style>
