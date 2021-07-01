@@ -2,24 +2,37 @@
   <div class="ly-echarts ds-row">
     <div class="echart-container-left ds-col">
       <div class="echart-line-one">
-        <div v-for="index in 6" :key="index" class="number-flex border" />
+        <div
+          v-for="item in Object.keys(todayCount)"
+          :key="item"
+          class="number-flex bg-white r-2"
+        >
+          <div>{{ todayCount[item].message }}</div>
+          <div>{{ todayCount[item].value }}</div>
+        </div>
       </div>
-      <div class="echart-line-two">
+      <div class="echart-line-two bg-white r-2">
         <p>基本概况</p>
         <div class="condition ds-row wrap">
-          <div class="count-item">经营单位总数：{{}}</div>
-          <div class="count-item">经营单位总数：{{}}</div>
-          <div class="count-item">经营单位总数：{{}}</div>
-          <div class="count-item">经营单位总数：{{}}</div>
-          <div class="count-item">经营单位总数：{{}}</div>
-          <div class="count-item">经营单位总数：{{}}</div>
-          <div class="count-item">经营单位总数：{{}}</div>
-          <div class="count-item">经营单位总数：{{}}</div>
+          <div class="count-item">
+            经营单位总数：{{ baseInfo.corporateTotal }}
+          </div>
+          <div class="count-item">门店总数：{{ baseInfo.storeTotal }}</div>
+          <div class="count-item">
+            住宅房间：{{ baseInfo.residentialRoomTotal }}
+          </div>
+          <div class="count-item">
+            公寓房间：{{ baseInfo.condominiumRoomTotal }}
+          </div>
+          <div class="count-item">房间总数：{{ baseInfo.roomTotal }}</div>
+          <div class="count-item">订单总数：{{ baseInfo.reserveTotal }}</div>
+          <div class="count-item">入住人数：{{}}</div>
+          <div class="count-item">入住人次：{{ baseInfo.joinPeopleTotal }}</div>
         </div>
       </div>
       <div class="echart-line-three ds-row">
-        <div class="mage-one border"></div>
-        <div class="mage-two border"></div>
+        <div id="pie" class="mage-one border bg-white r-2"></div>
+        <div id="treeGuests" class="mage-two border bg-white r-2"></div>
       </div>
     </div>
     <div class="echart-container-right ds-col">
@@ -32,11 +45,52 @@
 <script>
 import { mapGetters } from "vuex";
 import echarts from "echarts";
+import {
+  basicOverview,
+  getTodayCount,
+  nearlyWeekCheckInPeople,
+} from "@/api/counts";
 
 export default {
   data() {
     return {
-      description: "",
+      originTodayCount: null,
+
+      nearlyWeekCheckInPeople: null,
+
+      baseInfo: {
+        avgPeopleTotal: 1,
+        condominiumRoomTotal: 36,
+        corporateTotal: 1,
+        joinPeopleTotal: 1,
+        reserveTotal: 1,
+        residentialRoomTotal: 0,
+        roomTotal: 36,
+        storeTotal: 4,
+      },
+
+      todayCount: {
+        order: {
+          message: "今日订单",
+          value: "1",
+        },
+        guestNumber: {
+          message: "今日入住人数",
+          value: "",
+        },
+        orderRooms: {
+          message: "今日预定房间",
+          value: "",
+        },
+        emptyRooms: {
+          message: "今日空闲房间",
+          value: "",
+        },
+        roomPre: {
+          message: "房间使用率",
+          value: "",
+        },
+      },
     };
   },
 
@@ -47,41 +101,158 @@ export default {
     }),
   },
 
-  mounted() {
-    // this.initEcharts();
+  watch: {
+    originTodayCount: {
+      handler(res) {
+        res && this.initEchartsPie();
+      },
+      immediate: true,
+    },
+
+    nearlyWeekCheckInPeople: {
+      handler(res) {
+        res && this.initEchartsTreeGuests();
+      },
+    },
+  },
+
+  async mounted() {
+    await Promise.all([
+      this.initTodayCount(),
+      this.initBaseView(),
+      this.initWeekGuestContent(),
+    ]);
   },
 
   methods: {
-    initEcharts() {
-      const id = window.document.getElementById("echarts");
+    initEcharts(id, options) {
+      const myChart = echarts.init(window.document.getElementById(id));
 
-      console.log(id, "id");
+      myChart.setOption(options);
+    },
 
-      const myChart = echarts.init(id);
-
+    initEchartsPie() {
       // 指定图表的配置项和数据
-      const option = {
+      const options = {
         title: {
-          text: "ECharts 入门示例",
+          text: "今日旅客性别比例",
+          left: "center",
         },
-        tooltip: {},
+        tooltip: {
+          trigger: "item",
+        },
         legend: {
-          data: ["销量"],
+          orient: "vertical",
+          left: "left",
         },
-        xAxis: {
-          data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
-        },
-        yAxis: {},
         series: [
           {
-            name: "销量",
-            type: "bar",
-            data: [5, 20, 36, 10, 10, 20],
+            name: "访问来源",
+            type: "pie",
+            radius: "50%",
+            data: [
+              {
+                value: this.originTodayCount["todayCheckInPeopleTotalByMan"],
+                name: "今日入住男性",
+              },
+              {
+                value: this.originTodayCount["todayCheckInPeopleTotalByWoman"],
+                name: "今日入住女性",
+              },
+            ],
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: "rgba(0, 0, 0, 0.5)",
+              },
+            },
           },
         ],
       };
 
-      myChart.setOption(option);
+      this.initEcharts("pie", options);
+    },
+
+    initEchartsTreeGuests() {
+      const yAxis = [];
+
+      const xAxis = [];
+
+      const extractYAxis = () => {
+        this.nearlyWeekCheckInPeople.forEach((item) => {
+          yAxis.push(item.date);
+        });
+      };
+
+      const extractXAxis = () => {
+        this.nearlyWeekCheckInPeople.forEach((item) => {
+          xAxis.push(item.checkInPeopleTotal);
+        });
+      };
+
+      extractXAxis();
+      extractYAxis();
+
+      const option = {
+        title: {
+          text: "近一周入住人数",
+        },
+        tooltip: {
+          trigger: "axis",
+          axisPointer: {
+            type: "shadow",
+          },
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true,
+        },
+        xAxis: {
+          type: "value",
+          boundaryGap: [0, 0.01],
+        },
+        yAxis: {
+          type: "category",
+          data: yAxis,
+        },
+        series: [
+          {
+            type: "bar",
+            data: xAxis,
+          },
+        ],
+      };
+
+      this.initEcharts("treeGuests", option);
+    },
+
+    async initTodayCount() {
+      let { data: _todayCount } = await getTodayCount();
+
+      _todayCount = _todayCount[0];
+
+      this.originTodayCount = _todayCount;
+
+      this.todayCount.order.value = _todayCount.todayReserveTotal;
+      this.todayCount.guestNumber.value = _todayCount.todayCheckInPeopleTotal;
+      this.todayCount.orderRooms.value = _todayCount.todayReserveRoomTotal;
+      this.todayCount.emptyRooms.value = _todayCount.todayReserveTotal;
+      this.todayCount.roomPre.value = _todayCount.roomUsageRate;
+    },
+
+    async initBaseView() {
+      const { data } = await basicOverview();
+
+      this.baseInfo = data[0];
+    },
+
+    async initWeekGuestContent() {
+      const { data } = await nearlyWeekCheckInPeople();
+
+      this.nearlyWeekCheckInPeople = data;
     },
   },
 };
@@ -92,7 +263,14 @@ export default {
   flex: 1;
 
   height: 100%;
-  background: #ffffff !important;
+
+  .bg-white {
+    background: #ffffff !important;
+  }
+
+  .r-2 {
+    border-radius: 4px;
+  }
 
   .h-100 {
     height: 100%;
