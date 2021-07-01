@@ -13,6 +13,11 @@ import qs from "qs";
 import { isArray } from "@/utils/validate";
 import { Message } from "element-ui";
 import { changeObjectToChar } from "@/utils/tools";
+import { debounce as ldDebounce } from "lodash";
+
+const MessageError = ldDebounce((options) => {
+  Message(options);
+}, 100);
 
 let loadingInstance;
 
@@ -62,11 +67,12 @@ const handleData = ({ config, data, status, statusText }) => {
   }
 
   if (!data.ok) {
-    Message({
-      type: "error",
-      message: err.msg,
-      duration: 1500,
-    });
+    !err.msg.includes("令牌不存在") &&
+      MessageError({
+        type: "error",
+        message: err.msg,
+        duration: 1500,
+      });
   }
 
   const { data: resData } = data;

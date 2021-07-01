@@ -33,7 +33,6 @@
           >
             添加
           </el-button>
-          <el-button class="test" @click="changeArray">测试</el-button>
         </el-form-item>
       </template>
       <template #table-self>
@@ -103,6 +102,8 @@ export default {
 
           const { parentZoneCode, zoneCode } = row;
 
+          console.log(this.$refs.zoneTable.theTable.store.states, "map");
+
           // 动态更新树形表格的数据
           if (parentZoneCode && zoneCode) {
             const index = this.$refs.zoneTable.theTable.store.states.lazyTreeNodeMap[
@@ -122,13 +123,11 @@ export default {
     },
 
     async queryData() {
+      console.log("更新数据");
+
       await this.$refs.zoneTable.flashTable();
 
       await this.$store.dispatch("zones/_initZones", true);
-    },
-
-    changeArray(row) {
-      console.log(this.$refs.zoneTable.theTable.store.states.lazyTreeNodeMap);
     },
 
     async lazyLoad(tree, treeNode, resolve) /* 点击节点、点击节点列表（树） */ {
