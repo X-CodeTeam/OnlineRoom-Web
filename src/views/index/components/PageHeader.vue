@@ -26,7 +26,7 @@
           </div>
           <div class="count-item">房间总数：{{ baseInfo.roomTotal }}</div>
           <div class="count-item">订单总数：{{ baseInfo.reserveTotal }}</div>
-          <div class="count-item">入住人数：{{ baseInfo.joinPeopleTotal }}</div>
+          <div class="count-item">入住人数：{{ baseInfo.avgPeopleTotal }}</div>
           <div class="count-item">入住人次：{{ baseInfo.joinPeopleTotal }}</div>
         </div>
       </div>
@@ -173,6 +173,10 @@ export default {
       avatar: "user/avatar",
       username: "user/username",
     }),
+
+    todayCheckInPeopleTotal() {
+      return this.todayCount["todayCheckInPeopleTotal"];
+    },
   },
 
   watch: {
