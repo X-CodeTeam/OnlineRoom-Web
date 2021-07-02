@@ -26,7 +26,9 @@
           </div>
           <div class="count-item">房间总数：{{ baseInfo.roomTotal }}</div>
           <div class="count-item">订单总数：{{ baseInfo.reserveTotal }}</div>
-          <div class="count-item">入住人数：{{ baseInfo.avgPeopleTotal }}</div>
+          <div class="count-item">
+            入住人数：{{ baseInfo.checkInPeopleTotal }}
+          </div>
           <div class="count-item">入住人次：{{ baseInfo.joinPeopleTotal }}</div>
         </div>
       </div>
@@ -121,14 +123,15 @@ export default {
       rollUpReserves: [],
 
       baseInfo: {
-        avgPeopleTotal: 1,
-        condominiumRoomTotal: 36,
-        corporateTotal: 1,
-        joinPeopleTotal: 1,
-        reserveTotal: 1,
+        avgPeopleTotal: 0,
+        condominiumRoomTotal: 0,
+        corporateTotal: 0,
+        joinPeopleTotal: 0,
+        reserveTotal: 0,
         residentialRoomTotal: 0,
-        roomTotal: 36,
-        storeTotal: 4,
+        roomTotal: 0,
+        storeTotal: 0,
+        checkInPeopleTotal: 0,
       },
 
       todayCount: {
