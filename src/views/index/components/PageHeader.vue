@@ -7,12 +7,12 @@
           :key="item"
           class="number-flex bg-white r-2"
         >
-          <div>{{ todayCount[item].message }}</div>
-          <div>{{ todayCount[item].value }}</div>
+          <div class="number-title">{{ todayCount[item].message }}</div>
+          <div class="number-value">{{ todayCount[item].value }}</div>
         </div>
       </div>
       <div class="echart-line-two bg-white r-2">
-        <p>基本概况</p>
+        <p class="base-title">基本概况</p>
         <div class="condition ds-row wrap">
           <div class="count-item">
             经营单位总数：{{ baseInfo.corporateTotal }}
@@ -26,7 +26,7 @@
           </div>
           <div class="count-item">房间总数：{{ baseInfo.roomTotal }}</div>
           <div class="count-item">订单总数：{{ baseInfo.reserveTotal }}</div>
-          <div class="count-item">入住人数：{{}}</div>
+          <div class="count-item">入住人数：{{ baseInfo.joinPeopleTotal }}</div>
           <div class="count-item">入住人次：{{ baseInfo.joinPeopleTotal }}</div>
         </div>
       </div>
@@ -36,9 +36,36 @@
       </div>
     </div>
     <div class="echart-container-right ds-col">
-      <div class="echart-left-one border">sd</div>
-      <div class="echart-left-two border">sd</div>
+      <div class="echart-left-one bg-white r-2">
+        <p class="new-stay-title">最近入住</p>
+        <transition-group name="list">
+          <div
+            v-for="reserve in reserves"
+            :key="reserve['objectId']"
+            class="new-stay-value"
+          >
+            <span>{{ reserve | reserveTime }}</span>
+            <span class="mlp-2">{{ reserve | reserveNameAndIdcard }}</span>
+          </div>
+        </transition-group>
+      </div>
+      <div class="echart-left-two bg-white r-2">
+        <p class="waring-title">异常预警</p>
+        <transition-group name="list" mode="out-in">
+          <div
+            v-for="warning in exceptionWarnings"
+            :key="warning['warningId']"
+            class="waring-value"
+            @click="orderShow(warning)"
+          >
+            <span>{{ warning | timeString }}</span>
+            <span class="mlp-3">{{ warning | typeString }}</span>
+          </div>
+        </transition-group>
+      </div>
     </div>
+
+    <order-show ref="orderShow"></order-show>
   </div>
 </template>
 
@@ -50,13 +77,48 @@ import {
   getTodayCount,
   nearlyWeekCheckInPeople,
 } from "@/api/counts";
+import { queryPage } from "@/api/warning";
+import { queryObjects as reservesQueryPage } from "@/api/order";
+import OrderShow from "@/views/warning/components/warningShow";
+
+const defaultRollUpLength = 8;
 
 export default {
+  filters: {
+    timeString(waring) {
+      return `${waring["warningTime"]}`;
+    },
+
+    typeString(waring) {
+      return waring["warningTypeString"];
+    },
+
+    reserveTime(reserve) {
+      return reserve["checkInTime"];
+    },
+
+    reserveNameAndIdcard(reserve) {
+      return `${reserve["objectName"]} -- ${reserve["objectIdcard"]}`;
+    },
+  },
+
+  components: {
+    OrderShow,
+  },
+
   data() {
     return {
       originTodayCount: null,
 
       nearlyWeekCheckInPeople: null,
+
+      exceptionWarnings: [],
+
+      rollUpWaring: [],
+
+      reserves: [],
+
+      rollUpReserves: [],
 
       baseInfo: {
         avgPeopleTotal: 1,
@@ -91,6 +153,18 @@ export default {
           value: "",
         },
       },
+
+      rollUp: {
+        waringSize: defaultRollUpLength, // 固定值，默认展示数量
+        waringTotal: null,
+        waringIndex: 1,
+        waringTimeId: null,
+
+        reserveSize: defaultRollUpLength,
+        reserveTotal: null,
+        reserveIndex: 1,
+        reserveTimeId: null,
+      },
     };
   },
 
@@ -116,15 +190,29 @@ export default {
     },
   },
 
-  async mounted() {
+  async created() {
     await Promise.all([
       this.initTodayCount(),
       this.initBaseView(),
       this.initWeekGuestContent(),
     ]);
+
+    this.autoRollUpWaring();
+    this.autoRollUpReserves();
+  },
+
+  beforeDestroy() {
+    this.rollUp.waringTimeId = null;
+    this.rollUp.reserveTimeId = null;
   },
 
   methods: {
+    orderShow(row) {
+      if (row.warningId) {
+        this.$refs["orderShow"].showEdit(row);
+      }
+    },
+
     initEcharts(id, options) {
       const myChart = echarts.init(window.document.getElementById(id));
 
@@ -240,7 +328,7 @@ export default {
       this.todayCount.guestNumber.value = _todayCount.todayCheckInPeopleTotal;
       this.todayCount.orderRooms.value = _todayCount.todayReserveRoomTotal;
       this.todayCount.emptyRooms.value = _todayCount.todayReserveTotal;
-      this.todayCount.roomPre.value = _todayCount.roomUsageRate;
+      this.todayCount.roomPre.value = _todayCount.roomUsageRate * 100 + "%";
     },
 
     async initBaseView() {
@@ -254,11 +342,108 @@ export default {
 
       this.nearlyWeekCheckInPeople = data;
     },
+
+    async initExceptionWarnings() {
+      const { data, pageTotal, pageIndex } = await queryPage({
+        pageIndex: this.rollUp.waringIndex,
+        pageSize: this.rollUp.waringSize,
+      });
+
+      this.rollUp.waringTotal = pageTotal;
+      this.rollUp.waringIndex = pageIndex;
+
+      this.rollUpWaring = data;
+    },
+
+    autoRollUpWaring() {
+      this.rollUp.waringTimeId = setInterval(async () => {
+        if (!this.rollUpWaring.length) {
+          if (
+            this.rollUp.waringTotal >
+            this.rollUp.waringIndex * this.rollUp.waringSize
+          ) {
+            this.rollUp.waringIndex += 1;
+          } else {
+            this.rollUp.waringIndex = 1;
+          }
+
+          await this.initExceptionWarnings();
+        }
+
+        if (!this.exceptionWarnings.length) {
+          this.exceptionWarnings = this.rollUpWaring;
+          this.rollUpWaring = [];
+        }
+
+        if (
+          this.rollUpWaring.length &&
+          this.exceptionWarnings.length === defaultRollUpLength
+        ) {
+          this.exceptionWarnings.shift();
+          this.exceptionWarnings.push(this.rollUpWaring.shift());
+        }
+      }, 2000);
+    },
+
+    async initReserves() {
+      const { data, pageTotal, pageIndex } = await reservesQueryPage({
+        pageIndex: this.rollUp.reserveIndex,
+        pageSize: this.rollUp.reserveSize,
+      });
+
+      this.rollUp.reserveTotal = pageTotal;
+      this.rollUp.reserveIndex = pageIndex;
+
+      this.reserves = data;
+    },
+
+    autoRollUpReserves() {
+      this.rollUp.reserveTimeId = setInterval(async () => {
+        if (!this.rollUpReserves.length) {
+          if (
+            this.rollUp.reserveTotal >
+            this.rollUp.reserveIndex * this.rollUp.reserveSize
+          ) {
+            this.rollUp.reserveIndex += 1;
+          } else {
+            this.rollUp.reserveIndex = 1;
+          }
+
+          await this.initReserves();
+        }
+
+        if (!this.reserves.length) {
+          this.reserves = this.rollUpReserves;
+          this.rollUpReserves = [];
+        }
+
+        if (
+          this.reserves.length &&
+          this.reserves.length === defaultRollUpLength
+        ) {
+          this.reserves.shift();
+          this.reserves.push(this.rollUpReserves.shift());
+        }
+      }, 2000);
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.list-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+.list-enter-active {
+  transition: all 1s;
+}
+.list-enter
+  /* .list-leave-active for below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
 .ly-echarts {
   flex: 1;
 
@@ -278,6 +463,14 @@ export default {
 
   .fx-1 {
     flex: 1;
+  }
+
+  .mlp-2 {
+    margin-left: 10%;
+  }
+
+  .mlp-3 {
+    margin-left: 15%;
   }
 
   &.ds-col,
@@ -304,7 +497,7 @@ export default {
 
   .echart-container-left {
     box-sizing: border-box;
-    width: 65%;
+    width: 70%;
     padding: 10px 16px;
   }
 
@@ -314,23 +507,50 @@ export default {
     padding: 10px 16px;
   }
 
+  %title {
+    font-size: 1em;
+    font-weight: bold;
+  }
+
+  %line {
+    height: 32px;
+    line-height: 32px;
+  }
+
   .echart-line-one {
     display: flex;
     flex-flow: row nowrap;
 
     .number-flex {
       flex: 1;
-      height: 150px;
-      margin-right: 16px;
+      height: 120px;
+      padding: 0.8rem;
+      margin-right: 12px;
 
       &:last-child {
         margin-right: 0;
       }
     }
+
+    .number-title {
+      @extend %title;
+    }
+
+    .number-value {
+      margin-top: 2rem;
+      font-size: 2em;
+      font-weight: bolder;
+      text-align: center;
+    }
   }
 
   .echart-line-two {
+    padding: 0 1em;
     margin: 16px 0;
+
+    .base-title {
+      @extend %title;
+    }
   }
 
   .echart-line-three {
@@ -351,11 +571,30 @@ export default {
 
   .echart-left-one {
     height: 350px;
+    padding: 0 1em;
+
+    .new-stay-title {
+      @extend %title;
+    }
+
+    .new-stay-value {
+      @extend %line;
+    }
   }
 
   .echart-left-two {
     flex: 1;
+    padding: 0 1em;
     margin-top: 16px;
+
+    .waring-title {
+      @extend %title;
+    }
+
+    .waring-value {
+      @extend %line;
+      cursor: pointer;
+    }
   }
 
   .border {

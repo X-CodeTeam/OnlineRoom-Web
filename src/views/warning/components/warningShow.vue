@@ -411,6 +411,7 @@
 
 <script>
 import { queryWarnings } from "@/api/warning";
+
 export default {
   name: "CheckinShowShow",
 
@@ -434,6 +435,7 @@ export default {
       }
       this.dialogFormVisible = true;
     },
+
     async fetchData(warningId) {
       this.listLoading = true;
       const { data } = await queryWarnings(warningId);
@@ -442,6 +444,7 @@ export default {
       }
       this.listLoading = false;
     },
+
     close() {
       this.$refs["form"].resetFields();
       this.form = this.$options.data().form;
